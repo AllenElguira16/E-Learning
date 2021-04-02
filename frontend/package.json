@@ -2,6 +2,7 @@
   "name": "frontend",
   "version": "0.1.0",
   "license": "UNLICENSED",
+  "description": "",
   "private": true,
   "scripts": {
     "start": "react-scripts start",

@@ -9,6 +9,10 @@ const Pages: RouteProps[] = [
   {
     path: '/',
     component: React.lazy(() => import('./Home'))
+  },
+  {
+    path: '/admin',
+    component: React.lazy(() => import('./Admin'))
   }
 ]
 

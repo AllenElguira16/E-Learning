@@ -1,7 +1,9 @@
 {
   "name": "backend",
-  "version": "1.0.0",
+  "version": "0.1.0",
+  "license": "UNLICENSED",
   "description": "",
+  "private": true,
   "scripts": {
     "build": "yarn run tsc",
     "tsc": "tsc --project tsconfig.compile.json",
