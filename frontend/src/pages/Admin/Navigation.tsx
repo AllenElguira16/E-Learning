@@ -26,20 +26,14 @@ const Navigation = () => {
           <Nav className="mr-auto" navbar>
             <UncontrolledDropdown nav inNavbar>
               <DropdownToggle nav>
-                Teacher
+                Lessons
               </DropdownToggle>
               <DropdownMenu>
                 <DropdownItem>
-                  <NavLink href="/teacher/list">Lists of Teachers</NavLink>
+                  <NavLink href="/admin/lesson/list">Lists of Lessons</NavLink>
                 </DropdownItem>
                 <DropdownItem>
-                  <NavLink href="/teacher/add">Add Teacher</NavLink>
-                </DropdownItem>
-                <DropdownItem>
-                  <NavLink href="/teacher/edit">Edit Teacher</NavLink>
-                </DropdownItem>
-                <DropdownItem>
-                  <NavLink href="/teacher/delete">Delete Teacher</NavLink>
+                  <NavLink href="/admin/lesson/upload">Upload Lessons</NavLink>
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
@@ -49,16 +43,16 @@ const Navigation = () => {
               </DropdownToggle>
               <DropdownMenu>
                 <DropdownItem>
-                  <NavLink href="/student/list">Lists of Students</NavLink>
+                  <NavLink href="/admin/student/list">Lists of Students</NavLink>
                 </DropdownItem>
                 <DropdownItem>
-                  <NavLink href="/student/add">Add Student</NavLink>
+                  <NavLink href="/admin/student/add">Add Student</NavLink>
                 </DropdownItem>
                 <DropdownItem>
-                  <NavLink href="/student/edit">Edit Student</NavLink>
+                  <NavLink href="/admin/student/edit">Edit Student</NavLink>
                 </DropdownItem>
                 <DropdownItem>
-                  <NavLink href="/student/delete">Delete Student</NavLink>
+                  <NavLink href="/admin/student/delete">Delete Student</NavLink>
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
