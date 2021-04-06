@@ -7,6 +7,7 @@ import { RouteProps } from "react-router"
  */
 const Pages: RouteProps[] = [
   {
+    exact: true,
     path: '/',
     component: React.lazy(() => import('./Home'))
   },

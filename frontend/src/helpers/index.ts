@@ -1,6 +1,8 @@
 /**
  * Helper functions
  */
-export const helloWorld = () => {
-  return 'hello world';
+import dayjs from 'dayjs';
+
+export const formatDateToYMD = (date: Date) => {
+  return dayjs(date).format('YYYY-MM-DD');
 };
