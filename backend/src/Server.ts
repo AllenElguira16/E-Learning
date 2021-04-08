@@ -2,7 +2,7 @@ import {Env} from "@tsed/core";
 import {Configuration, Inject} from "@tsed/di";
 import {$log, PlatformApplication} from "@tsed/common";
 import "@tsed/platform-express"; // /!\ keep this import
-import bodyParser from "body-parser";
+import express from "express";
 import compress from "compression";
 import cookieParser from "cookie-parser";
 import methodOverride from "method-override";
@@ -49,7 +49,18 @@ if (isProduction) {
   typeorm: typeormConfig,
   exclude: [
     "**/*.spec.ts"
-  ]
+  ],
+  // ajv: {
+  //   strict: false,
+  //   allErrors: true,
+  //   $data: true
+  // }
+  ajv: {
+    errorFormatter: (error) => `value '${error.data}' ${error.message}`,
+    verbose: false,
+    allErrors: true
+    // verbose: true
+ }
 })
 export class Server {
   @Inject()
@@ -64,8 +75,8 @@ export class Server {
       .use(cookieParser())
       .use(compress({}))
       .use(methodOverride())
-      .use(bodyParser.json())
-      .use(bodyParser.urlencoded({
+      .use(express.json())
+      .use(express.urlencoded({
         extended: true
       }));
   }

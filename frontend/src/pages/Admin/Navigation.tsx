@@ -26,19 +26,6 @@ const Navigation = () => {
           <Nav className="mr-auto" navbar>
             <UncontrolledDropdown nav inNavbar>
               <DropdownToggle nav>
-                Lessons
-              </DropdownToggle>
-              <DropdownMenu>
-                <DropdownItem>
-                  <NavLink href="/admin/lesson/list">Lists of Lessons</NavLink>
-                </DropdownItem>
-                <DropdownItem>
-                  <NavLink href="/admin/lesson/upload">Upload Lessons</NavLink>
-                </DropdownItem>
-              </DropdownMenu>
-            </UncontrolledDropdown>
-            <UncontrolledDropdown nav inNavbar>
-              <DropdownToggle nav>
                 Students
               </DropdownToggle>
               <DropdownMenu>
@@ -53,6 +40,19 @@ const Navigation = () => {
                 </DropdownItem>
                 <DropdownItem>
                   <NavLink href="/admin/student/delete">Delete Student</NavLink>
+                </DropdownItem>
+              </DropdownMenu>
+            </UncontrolledDropdown>
+            <UncontrolledDropdown nav inNavbar>
+              <DropdownToggle nav>
+                Lessons
+              </DropdownToggle>
+              <DropdownMenu>
+                <DropdownItem>
+                  <NavLink href="/admin/lesson/list">Lists of Lessons</NavLink>
+                </DropdownItem>
+                <DropdownItem>
+                  <NavLink href="/admin/lesson/upload">Upload Lessons</NavLink>
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
