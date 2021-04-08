@@ -4,11 +4,14 @@ import { getStudentList } from '../../../api';
 import { formatDateToYMD } from '../../../helpers';
 
 const Lists: FC = () => {
-  const [studentList, setStudentList] = useState<IStudent[] | null>(null);
+  const [studentList, setStudentList] = useState<IStudent[]>([]);
  
   useEffect(() => {
     (async () => {
-      setStudentList(await getStudentList())
+      const studentList = await getStudentList();
+      if (studentList) {
+        setStudentList(studentList)
+      }
     })()
   }, []);
 
@@ -24,7 +27,7 @@ const Lists: FC = () => {
         </tr>
       </thead>
       <tbody>
-        {studentList !== null && studentList.map((student) => (
+        {studentList.length && studentList.map((student) => (
           <tr>
             <td>{student.student_id}</td>
             <td>{student.first_name}</td>

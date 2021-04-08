@@ -1,25 +1,61 @@
-import {Controller, Get} from "@tsed/common";
+import {BodyParams, Controller, Get, Post} from "@tsed/common";
 import { ContentType } from "@tsed/schema";
+import { StudentInput } from "../model/StudentInput";
+import { StudentService } from "../services/studentService";
 
 @Controller("/student")
+@ContentType('application/json')
 export class StudentController {
-  @Get("/list")
-  @ContentType('application/json')
-  listOfStudents(): IStudent[] {
-    const students: IStudent[] = [];
+  constructor(private studentService: StudentService) {}
+
+  private transformID(id: number | string) {
     const padding = "000000";
-    for (let i = 0; i < 50; i++) {
-      const id = i + 1;
-      students.push({
-        student_id: 'STUDENT-' + (padding.substr(id.toString().length) + id),
-        first_name: 'Michael Allen',
-        middle_name: 'Erguiza',
-        last_name: 'Elguira',
-        profile_id: null,
-        created: new Date()
-      });
+    const studentIdLength = id.toString().length;
+    return padding.substr(studentIdLength) + id
+  }
+  /**
+   * Get all students
+   * 
+   * @returns IResponse
+   */
+  @Get("/list")
+  async listOfStudents(): Promise<IResponse<{ students: IStudent[]}>> {
+    const students: IStudent[] = await this.studentService.getAll();
+    for (let i = 0; i < students.length; i++) {
+      students[i].student_id = 'STUDENT-' + this.transformID(students[i].student_id);
     }
 
-    return students;
+    return {
+      status: 200,
+      message: 'Successfully retrieve student list',
+      data: {
+        students
+      }
+    };
+  }
+
+  /**
+   * 
+   * @param newStudent Student
+   * @returns IResponse
+   */
+  @Post("/add")
+  async addStudent(@BodyParams() newStudent: TInput): Promise<IResponse> {
+    // return newStudent;
+    try {
+      
+      await this.studentService.create(newStudent)
+  
+      return {
+        status: 200,
+        message: 'Successfully added new student'
+      };
+    } catch (error) {
+      return {
+        status: 400,
+        message: 'Error adding new student',
+        data: error.errors
+      };
+    }
   }
 }

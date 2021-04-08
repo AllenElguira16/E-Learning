@@ -2,10 +2,26 @@
  * Handles API Requests
  */
 
-import axios from "axios"
+import axios, { AxiosResponse } from "axios"
 
-export const getStudentList = async (): Promise<IStudent[]> => {
-  const { data } = await axios.get('/rest/student/list');
+export const getStudentList = async (): Promise<IStudent[]|undefined> => {
+  try {
+    
+    const { data: axiosData }: AxiosResponse<IResponse<{ students: IStudent[]}>> = await axios.get('/rest/student/list');
+  
+    return axiosData.data?.students;
+  } catch (error) {
+    alert(error.message);
+  }
+}
 
-  return data
+export const addStudent = async (newStudentData: TInput): 
+  Promise<IResponse | IResponse<TValidationObject<TInput>>> => {
+  try {
+    const { data: axiosData }: AxiosResponse<IResponse<{ students: IStudent[]}>> = await axios.post('/rest/student/add', newStudentData);
+    // console.log(axiosData);
+    return axiosData;
+  } catch (error) {
+    return error.response.data.errors;
+  }
 }
