@@ -7,8 +7,26 @@ import { StudentInput } from '../model/StudentInput';
  */
 @EntityRepository(Student)
 export class StudentRepository extends Repository<Student> {
-  async getAllStudent(): Promise<Student[]> {
-    return this.find();
+  /**
+   * get list of students
+   * 
+   * @returns Student[]
+   */
+  async getStudents(offset: number, limit: number): Promise<[Student[], number]> {
+    return this.findAndCount({
+      take: limit,
+      skip: offset
+    });
+  }
+
+  /**
+   * get count of students
+   * 
+   * @returns number
+   */
+  async countStudent(): Promise<number> {
+    const [,count] = await this.findAndCount();
+    return count;
   }
 
   /**

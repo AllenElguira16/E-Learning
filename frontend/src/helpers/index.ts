@@ -16,5 +16,5 @@ export const renderFontAwesomeIcons = (): void => {
 export const transformID = (id: number | string) => {
   const padding = '000000';
   const studentIdLength = id.toString().length;
-  return 'STUDENT-' + (padding.substr(studentIdLength) + id);
+  return 'STUD-' + (padding.substr(studentIdLength) + id);
 };

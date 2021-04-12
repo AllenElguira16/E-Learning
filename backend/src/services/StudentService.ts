@@ -20,8 +20,17 @@ export class StudentService {
    * 
    * @returns Student[]
    */
-  async getAll(): Promise<Student[]> {
-    return this.studentRepository.getAllStudent();
+  async getStudents(offset: number, limit: number): Promise<[Student[], number]> {
+    return this.studentRepository.getStudents(offset, limit);
+  }
+
+  /**
+   * Retrieve all students per page
+   * 
+   * @returns Student[]
+   */
+   async countStudents(): Promise<number> {
+    return this.studentRepository.countStudent();
   }
 
   /**

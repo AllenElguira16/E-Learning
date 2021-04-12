@@ -8,7 +8,7 @@ const HelloWorld: FC = () => {
   
   const toggleHelloWorld = () => {
     dispatch({type: 'TOGGLE_HELLO_WORLD'});
-  }
+  };
 
   return (
     <>
@@ -19,7 +19,7 @@ const HelloWorld: FC = () => {
         {helloWorld && 'Hello World'}
       </div>
     </>
-  )
-}
+  );
+};
 
-export default HelloWorld
+export default HelloWorld;
