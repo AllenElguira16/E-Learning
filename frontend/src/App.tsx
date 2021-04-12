@@ -2,6 +2,7 @@ import React, { FC, Suspense } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import pages from './pages';
 
+
 const App: FC = () => {
   return (
     <Suspense fallback={<>Loading...</>}>

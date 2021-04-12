@@ -1,54 +1,54 @@
-import {Env} from "@tsed/core";
-import {Configuration, Inject} from "@tsed/di";
-import {$log, PlatformApplication} from "@tsed/common";
-import "@tsed/platform-express"; // /!\ keep this import
-import express from "express";
-import compress from "compression";
-import cookieParser from "cookie-parser";
-import methodOverride from "method-override";
-import cors from "cors";
-import "@tsed/ajv";
-import "@tsed/typeorm";
-import typeormConfig from "./config/typeorm";
+import {Env} from '@tsed/core';
+import {Configuration, Inject} from '@tsed/di';
+import {$log, PlatformApplication} from '@tsed/common';
+import '@tsed/platform-express'; // /!\ keep this import
+import express from 'express';
+import compress from 'compression';
+import cookieParser from 'cookie-parser';
+import methodOverride from 'method-override';
+import cors from 'cors';
+import '@tsed/ajv';
+import '@tsed/typeorm';
+import typeormConfig from './config/typeorm';
 
 
 export const rootDir = __dirname;
 export const isProduction = process.env.NODE_ENV === Env.PROD;
 
 if (isProduction) {
-  $log.appenders.set("stdout", {
-    type: "stdout",
-    levels: ["info", "debug"],
+  $log.appenders.set('stdout', {
+    type: 'stdout',
+    levels: ['info', 'debug'],
     layout: {
-      type: "json"
+      type: 'json'
     }
   });
 
-  $log.appenders.set("stderr", {
-    levels: ["trace", "fatal", "error", "warn"],
-    type: "stderr",
+  $log.appenders.set('stderr', {
+    levels: ['trace', 'fatal', 'error', 'warn'],
+    type: 'stderr',
     layout: {
-      type: "json"
+      type: 'json'
     }
   });
 }
 
 @Configuration({
   rootDir,
-  acceptMimes: ["application/json"],
+  acceptMimes: ['application/json'],
   httpPort: process.env.PORT || 8083,
   httpsPort: false, // CHANGE
   logger: {
     disableRoutesSummary: isProduction
   },
   mount: {
-    "/rest": [
+    '/rest': [
       `${rootDir}/controllers/**/*.ts`
     ]
   },
   typeorm: typeormConfig,
   exclude: [
-    "**/*.spec.ts"
+    '**/*.spec.ts'
   ],
   // ajv: {
   //   strict: false,

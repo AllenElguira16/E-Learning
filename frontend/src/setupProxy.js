@@ -11,5 +11,5 @@ module.exports = function(app) {
             target: 'http://localhost:8083',
             changeOrigin: true
         })
-    )
-}
+    );
+};

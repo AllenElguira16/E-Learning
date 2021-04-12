@@ -1,5 +1,5 @@
-import { ResponseErrorObject } from "@tsed/common";
-import { BadRequest } from "@tsed/exceptions";
+import { ResponseErrorObject } from '@tsed/common';
+import { BadRequest } from '@tsed/exceptions';
 
 /**
  * For handling Custom Validation Exception
@@ -9,7 +9,7 @@ export class ValidationException extends BadRequest implements ResponseErrorObje
   errors: [];
 
   constructor(errors: never) {
-    super("Validation error");
+    super('Validation error');
 
     this.errors = errors;
   }

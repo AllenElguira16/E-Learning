@@ -1,4 +1,4 @@
-import type { Dispatch } from "redux";
+import type { Dispatch } from 'redux';
 
 export const showHelloWorld = () => async (dispatch: Dispatch) => {
   dispatch({
