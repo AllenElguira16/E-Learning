@@ -1,4 +1,4 @@
-import { Reducer } from "redux";
+import { Reducer } from 'redux';
 
 const HelloWorldReducer: Reducer = (state: THelloWorldToggle = false, action) => {
   switch (action.type) {
@@ -7,6 +7,6 @@ const HelloWorldReducer: Reducer = (state: THelloWorldToggle = false, action) =>
     default:
       return state;
   }
-}
+};
 
 export default HelloWorldReducer;

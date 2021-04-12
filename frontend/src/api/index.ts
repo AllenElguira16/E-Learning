@@ -2,7 +2,7 @@
  * Handles API Requests
  */
 
-import axios, { AxiosResponse } from "axios"
+import axios, { AxiosResponse } from 'axios';
 
 export const getStudentList = async (): Promise<IStudent[]|undefined> => {
   try {
@@ -13,7 +13,7 @@ export const getStudentList = async (): Promise<IStudent[]|undefined> => {
   } catch (error) {
     alert(error.message);
   }
-}
+};
 
 export const addStudent = async (newStudentData: TInput): 
   Promise<IResponse | IResponse<TValidationObject<TInput>>> => {
@@ -24,4 +24,15 @@ export const addStudent = async (newStudentData: TInput):
   } catch (error) {
     return error.response.data.errors;
   }
-}
+};
+
+export const editStudent = async (student_id: IStudent['student_id'], studentData: TInput): 
+  Promise<IResponse | IResponse<TValidationObject<TInput>>> => {
+  try {
+    const { data: axiosData }: AxiosResponse<IResponse<{ students: IStudent[]}>> = await axios.put('/rest/student/edit/' + student_id, studentData);
+    // console.log(axiosData);
+    return axiosData;
+  } catch (error) {
+    return error.response.data.errors;
+  }
+};

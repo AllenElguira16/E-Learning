@@ -21,7 +21,7 @@ interface IResponse<T = any> {
 
 type TInput = Pick<IStudent, "first_name"|"middle_name"|"last_name"> 
 
-type TValidationObject<T = keyof T> = {
+type TValidationObject<T> = {
   hasErrors: boolean;
   data: {
     [key in keyof T]: {

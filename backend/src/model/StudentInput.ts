@@ -1,4 +1,4 @@
-import { MaxLength, MinLength, Required } from "@tsed/schema";
+import { MaxLength, MinLength, Required } from '@tsed/schema';
 
 
 export class StudentInput implements TInput {

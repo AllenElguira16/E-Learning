@@ -1,11 +1,12 @@
-import { Inject, Injectable } from "@tsed/di";
-import { UseConnection } from "@tsed/typeorm";
-import { Student } from "../entity/Student";
-import { StudentInput } from "../model/StudentInput";
-import { StudentRepository } from "../repository/StudentRepository";
-import {Exception} from "@tsed/exceptions"
-import { ValidationException } from "src/exceptions/ValidationException";
+import { Inject, Injectable } from '@tsed/di';
+import { UseConnection } from '@tsed/typeorm';
+import { Student } from '../entity/Student';
+import { StudentRepository } from '../repository/StudentRepository';
+import { ValidationException } from 'src/exceptions/ValidationException';
 
+/**
+ * Student Provider
+ */
 @Injectable()
 export class StudentService {
   constructor(
@@ -14,12 +15,46 @@ export class StudentService {
     private studentRepository: StudentRepository
   ) {}
 
+  /**
+   * Retrieve all students per page
+   * 
+   * @returns Student[]
+   */
   async getAll(): Promise<Student[]> {
     return this.studentRepository.getAllStudent();
   }
 
-  async create(student: TInput): Promise<Student> {
-    // const {first_name, middle_name, last_name} = student;
+  /**
+   * Add student
+   * 
+   * @param student TInput
+   * @returns Student
+   */
+  async addStudent(student: TInput): Promise<Student> {
+    this.validate(student);    
+
+    return this.studentRepository.addStudent(student);
+  }
+
+  /**
+   * Edit student
+   * 
+   * @param student_id IStudent["student_id"]
+   * @param student TInput
+   * @returns Student | void
+   */
+  async editStudent(student_id: IStudent['student_id'], student: TInput): Promise<Student | void> {
+    this.validate(student);    
+
+    return this.studentRepository.editStudent(student_id, student);
+  }
+
+  /**
+   * For validating input
+   * 
+   * @param student TInput
+   */
+  private validate(student: TInput): void {
     const errors: TValidationObject<TInput> = {
       hasErrors: false, 
       data: {
@@ -27,7 +62,7 @@ export class StudentService {
         middle_name: {},
         last_name: {}
       }
-    }
+    };
 
     Object.keys(student).map((key: keyof TInput) => {
       if (!student[key]) {
@@ -48,9 +83,7 @@ export class StudentService {
 
     // console.log(errors);
     if (errors.hasErrors) {
-      throw new ValidationException(errors.data as never)
+      throw new ValidationException(errors.data as never);
     }
-
-    return this.studentRepository.createNewStudent(student);
   }
 }

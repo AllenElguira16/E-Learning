@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import { 
   Navbar, 
   NavLink, 
@@ -6,11 +6,8 @@ import {
   NavbarToggler, 
   Collapse, 
   Nav, 
-  UncontrolledDropdown,
-  DropdownToggle, 
-  DropdownMenu, 
-  DropdownItem, 
-} from "reactstrap";
+  NavItem, 
+} from 'reactstrap';
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -24,43 +21,17 @@ const Navigation = () => {
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
-            <UncontrolledDropdown nav inNavbar>
-              <DropdownToggle nav>
-                Students
-              </DropdownToggle>
-              <DropdownMenu>
-                <DropdownItem>
-                  <NavLink href="/admin/student/list">Lists of Students</NavLink>
-                </DropdownItem>
-                <DropdownItem>
-                  <NavLink href="/admin/student/add">Add Student</NavLink>
-                </DropdownItem>
-                <DropdownItem>
-                  <NavLink href="/admin/student/edit">Edit Student</NavLink>
-                </DropdownItem>
-                <DropdownItem>
-                  <NavLink href="/admin/student/delete">Delete Student</NavLink>
-                </DropdownItem>
-              </DropdownMenu>
-            </UncontrolledDropdown>
-            <UncontrolledDropdown nav inNavbar>
-              <DropdownToggle nav>
-                Lessons
-              </DropdownToggle>
-              <DropdownMenu>
-                <DropdownItem>
-                  <NavLink href="/admin/lesson/list">Lists of Lessons</NavLink>
-                </DropdownItem>
-                <DropdownItem>
-                  <NavLink href="/admin/lesson/upload">Upload Lessons</NavLink>
-                </DropdownItem>
-              </DropdownMenu>
-            </UncontrolledDropdown>
+            <NavItem>
+              <NavLink href="/admin/student">Student</NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink href="/admin/lessons">Lessons</NavLink>
+            </NavItem>
           </Nav>
         </Collapse>
       </Navbar>
     </header>
-  )
-}
+  );
+};
 
 export default Navigation;

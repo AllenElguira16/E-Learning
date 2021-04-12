@@ -1,18 +1,18 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { FC, useState } from 'react';
 import { FormGroup, Label, Input, Form, Button, FormFeedback, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import { addStudent } from '../../../api';
+import { editStudent } from '../../../api';
 
 type TProps = {
-  // toggle: React.MouseEventHandler<HTMLButtonElement>;
-  // isOpen: boolean;
+  student: IStudent
 }
 
 /**
- * A Component for adding new student
+ * A Component for editing student
  * 
  * @returns FC
  */
-const Add: FC<TProps> = () => {
+const Edit: FC<TProps> = ({student}) => {
   /**
    * Modal State
    */
@@ -29,9 +29,9 @@ const Add: FC<TProps> = () => {
    * Input State
    */
   const [input, setInput] = useState<TInput>({
-    first_name: '',
-    middle_name: '',
-    last_name: '',
+    first_name: student.first_name || '',
+    middle_name: student.middle_name || '',
+    last_name: student.last_name || '',
   });
 
   /**
@@ -63,7 +63,7 @@ const Add: FC<TProps> = () => {
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const response = await addStudent(input);
+    const response = await editStudent(student.student_id, input);
 
     if (response.status !== 200) {
       Object.keys(response.data).forEach((key) => {
@@ -82,10 +82,12 @@ const Add: FC<TProps> = () => {
 
   return (
     <>
-      <Button onClick={toggle}>Add Student</Button>
+      <Button color="warning" onClick={toggle}>
+        <FontAwesomeIcon icon="edit" />
+      </Button>
       <Modal isOpen={isOpen} toggle={toggle}>
         <Form autoComplete="off" onSubmit={onSubmit}>
-          <ModalHeader toggle={toggle}>Add Student</ModalHeader>
+          <ModalHeader toggle={toggle}>Edit Student</ModalHeader>
           <ModalBody>
             <FormGroup>
               <Label for="first_name">First Name</Label>
@@ -95,6 +97,7 @@ const Add: FC<TProps> = () => {
                 id="first_name"
                 placeholder="Enter student's first name"
                 onChange={onChange}
+                value={input.first_name}
                 invalid={inputError.first_name !== ''}
               />
               <FormFeedback>{inputError.first_name}</FormFeedback>
@@ -107,6 +110,7 @@ const Add: FC<TProps> = () => {
                 id="middle_name"
                 placeholder="Enter student's middle name"
                 onChange={onChange}
+                value={input.middle_name}
                 invalid={inputError.middle_name !== ''}
               />
               <FormFeedback>{inputError.middle_name}</FormFeedback>
@@ -119,13 +123,14 @@ const Add: FC<TProps> = () => {
                 id="last_name"
                 placeholder="Enter student's last name"
                 onChange={onChange}
+                value={input.last_name}
                 invalid={inputError.last_name !== ''}
               />
               <FormFeedback>{inputError.last_name}</FormFeedback>
             </FormGroup>
           </ModalBody>
           <ModalFooter>
-            <Button type="submit">Add Student</Button>
+            <Button type="submit">Edit Student</Button>
           </ModalFooter>
         </Form>
       </Modal>
@@ -133,4 +138,4 @@ const Add: FC<TProps> = () => {
   );
 };
 
-export default Add;
+export default Edit;

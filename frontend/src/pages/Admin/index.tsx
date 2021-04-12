@@ -1,17 +1,20 @@
-import React from "react";
-import { Route } from "react-router-dom";
-import { Container } from "reactstrap";
-import Navigation from "./Navigation";
-import StudentList from "./Student/Lists";
-import AddStudent from "./Student/Add";
+import React, { FC } from 'react';
+import { Route, Switch } from 'react-router-dom';
+import { Container } from 'reactstrap';
+import Navigation from './Navigation';
+import Student from './Student';
 
-const Admin = () => {
+const Admin: FC = () => {
   return (
     <>
       <Navigation/>
       <Container>
-        <Route path="/admin/student/list" component={StudentList} />
-        <Route path="/admin/student/add" component={AddStudent} />
+        <Switch>
+          {/* <Redirect exact path="/admin/student" to="/admin/student/list" /> */}
+
+          <Route path="/admin/student" component={Student} />
+          {/* <Route path="/admin/student/add" component={AddStudent} /> */}
+        </Switch>
       </Container>
     </>
   );

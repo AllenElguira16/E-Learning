@@ -1,5 +1,8 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
+/**
+ * Student Entity
+ */
 @Entity()
 export class Student implements IStudent {
   

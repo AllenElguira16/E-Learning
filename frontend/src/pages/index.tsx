@@ -1,6 +1,5 @@
 import React from 'react';
-import { RouteProps } from "react-router"
-// import Home from './Home';
+import { RouteProps } from 'react-router';
 
 /**
  * Entry point of page
@@ -15,6 +14,6 @@ const Pages: RouteProps[] = [
     path: '/admin',
     component: React.lazy(() => import('./Admin'))
   }
-]
+];
 
-export default Pages
+export default Pages;
