@@ -4,12 +4,12 @@
 
 import axios, { AxiosResponse } from 'axios';
 
-export const getStudentList = async (): Promise<IStudent[]|undefined> => {
+export const getStudentList = async (page: number): Promise<{ students: IStudent[], total_pages: number }|undefined> => {
   try {
-    
-    const { data: axiosData }: AxiosResponse<IResponse<{ students: IStudent[]}>> = await axios.get('/rest/student/list');
+    const limit = 5;
+    const { data: axiosData }: AxiosResponse = await axios.get(`/rest/student/list?page=${page}&limit=${limit}`);
   
-    return axiosData.data?.students;
+    return axiosData.data;
   } catch (error) {
     alert(error.message);
   }

@@ -13,6 +13,6 @@ const App: FC = () => {
       </BrowserRouter>
     </Suspense>
   );
-}
+};
 
 export default App;

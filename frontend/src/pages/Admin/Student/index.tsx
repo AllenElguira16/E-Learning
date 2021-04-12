@@ -13,7 +13,7 @@ const Student: FC = () => {
       </Nav>
       <Lists />
     </>
-  )
-}
+  );
+};
 
 export default Student;

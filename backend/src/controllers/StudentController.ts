@@ -1,4 +1,4 @@
-import { BodyParams, Controller, Get, PathParams, Post, Put } from '@tsed/common';
+import { BodyParams, Controller, Get, PathParams, Post, Put, QueryParams } from '@tsed/common';
 import { ContentType } from '@tsed/schema';
 import { StudentService } from '../services/studentService';
 
@@ -16,13 +16,20 @@ export class StudentController {
    * @returns IResponse
    */
   @Get('/list')
-  async listOfStudents(): Promise<IResponse<{ students: IStudent[] }>> {
-    const students: IStudent[] = await this.studentService.getAll();
+  async listOfStudents(
+    @QueryParams('page') page: number,
+    @QueryParams('limit') limit: number,
+  ): Promise<IResponse> {
+    const offset = ((page - 1) * limit);
+
+    const [students, count] = await this.studentService.getStudents(offset, limit);
 
     return {
       status: 200,
       message: 'Successfully retrieve student list',
       data: {
+        total_pages: Math.ceil(count / limit),
+        current_page: page,
         students
       }
     };
