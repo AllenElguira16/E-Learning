@@ -50,17 +50,11 @@ if (isProduction) {
   exclude: [
     '**/*.spec.ts'
   ],
-  // ajv: {
-  //   strict: false,
-  //   allErrors: true,
-  //   $data: true
-  // }
   ajv: {
-    errorFormatter: (error) => `value '${error.data}' ${error.message}`,
-    verbose: false,
+    errorFormatter: (error) => `'${error.instancePath}' ${error.message}`,
+    verbose: true,
     allErrors: true
-    // verbose: true
- }
+  }
 })
 export class Server {
   @Inject()

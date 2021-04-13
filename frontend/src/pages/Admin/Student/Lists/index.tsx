@@ -1,42 +1,51 @@
-import React, { FC, Suspense, useEffect, useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Button, Table } from 'reactstrap';
+import React, { FC, Suspense, useEffect } from 'react';
+import { Table } from 'reactstrap';
 import { useParams } from 'react-router-dom';
 
-import { getStudentList } from '../../../../api';
 import { formatDateToYMD, transformID } from '../../../../helpers';
 import Edit from '../Edit';
 import Paginate from './Paginate';
+import Delete from '../Delete';
+import { useSelector, useDispatch } from 'react-redux';
+import { getStudents } from '../../../../store/actions/StudentAction';
+// import { getStudentList } from '../../../../api';
+// import { getStudentList } from '../../../../api';
 
 type TProps = {}
 
 /**
  * A Component for lists of students
- * 
+ *
  * @returns FC
  */
 const Lists: FC<TProps> = () => {
   /**
-   * Student State 
+   * Route params
    */
-  const [studentData, setStudentData] = useState<{ students: IStudent[], total_pages: number }>({
-    students: [],
-    total_pages: 0
-  });
+  const { page } = useParams<{ page: string; }>();
 
-  const {page} = useParams<{page: string}>();
+  /**
+   * Student State
+   */
+  const { student } = useSelector<TRootReducers, TRootReducers>(state => state);
+
+  /**
+   * For dispatching actions
+   */
+  const dispatch = useDispatch();
 
   /**
    * Get All Student before rendering component
    */
   useEffect(() => {
     (async () => {
-      const studentData = await getStudentList(parseInt(page));
-      if (studentData) {
-        setStudentData(studentData);
+      try {
+        dispatch(await getStudents(parseInt(page)));
+      } catch (error) {
+        alert(error.message);
       }
     })();
-  }, [page]);
+  }, [dispatch, page]);
 
   return (
     <>
@@ -57,7 +66,7 @@ const Lists: FC<TProps> = () => {
               <td colSpan={5}>Loading</td>
             </tr>
           }>
-            {studentData.students !== null && studentData.students.map((student) => (
+            {student.students !== null && student.students.map((student) => (
               <tr key={student.student_id}>
                 <th scope="row">{transformID(student.student_id)}</th>
                 <td>{student.first_name}</td>
@@ -66,16 +75,14 @@ const Lists: FC<TProps> = () => {
                 <td>{formatDateToYMD(student.created)}</td>
                 <td>
                   <Edit student={student} />
-                  <Button color="danger">
-                    <FontAwesomeIcon icon="trash" />
-                  </Button>
+                  <Delete student={student} />
                 </td>
               </tr>
             ))}
           </Suspense>
         </tbody>
       </Table>
-      <Paginate page={parseInt(page)} totalPages={studentData.total_pages} />
+      <Paginate page={parseInt(page)} totalPages={student.total_pages} />
     </>
   );
 };

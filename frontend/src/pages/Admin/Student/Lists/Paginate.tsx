@@ -25,8 +25,6 @@ const Paginate: FC<TProps> = ({ page: currentPage, totalPages }) => {
       end = start + 5;
     }
 
-    console.log({ start, end, totalPages });
-
     for (let i = start; i < end; i++) {
       pages.push(i + 1);
     }
