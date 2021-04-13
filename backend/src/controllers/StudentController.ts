@@ -1,6 +1,8 @@
-import { BodyParams, Controller, Get, PathParams, Post, Put, QueryParams } from '@tsed/common';
+import { BodyParams, Controller, Delete, Get, PathParams, Post, Put, QueryParams } from '@tsed/common';
 import { ContentType } from '@tsed/schema';
+import { Student } from 'src/entity/Student';
 import { StudentService } from '../services/studentService';
+import { StudentInput } from "../model/StudentInput";
 
 /**
  * Controller for student api
@@ -12,7 +14,9 @@ export class StudentController {
 
   /**
    * Get all students
-   * 
+   *
+   * @param page
+   * @param limit
    * @returns IResponse
    */
   @Get('/list')
@@ -26,8 +30,8 @@ export class StudentController {
 
     return {
       status: 200,
-      message: 'Successfully retrieve student list',
-      data: {
+      message: 'Student list retrieved successfully',
+      details: {
         total_pages: Math.ceil(count / limit),
         current_page: page,
         students
@@ -37,56 +41,58 @@ export class StudentController {
 
   /**
    * Entry point for adding student
-   * 
-   * @param newStudent Student
+   *
+   * @param newStudent
    * @returns IResponse
    */
   @Post('/add')
-  async addStudent(@BodyParams() newStudent: TInput): Promise<IResponse> {
-    // return newStudent;
-    try {
+  async addStudent(@BodyParams() newStudent: StudentInput): Promise<IResponse> {
+    await this.studentService.addStudent(newStudent);
 
-      await this.studentService.addStudent(newStudent);
-
-      return {
-        status: 200,
-        message: 'Successfully added new student'
-      };
-    } catch (error) {
-      return {
-        status: 400,
-        message: 'Error adding new student',
-        data: error.errors
-      };
-    }
+    return {
+      status: 200,
+      message: 'Student successfully added'
+    };
   }
 
   /**
    * Entry point for editing student
-   * 
-   * @param student TInput
+   *
+   * @param student_id
+   * @param student
    * @returns IResponse
    */
   @Put('/edit/:student_id')
-  async editStudent(@PathParams() student_id: IStudent['student_id'], @BodyParams() student: TInput): Promise<IResponse> {
-    // return newStudent;
-    try {
+  async editStudent(
+    @PathParams() student_id: IStudent['student_id'],
+    @BodyParams() student: TInput
+  ): Promise<IResponse> {
+    await this.studentService.editStudent(student_id, student);
 
-      await this.studentService.editStudent(student_id, student);
+    return {
+      status: 200,
+      message: 'Successfully updating student',
+      details: {
+        student
+      }
+    };
+  }
 
-      return {
-        status: 200,
-        message: 'Successfully edit student',
-        data: {
-          student
-        }
-      };
-    } catch (error) {
-      return {
-        status: 400,
-        message: 'Error adding new student',
-        data: error.errors
-      };
-    }
+  /**
+   * Entry point for editing student
+   *
+   * @param student_id
+   * @returns IResponse
+   */
+  @Delete('/delete/:student_id')
+  async deleteStudent(
+    @PathParams('student_id') student_id: Student['student_id'],
+  ): Promise<IResponse> {
+    await this.studentService.deleteStudent(student_id);
+
+    return {
+      status: 200,
+      message: 'Successfully successfully deleted',
+    };
   }
 }

@@ -1,6 +1,9 @@
 import React, { FC, useState } from 'react';
 import { FormGroup, Label, Input, Form, Button, FormFeedback, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import { addStudent } from '../../../api';
+import { addStudent } from '../../../../store/actions/StudentAction';
+import { useParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+// import { addStudent } from '../../../../api';
 
 type TProps = {
   // toggle: React.MouseEventHandler<HTMLButtonElement>;
@@ -9,7 +12,7 @@ type TProps = {
 
 /**
  * A Component for adding new student
- * 
+ *
  * @returns FC
  */
 const Add: FC<TProps> = () => {
@@ -17,6 +20,11 @@ const Add: FC<TProps> = () => {
    * Modal State
    */
   const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  /**
+   * For dispatching actions
+   */
+  const dispatch = useDispatch();
 
   /**
    * Toggle Modal
@@ -45,8 +53,8 @@ const Add: FC<TProps> = () => {
 
   /**
    * Handles input change
-   * 
-   * @param event 
+   *
+   * @param event
    */
   const onChange = (event: React.FormEvent<HTMLInputElement>) => {
     setInput({
@@ -56,28 +64,34 @@ const Add: FC<TProps> = () => {
   };
 
   /**
+   * Route params
+   */
+  const { page } = useParams<{ page: string; }>();
+
+  /**
    * Submit event for adding new student
-   * 
-   * @param event 
+   *
+   * @param event
    */
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+    try {
+      event.preventDefault();
 
-    const response = await addStudent(input);
+      const [response, toDispatch] = await addStudent(input, parseInt(page));
 
-    if (response.status !== 200) {
-      Object.keys(response.data).forEach((key) => {
-        const message = response.data[key]?.message;
+      alert(response.message);
+      dispatch(toDispatch);
+      setInputError({first_name: '', middle_name: '' ,last_name: ''});
+      setInput({first_name: '', middle_name: '' ,last_name: ''});
+    } catch (error) {
+      error.response.data.errors.forEach(({instancePath, message}: any) => {
 
         setInputError(prevState => ({
           ...prevState,
-          [key]: message
+          [instancePath.substring(1)]: message
         }));
       });
-      return;
     }
-
-    alert(response.message);
   };
 
   return (

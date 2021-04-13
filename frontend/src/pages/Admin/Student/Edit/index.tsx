@@ -1,7 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { FC, useState } from 'react';
 import { FormGroup, Label, Input, Form, Button, FormFeedback, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import { editStudent } from '../../../api';
+import { editStudent } from '../../../../store/actions/StudentAction';
+import { useParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 type TProps = {
   student: IStudent
@@ -9,7 +11,7 @@ type TProps = {
 
 /**
  * A Component for editing student
- * 
+ *
  * @returns FC
  */
 const Edit: FC<TProps> = ({student}) => {
@@ -17,6 +19,16 @@ const Edit: FC<TProps> = ({student}) => {
    * Modal State
    */
   const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  /**
+   * Route params
+   */
+  const { page } = useParams<{ page: string; }>();
+
+  /**
+   * For dispatching actions
+   */
+  const dispatch = useDispatch();
 
   /**
    * Toggle Modal
@@ -45,8 +57,8 @@ const Edit: FC<TProps> = ({student}) => {
 
   /**
    * Handles input change
-   * 
-   * @param event 
+   *
+   * @param event
    */
   const onChange = (event: React.FormEvent<HTMLInputElement>) => {
     setInput({
@@ -57,27 +69,28 @@ const Edit: FC<TProps> = ({student}) => {
 
   /**
    * Submit event for adding new student
-   * 
-   * @param event 
+   *
+   * @param event
    */
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+    try {
+      event.preventDefault();
 
-    const response = await editStudent(student.student_id, input);
+      const [response, toDispatch] = await editStudent(student.student_id, input, parseInt(page));
 
-    if (response.status !== 200) {
-      Object.keys(response.data).forEach((key) => {
-        const message = response.data[key]?.message;
+      alert(response.message);
+      dispatch(toDispatch);
+
+      setInputError({first_name: '', middle_name: '' ,last_name: ''});
+    } catch (error) {
+      error.response.data.errors.forEach(({instancePath, message}: any) => {
 
         setInputError(prevState => ({
           ...prevState,
-          [key]: message
+          [instancePath.substring(1)]: message
         }));
       });
-      return;
     }
-
-    alert(response.message);
   };
 
   return (

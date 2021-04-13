@@ -1,4 +1,4 @@
-import { EntityRepository, Repository } from 'typeorm';
+import { DeleteResult, EntityRepository, Repository } from 'typeorm';
 import { Student } from '../entity/Student';
 import { StudentInput } from '../model/StudentInput';
 
@@ -56,5 +56,15 @@ export class StudentRepository extends Repository<Student> {
     studentToUpdate.last_name = student.last_name;
 
     return this.save(studentToUpdate);
+  }
+
+  /**
+   * Removing Student from database
+   * 
+   * @param student TInput
+   * @returns 
+   */
+  async deleteStudent(student_id: Student['student_id']): Promise<DeleteResult> {
+    return this.delete(student_id);
   }
 }

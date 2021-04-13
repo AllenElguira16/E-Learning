@@ -2,6 +2,7 @@ type THelloWorldToggle = boolean | null;
 
 type TRootReducers = {
   helloWorld: THelloWorldToggle;
+  student: TStudentReducer;
 };
 
 interface IStudent {
@@ -16,10 +17,10 @@ interface IStudent {
 interface IResponse<T = any> {
   status: number;
   message: string;
-  data?: T;
+  details?: T;
 }
 
-type TInput = Pick<IStudent, "first_name"|"middle_name"|"last_name"> 
+type TInput = Pick<IStudent, "first_name"|"middle_name"|"last_name">
 
 type TValidationObject<T> = {
   hasErrors: boolean;
@@ -28,4 +29,9 @@ type TValidationObject<T> = {
       message?: string
     }
   }
+}
+
+type TStudentReducer = {
+  students: IStudent[];
+  total_pages: number;
 }
