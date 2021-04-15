@@ -8,10 +8,12 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 
 import HelloWorldReducer from './reducers/HelloWorldReducer';
 import StudentReducer from './reducers/StudentReducer';
- 
+import LessonReducer from './reducers/LessonReducer';
+
 const rootReducer = combineReducers<TRootReducers>({
   helloWorld: HelloWorldReducer,
-  student: StudentReducer
+  student: StudentReducer,
+  lesson: LessonReducer
 });
 
 const composedEnhancer = composeWithDevTools(applyMiddleware(thunk));
@@ -20,5 +22,5 @@ const composedEnhancer = composeWithDevTools(applyMiddleware(thunk));
  * Store
  */
 const store = createStore(rootReducer, composedEnhancer);
- 
+
 export default store;

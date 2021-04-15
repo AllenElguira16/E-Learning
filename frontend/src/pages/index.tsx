@@ -1,19 +1,15 @@
-import React from 'react';
-import { RouteProps } from 'react-router';
+import React, { FC } from 'react';
+import { Route } from 'react-router-dom';
+import Home from './Home';
+import Admin from './Admin';
 
-/**
- * Entry point of page
- */
-const Pages: RouteProps[] = [
-  {
-    exact: true,
-    path: '/',
-    component: React.lazy(() => import('./Home'))
-  },
-  {
-    path: '/admin',
-    component: React.lazy(() => import('./Admin'))
-  }
-];
+const Pages: FC = () => {
+  return (
+    <>
+      <Route path="/home"><Home/></Route>
+      <Route path="/admin"><Admin/></Route>
+    </>
+  );
+};
 
 export default Pages;

@@ -9,7 +9,7 @@ type TProps = {
 const Paginate: FC<TProps> = ({ page: currentPage, totalPages }) => {
 
   const url = (page: number) => {
-    return `/admin/student/${page}`;
+    return `/admin/students?page=${page}`;
   };
 
   const pages = () => {
@@ -18,7 +18,7 @@ const Paginate: FC<TProps> = ({ page: currentPage, totalPages }) => {
     let pages = [];
 
     if (currentPage > 3 && totalPages > 5) {
-      start = ((totalPages - 3) < currentPage) ? totalPages - 5 : currentPage - 3; 
+      start = ((totalPages - 3) < currentPage) ? totalPages - 5 : currentPage - 3;
     }
 
     if (totalPages > 5) {

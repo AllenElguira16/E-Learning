@@ -1,6 +1,6 @@
 import React, { FC, Suspense } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import pages from './pages';
+import { BrowserRouter, Switch } from 'react-router-dom';
+import Pages from './pages';
 
 
 const App: FC = () => {
@@ -8,7 +8,7 @@ const App: FC = () => {
     <Suspense fallback={<>Loading...</>}>
       <BrowserRouter>
         <Switch>
-          {pages.map((page, key) => <Route key={key} {...page} />)}
+          <Pages/>
         </Switch>
       </BrowserRouter>
     </Suspense>

@@ -46,6 +46,16 @@ if (isProduction) {
       `${rootDir}/controllers/**/*.ts`
     ]
   },
+  multer: {
+    dest: `${rootDir}/../static`
+  },
+  statics: {
+    '/static': [
+      {
+        root: `${rootDir}/../static/`
+      }
+    ],
+  },
   typeorm: typeormConfig,
   exclude: [
     '**/*.spec.ts'

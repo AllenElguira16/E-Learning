@@ -52,3 +52,4 @@ database.sqlite
 # Project
 /public
 /dist
+/static
