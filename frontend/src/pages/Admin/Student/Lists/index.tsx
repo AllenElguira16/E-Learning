@@ -1,15 +1,13 @@
 import React, { FC, Suspense, useEffect } from 'react';
 import { Table } from 'reactstrap';
-import { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import { formatDateToYMD, transformID } from '../../../../helpers';
 import Edit from '../Edit';
-import Paginate from './Paginate';
+import { Paginate } from '../../../../components';
 import Delete from '../Delete';
 import { useSelector, useDispatch } from 'react-redux';
 import { getStudents } from '../../../../store/actions/StudentAction';
-// import { getStudentList } from '../../../../api';
-// import { getStudentList } from '../../../../api';
 
 type TProps = {}
 
@@ -22,7 +20,7 @@ const Lists: FC<TProps> = () => {
   /**
    * Route params
    */
-  const { page } = useParams<{ page: string; }>();
+  const page = parseInt((new URLSearchParams(useLocation().search)).get('page') as string);
 
   /**
    * Student State
@@ -40,7 +38,7 @@ const Lists: FC<TProps> = () => {
   useEffect(() => {
     (async () => {
       try {
-        dispatch(await getStudents(parseInt(page)));
+        dispatch(await getStudents(page));
       } catch (error) {
         alert(error.message);
       }
@@ -66,7 +64,7 @@ const Lists: FC<TProps> = () => {
               <td colSpan={5}>Loading</td>
             </tr>
           }>
-            {student.students !== null && student.students.map((student) => (
+            {student.students.length ? student.students.map((student) => (
               <tr key={student.student_id}>
                 <th scope="row">{transformID(student.student_id)}</th>
                 <td>{student.first_name}</td>
@@ -78,11 +76,15 @@ const Lists: FC<TProps> = () => {
                   <Delete student={student} />
                 </td>
               </tr>
-            ))}
+            )) : (
+              <tr>
+                <td colSpan={6}>There are no students or the page exceeded</td>
+              </tr>
+            )}
           </Suspense>
         </tbody>
       </Table>
-      <Paginate page={parseInt(page)} totalPages={student.total_pages} />
+      <Paginate page={page} totalPages={student.total_pages} />
     </>
   );
 };

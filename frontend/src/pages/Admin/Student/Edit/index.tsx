@@ -96,7 +96,7 @@ const Edit: FC<TProps> = ({student}) => {
   return (
     <>
       <Button color="warning" onClick={toggle}>
-        <FontAwesomeIcon icon="edit" />
+        <FontAwesomeIcon icon="edit" fixedWidth />
       </Button>
       <Modal isOpen={isOpen} toggle={toggle}>
         <Form autoComplete="off" onSubmit={onSubmit}>

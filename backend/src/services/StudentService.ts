@@ -2,7 +2,6 @@ import { Inject, Injectable } from '@tsed/di';
 import { UseConnection } from '@tsed/typeorm';
 import { Student } from '../entity/Student';
 import { StudentRepository } from '../repository/StudentRepository';
-import { ValidationException } from 'src/exceptions/ValidationException';
 import { DeleteResult } from 'typeorm';
 
 /**
@@ -63,42 +62,5 @@ export class StudentService {
    */
    async deleteStudent(student_id: Student['student_id']): Promise<DeleteResult> {
     return this.studentRepository.deleteStudent(student_id);
-  }
-
-  /**
-   * For validating input
-   *
-   * @param student TInput
-   */
-  private validate(student: TInput): void {
-    const errors: TValidationObject<TInput> = {
-      hasErrors: false,
-      data: {
-        first_name: {},
-        middle_name: {},
-        last_name: {}
-      }
-    };
-
-    Object.keys(student).map((key: keyof TInput) => {
-      if (!student[key]) {
-        errors.data[key].message = 'Should not be empty';
-        errors.hasErrors = true;
-      }
-
-      if (student[key].length < 2) {
-        errors.data[key].message = 'should be greater than 2';
-        errors.hasErrors = true;
-      }
-
-      if (student[key].length > 50) {
-        errors.data[key].message = 'should be greater than 50';
-        errors.hasErrors = true;
-      }
-    });
-
-    if (errors.hasErrors) {
-      throw new ValidationException(errors.data as never);
-    }
   }
 }

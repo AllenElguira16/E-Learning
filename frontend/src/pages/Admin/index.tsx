@@ -1,8 +1,9 @@
 import React, { FC } from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { Container } from 'reactstrap';
 import Navigation from './Navigation';
 import Student from './Student';
+import Lessons from './Lessons';
 
 const Admin: FC = () => {
   return (
@@ -10,10 +11,8 @@ const Admin: FC = () => {
       <Navigation/>
       <Container>
         <Switch>
-          <Redirect exact path="/admin/student" to="/admin/student/1" />
-
-          <Route path="/admin/student/:page" component={Student} />
-          {/* <Route path="/admin/student/add" component={AddStudent} /> */}
+          <Route path="/admin/students"><Student/></Route>
+          <Route path="/admin/lessons"><Lessons/></Route>
         </Switch>
       </Container>
     </>

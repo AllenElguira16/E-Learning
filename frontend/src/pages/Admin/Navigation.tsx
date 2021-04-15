@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { 
-  Navbar, 
-  NavLink, 
-  NavbarBrand, 
-  NavbarToggler, 
-  Collapse, 
-  Nav, 
-  NavItem, 
+import {
+  Navbar,
+  NavLink,
+  NavbarBrand,
+  NavbarToggler,
+  Collapse,
+  Nav,
+  NavItem,
 } from 'reactstrap';
 
 const Navigation = () => {
@@ -22,10 +22,10 @@ const Navigation = () => {
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
             <NavItem>
-              <NavLink href="/admin/student">Student</NavLink>
+              <NavLink href="/admin/students?page=1">Students</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="/admin/lessons">Lessons</NavLink>
+              <NavLink href="/admin/lessons?page=1">Lessons</NavLink>
             </NavItem>
           </Nav>
         </Collapse>

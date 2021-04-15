@@ -53,7 +53,7 @@ const Delete: FC<TProps> = ({student}) => {
   return (
     <>
       <Button color="danger" onClick={toggle}>
-        <FontAwesomeIcon icon="trash" />
+        <FontAwesomeIcon icon="trash" fixedWidth />
       </Button>
       <Modal isOpen={isOpen} toggle={toggle}>
         <Form autoComplete="off" onSubmit={onSubmit}>

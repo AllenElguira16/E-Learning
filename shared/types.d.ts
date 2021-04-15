@@ -3,6 +3,7 @@ type THelloWorldToggle = boolean | null;
 type TRootReducers = {
   helloWorld: THelloWorldToggle;
   student: TStudentReducer;
+  lesson: TLessonReducer;
 };
 
 interface IStudent {
@@ -22,16 +23,21 @@ interface IResponse<T = any> {
 
 type TInput = Pick<IStudent, "first_name"|"middle_name"|"last_name">
 
-type TValidationObject<T> = {
-  hasErrors: boolean;
-  data: {
-    [key in keyof T]: {
-      message?: string
-    }
-  }
-}
-
 type TStudentReducer = {
   students: IStudent[];
+  total_pages: number;
+}
+
+interface ILesson {
+  lesson_id: number;
+  title: string;
+  description: string;
+  file: string;
+  type: string;
+  created: Date;
+}
+
+type TLessonReducer = {
+  lessons: ILesson[];
   total_pages: number;
 }

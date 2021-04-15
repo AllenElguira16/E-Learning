@@ -1,1 +1,46 @@
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";
+
+.tb-lesson-row {
+  &:hover {
+    cursor: pointer;
+  }
+}
+#video-player {
+  @extend .position-relative;
+  @extend .bg-dark;
+  @extend .text-white;
+
+  overflow-y: hidden;
+
+  .player {
+    @extend .mx-auto;
+  }
+
+  .control {
+    @extend .position-absolute;
+    @extend .d-flex;
+    @extend .p-3;
+
+    background-image: linear-gradient(to bottom, rgba($black, 0), rgba($black, .8));
+    bottom: 0;
+    left: 0;
+    right: 0;
+    transition: bottom 0.1s linear;
+
+    &.hide {
+      bottom: -15%;
+    }
+
+    .group {
+      @extend .d-flex, .align-items-center;
+
+      .item {
+        @extend .mx-2;
+      }
+    }
+
+    .video-button {
+      cursor: pointer;
+    }
+  }
+}

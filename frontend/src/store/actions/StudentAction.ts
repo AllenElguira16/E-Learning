@@ -7,13 +7,17 @@ type TDispatch = {
 
 export const getStudents = async (page: number): Promise<TDispatch> =>  {
   const limit = 5;
-  const { data: axiosData }: AxiosResponse<IResponse> = await axios.get(`/rest/student/list?page=${page}&limit=${limit}`);
+  const { data: { details } }: AxiosResponse<IResponse> = await axios.get(`/rest/student/list?page=${page}&limit=${limit}`);
+
+  if (page > details.total_pages) {
+    throw new Error(`Page must be lesser than ${page}`);
+  }
 
   return {
     type: 'STORE_STUDENT',
     payload: {
-      students: axiosData.details.students,
-      total_pages: axiosData.details.total_pages,
+      students: details.students,
+      total_pages: details.total_pages,
     }
   };
 };
