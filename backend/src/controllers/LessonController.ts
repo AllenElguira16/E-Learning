@@ -1,4 +1,12 @@
-import { Controller, Get, PathParams, QueryParams } from '@tsed/common';
+import {
+  BodyParams,
+  Controller,
+  Get,
+  PathParams,
+  Post,
+  QueryParams,
+} from '@tsed/common';
+import { MultipartFile } from '@tsed/multipartfiles';
 import { ContentType } from '@tsed/schema';
 import { LessonService } from '../services/LessonService';
 
@@ -23,13 +31,14 @@ export class LessonController {
   ): Promise<IResponse> {
     const offset = ((page - 1) * limit);
 
+    const [lessons, count] = await this.lessonService.getLessons(offset, limit);
+
     return {
       status: 200,
       message: 'Student list retrieved successfully',
       details: {
-        // total_pages: Math.ceil(count / limit),
-        // current_page: page,
-        lessons: await this.lessonService.getLessons()
+        total_pages: Math.ceil(count / limit),
+        lessons
       }
     };
   }
@@ -51,6 +60,24 @@ export class LessonController {
       message: 'Student list retrieved successfully',
       details: {
         lesson: await this.lessonService.getLessonById(lesson_id)
+      }
+    };
+  }
+
+  @Post('/upload')
+  private async uploadLesson(
+    @MultipartFile('file') file: Express.Multer.File,
+    @BodyParams('title') title: string,
+    @BodyParams('description') description: string
+  ): Promise<IResponse> {
+
+    const response = await this.lessonService.addLesson(title, description, file);
+
+    return {
+      status: 200,
+      message: 'Student successfully added',
+      details: {
+        lesson: response
       }
     };
   }

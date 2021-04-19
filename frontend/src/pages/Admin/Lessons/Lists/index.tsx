@@ -1,11 +1,12 @@
 import React, { FC, Suspense, useEffect } from 'react';
-import { getLessons } from '../../../../store/actions/LessonAction';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import { Button, Table } from 'reactstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import { getLessons } from '../../../../store/actions/LessonAction';
 import { formatDateToYMD } from '../../../../helpers';
 import { Paginate } from '../../../../components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 /**
  *
@@ -50,6 +51,7 @@ const Lists: FC = () => {
       <Table striped bordered responsive hover>
         <thead>
         <tr>
+          <th scope="col">ID</th>
           <th scope="col">Title</th>
           <th scope="col">Created</th>
           <th scope="col">Action</th>
@@ -83,7 +85,7 @@ const Lists: FC = () => {
         </Suspense>
         </tbody>
       </Table>
-      <Paginate page={page} totalPages={lesson.total_pages} />
+      <Paginate page={page} url="/admin/lessons" totalPages={lesson.total_pages} />
     </>
   );
 };

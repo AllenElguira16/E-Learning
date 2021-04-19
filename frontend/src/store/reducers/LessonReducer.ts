@@ -18,7 +18,7 @@ const LessonReducer: Reducer<TLessonReducer, TPayload> = (
   {type, payload}
 ): TLessonReducer => {
   switch (type) {
-    case 'STORE_STUDENT':
+    case 'STORE_LESSONS':
       return {
         lessons: payload.lessons,
         total_pages: payload.total_pages,

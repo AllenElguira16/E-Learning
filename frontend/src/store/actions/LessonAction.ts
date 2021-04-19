@@ -20,7 +20,7 @@ export const getLessons = async (page: number): Promise<TDispatch | void> => {
     // }
 
     return {
-      type: 'STORE_STUDENT',
+      type: 'STORE_LESSONS',
       payload: {
         lessons: details.lessons,
         total_pages: details.total_pages,

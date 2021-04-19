@@ -32,9 +32,15 @@ interface ILesson {
   lesson_id: number;
   title: string;
   description: string;
-  file: string;
-  type: string;
+  file?: string;
+  type?: string;
   created: Date;
+}
+
+type TLessonInput = {
+  title: string;
+  description: string;
+  file: File | null;
 }
 
 type TLessonReducer = {

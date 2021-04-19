@@ -1,60 +1,55 @@
-import { Injectable } from '@tsed/di';
-// import fs from 'fs';
+import { Inject, Injectable } from '@tsed/di';
+import { MultipartFile } from '@tsed/common';
+import { UseConnection } from '@tsed/typeorm';
+import { LessonRepository } from '../repository/LessonRepository';
+import { Lesson } from '../entity/Lesson';
 
 /**
  * Student Provider
  */
 @Injectable()
 export class LessonService {
-  // constructor() {}
-  private lessons: ILesson[] = [
-    {
-      lesson_id: 1,
-      title: 'Sample Video',
-      description: 'Sample description that is related to the title',
-      file: 'sample1.mp4',
-      type: 'video',
-      created: new Date()
-    },
-    {
-      lesson_id: 2,
-      title: 'Sample Powerpoint',
-      description: 'Sample description that is related to the title',
-      file: 'sample2.pptx',
-      type: 'document',
-      created: new Date()
-    },
-    {
-      lesson_id: 3,
-      title: 'Sample Word Document',
-      description: 'Sample description that is related to the title',
-      file: 'sample3.docx',
-      type: 'document',
-      created: new Date()
-    },
-    {
-      lesson_id: 4,
-      title: 'Sample PDF Document',
-      description: 'Sample description that is related to the title',
-      file: 'sample4.pdf',
-      type: 'document',
-      created: new Date()
-    }
-  ];
+  constructor(
+    @Inject()
+    @UseConnection('default')
+    private lessonRepository: LessonRepository
+  ) {}
 
   /**
    * Retrieve all students per page
    *
    * @returns Student[]
    */
-  async getLessons(): Promise<ILesson[]> {
-    return this.lessons;
+  async getLessons(offset: number, limit: number): Promise<[Lesson[], number]> {
+    return this.lessonRepository.getLessons(offset, limit);
   }
 
   /**
    * Retrieve all students per page
    */
   async getLessonById(lesson_id: number): Promise<ILesson|undefined> {
-    return this.lessons.find((lesson) => lesson.lesson_id === lesson_id);
+    return this.lessonRepository.getLessonById(lesson_id);
+  }
+
+  /**
+   *
+   */
+  async addLesson(title: string, description: string, file?: MultipartFile): Promise<ILesson> {
+    type TData = Pick<ILesson, 'title'|'description'|'file'|'type' >;
+
+    let data: TData = {
+      title,
+      description
+    };
+
+    if (file) {
+      data = {
+        ...data,
+        file: file.filename,
+        type: file.mimetype.match(/video\/.*/) ? 'video' : 'document'
+      };
+    }
+
+    return this.lessonRepository.addStudent(data);
   }
 }
