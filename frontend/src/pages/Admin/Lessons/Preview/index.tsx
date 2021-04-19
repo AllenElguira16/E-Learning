@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios, { AxiosResponse } from 'axios';
 import { useParams } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { VideoPlayer } from '../../../../components/index';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Preview = () => {
   const { lesson_id } = useParams<{ lesson_id: string;}>();
@@ -36,7 +36,7 @@ const Preview = () => {
             (lesson.type === 'document') && (
               <a href={`/rest/static/${lesson.file}`} download>
                 <FontAwesomeIcon icon="file"/>
-                <span>{lesson.file}</span>
+                <span className="pl-2">Download File</span>
               </a>
             )
           }

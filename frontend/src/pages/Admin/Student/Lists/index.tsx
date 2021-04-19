@@ -1,12 +1,13 @@
 import React, { FC, Suspense, useEffect } from 'react';
 import { Table } from 'reactstrap';
 import { useLocation } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+
+import Edit from '../Edit';
+import Delete from '../Delete';
 
 import { formatDateToYMD, transformID } from '../../../../helpers';
-import Edit from '../Edit';
 import { Paginate } from '../../../../components';
-import Delete from '../Delete';
-import { useSelector, useDispatch } from 'react-redux';
 import { getStudents } from '../../../../store/actions/StudentAction';
 
 type TProps = {}
@@ -84,7 +85,7 @@ const Lists: FC<TProps> = () => {
           </Suspense>
         </tbody>
       </Table>
-      <Paginate page={page} totalPages={student.total_pages} />
+      <Paginate page={page} url="/admin/students" totalPages={student.total_pages} />
     </>
   );
 };

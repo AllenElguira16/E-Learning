@@ -10,7 +10,10 @@ import cors from 'cors';
 import '@tsed/ajv';
 import '@tsed/typeorm';
 import typeormConfig from './config/typeorm';
-
+import '@tsed/multipartfiles';
+import multer from 'multer';
+import path from 'path';
+import crypto from 'crypto';
 
 export const rootDir = __dirname;
 export const isProduction = process.env.NODE_ENV === Env.PROD;
@@ -47,7 +50,17 @@ if (isProduction) {
     ]
   },
   multer: {
-    dest: `${rootDir}/../static`
+    dest: `${rootDir}/../static`,
+    storage: multer.diskStorage({
+      destination(req: Express.Request, file: Express.Multer.File, callback: (error: (Error | null), filename: string) => void): void {
+        callback(null, `${rootDir}/../static`);
+      },
+      filename(req: Express.Request, file: Express.Multer.File, callback: (error: (Error | null), filename: string) => void): void {
+        const newFileName = crypto.randomBytes(18).toString('hex');
+        const fileExtension = path.extname(file.originalname);
+        callback(null, `${newFileName}${fileExtension}`);
+      }
+    })
   },
   statics: {
     '/static': [

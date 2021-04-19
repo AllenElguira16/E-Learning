@@ -4,12 +4,13 @@ import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 type TProps = {
   page: number;
   totalPages: number;
+  url: string;
 }
 
-const Paginate: FC<TProps> = ({ page: currentPage, totalPages }) => {
+const Paginate: FC<TProps> = ({ page: currentPage, totalPages, url: rootUrl }) => {
 
   const url = (page: number) => {
-    return `/admin/students?page=${page}`;
+    return `${rootUrl}?page=${page}`;
   };
 
   const pages = () => {
