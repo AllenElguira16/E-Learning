@@ -26,19 +26,19 @@ export const getLessons = async (page: number): Promise<TDispatch | void> => {
 
 
 export const addLesson = async (formData: FormData, page: number): Promise<[IResponse, TDispatch | void]> => {
-  const { data: axiosData } = await axios.post('/rest/lesson/upload', formData);
+  const { data: axiosData } = await axios.post('/rest/lesson/add', formData);
 
   return [axiosData, await getLessons(page)];
 };
 
 export const editLesson = async (lesson_id: ILesson['lesson_id'], formData: FormData, page: number): Promise<[IResponse, TDispatch | void]> => {
-  const { data: axiosData } = await axios.put(`/rest/lesson/upload/${lesson_id}`, formData);
+  const { data: axiosData } = await axios.put(`/rest/lesson/edit/${lesson_id}`, formData);
 
   return [axiosData, await getLessons(page)];
 };
 
-// export const deleteStudent = async (student_id: IStudent['student_id'], page: number): Promise<[IResponse, TDispatch | void]> => {
-//   const { data: axiosData }: AxiosResponse<IResponse> = await axios.delete(`/rest/student/delete/${student_id}`);
+export const deleteLesson = async (lesson_id: ILesson['lesson_id'], page: number): Promise<[IResponse, TDispatch | void]> => {
+  const { data: axiosData }: AxiosResponse<IResponse> = await axios.delete(`/rest/lesson/delete/${lesson_id}`);
 
-//   return [axiosData, await getLessons(page)];
-// };
+  return [axiosData, await getLessons(page)];
+};
