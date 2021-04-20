@@ -55,4 +55,4 @@ database.sqlite
 /static
 
 yarn.lock
-package.lock
+package-lock.json
