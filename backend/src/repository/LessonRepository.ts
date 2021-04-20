@@ -1,4 +1,5 @@
-import { EntityRepository, Repository } from 'typeorm';
+import { DeleteResult, EntityRepository, Repository } from 'typeorm';
+
 import { Lesson } from '../entity/Lesson';
 
 /**
@@ -67,5 +68,15 @@ export class LessonRepository extends Repository<Lesson> {
     }
     
     return this.save(currentLesson);
+  }
+
+  /**
+   * Removing lesson_id from database
+   * 
+   * @param lesson_id TInput
+   * @returns 
+   */
+  async deleteLesson(lesson_id: ILesson['lesson_id']): Promise<DeleteResult> {
+    return this.delete(lesson_id);
   }
 }

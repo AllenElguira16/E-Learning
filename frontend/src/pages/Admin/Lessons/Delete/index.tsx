@@ -1,12 +1,13 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { FC, useState } from 'react';
 import { Form, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import { deleteStudent } from '../../../../store/actions/StudentAction';
-import { useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+
+import { deleteLesson } from '../../../../store/actions/LessonAction';
 
 type TProps = {
-  student: IStudent
+  lesson_id: ILesson['lesson_id']
 }
 
 /**
@@ -14,7 +15,7 @@ type TProps = {
  *
  * @returns FC
  */
-const Delete: FC<TProps> = ({student}) => {
+const Delete: FC<TProps> = ({lesson_id}) => {
   /**
    * Modal State
    */
@@ -30,7 +31,8 @@ const Delete: FC<TProps> = ({student}) => {
   /**
    * Route params
    */
-   const page = parseInt((new URLSearchParams(useLocation().search)).get('page') as string);
+  const page = parseInt((new URLSearchParams(useLocation().search)).get('page') as string);
+
   /**
    * For dispatching actions
    */
@@ -44,7 +46,7 @@ const Delete: FC<TProps> = ({student}) => {
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const [response, toDispatch] = await deleteStudent(student.student_id, page);
+    const [response, toDispatch] = await deleteLesson(lesson_id, page);
 
     alert(response.message);
     dispatch(toDispatch);
@@ -59,7 +61,7 @@ const Delete: FC<TProps> = ({student}) => {
         <Form autoComplete="off" onSubmit={onSubmit}>
           <ModalHeader toggle={toggle}>Warning!</ModalHeader>
           <ModalBody>
-            Are you sure to delete student?
+            Are you sure to delete this lesson?
           </ModalBody>
           <ModalFooter>
             <Button type="submit" color="primary">Yes</Button>

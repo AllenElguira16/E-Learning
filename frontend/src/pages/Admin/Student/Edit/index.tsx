@@ -2,7 +2,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { FC, useState } from 'react';
 import { FormGroup, Label, Input, Form, Button, FormFeedback, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { editStudent } from '../../../../store/actions/StudentAction';
-import { useParams } from 'react-router-dom';
+
+import { useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 type TProps = {
@@ -23,7 +24,7 @@ const Edit: FC<TProps> = ({student}) => {
   /**
    * Route params
    */
-  const { page } = useParams<{ page: string; }>();
+   const page = parseInt((new URLSearchParams(useLocation().search)).get('page') as string);
 
   /**
    * For dispatching actions
@@ -76,7 +77,7 @@ const Edit: FC<TProps> = ({student}) => {
     try {
       event.preventDefault();
 
-      const [response, toDispatch] = await editStudent(student.student_id, input, parseInt(page));
+      const [response, toDispatch] = await editStudent(student.student_id, input, page);
 
       alert(response.message);
       dispatch(toDispatch);

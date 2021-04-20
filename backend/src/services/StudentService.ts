@@ -1,8 +1,9 @@
 import { Inject, Injectable } from '@tsed/di';
 import { UseConnection } from '@tsed/typeorm';
+import { DeleteResult } from 'typeorm';
+
 import { Student } from '../entity/Student';
 import { StudentRepository } from '../repository/StudentRepository';
-import { DeleteResult } from 'typeorm';
 
 /**
  * Student Provider
@@ -60,7 +61,7 @@ export class StudentService {
    * @param student_id IStudent["student_id"]
    * @returns Student | void
    */
-   async deleteStudent(student_id: Student['student_id']): Promise<DeleteResult> {
+  async deleteStudent(student_id: Student['student_id']): Promise<DeleteResult> {
     return this.studentRepository.deleteStudent(student_id);
   }
 }

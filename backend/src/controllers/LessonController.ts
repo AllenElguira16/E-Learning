@@ -1,6 +1,7 @@
 import {
   BodyParams,
   Controller,
+  Delete,
   Get,
   PathParams,
   Post,
@@ -9,6 +10,7 @@ import {
 } from '@tsed/common';
 import { MultipartFile } from '@tsed/multipartfiles';
 import { ContentType } from '@tsed/schema';
+
 import { LessonService } from '../services/LessonService';
 
 /**
@@ -65,7 +67,7 @@ export class LessonController {
     };
   }
 
-  @Post('/upload')
+  @Post('/add')
   public async addLesson(
     @MultipartFile('file') file: Express.Multer.File,
     @BodyParams('title') title: string,
@@ -83,7 +85,7 @@ export class LessonController {
     };
   }
 
-  @Put('/upload/:lesson_id')
+  @Put('/edit/:lesson_id')
   public async editLesson(
     @MultipartFile('file') file: Express.Multer.File,
     @BodyParams('title') title: string,
@@ -101,4 +103,22 @@ export class LessonController {
       }
     };
   }
+
+  /**
+   * Entry point for editing student
+   *
+   * @param student_id
+   * @returns IResponse
+   */
+   @Delete('/delete/:lesson_id')
+   async deleteStudent(
+     @PathParams('lesson_id') lesson_id: ILesson['lesson_id'],
+   ): Promise<IResponse> {
+     await this.lessonService.deleteLesson(lesson_id);
+ 
+     return {
+       status: 200,
+       message: 'Successfully successfully deleted',
+     };
+   }
 }

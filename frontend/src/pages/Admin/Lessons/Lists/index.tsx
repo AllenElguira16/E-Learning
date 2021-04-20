@@ -1,13 +1,13 @@
 import React, { FC, Suspense, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
-import { Button, Table } from 'reactstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Table } from 'reactstrap';
 
 import { getLessons } from '../../../../store/actions/LessonAction';
 import { formatDateToYMD } from '../../../../helpers';
 import { Paginate } from '../../../../components';
 import Edit from '../Edit';
+import Delete from '../Delete';
 
 /**
  *
@@ -76,9 +76,7 @@ const Lists: FC = () => {
                   description: lesson.description,
                   file: lesson.file
                 }} />
-                <Button color="danger">
-                  <FontAwesomeIcon icon="trash" fixedWidth />
-                </Button>
+                <Delete lesson_id={lesson.lesson_id} />
               </td>
             </tr>
           )) : (
