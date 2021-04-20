@@ -50,6 +50,28 @@ export class LessonService {
       };
     }
 
-    return this.lessonRepository.addStudent(data);
+    return this.lessonRepository.addLesson(data);
+  }
+
+  /**
+   *
+   */
+   async editLesson(lesson_id: number, title: string, description: string, file?: MultipartFile): Promise<ILesson | void> {
+    type TData = Pick<ILesson, 'title'|'description'|'file'|'type' >;
+
+    let data: TData = {
+      title,
+      description
+    };
+
+    if (file) {
+      data = {
+        ...data,
+        file: file.filename,
+        type: file.mimetype.match(/video\/.*/) ? 'video' : 'document'
+      };
+    }
+
+    return this.lessonRepository.editLesson(lesson_id, data);
   }
 }

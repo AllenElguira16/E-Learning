@@ -4,6 +4,7 @@ import {
   Get,
   PathParams,
   Post,
+  Put,
   QueryParams,
 } from '@tsed/common';
 import { MultipartFile } from '@tsed/multipartfiles';
@@ -65,7 +66,7 @@ export class LessonController {
   }
 
   @Post('/upload')
-  private async uploadLesson(
+  public async addLesson(
     @MultipartFile('file') file: Express.Multer.File,
     @BodyParams('title') title: string,
     @BodyParams('description') description: string
@@ -76,6 +77,25 @@ export class LessonController {
     return {
       status: 200,
       message: 'Student successfully added',
+      details: {
+        lesson: response
+      }
+    };
+  }
+
+  @Put('/upload/:lesson_id')
+  public async editLesson(
+    @MultipartFile('file') file: Express.Multer.File,
+    @BodyParams('title') title: string,
+    @BodyParams('description') description: string,
+    @PathParams('lesson_id') lesson_id: string
+  ): Promise<IResponse> {
+
+    const response = await this.lessonService.editLesson(parseInt(lesson_id), title, description, file);
+
+    return {
+      status: 200,
+      message: 'Student successfully updated',
       details: {
         lesson: response
       }

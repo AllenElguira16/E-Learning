@@ -10,14 +10,9 @@ export const getLessons = async (page: number): Promise<TDispatch | void> => {
   const limit = 5;
   const { data: { details } }: TResponse = await axios.get(`/rest/lesson/list?page=${page}&limit=${limit}`);
 
+  
   if (details) {
-    // const { data } = await axios.get(`/rest/${details.lessons[0].file}`, {
-    //   responseType: 'arraybuffer'
-    // });
-    // console.log(data);
-    // if (page > details.total_pages) {
-    //   throw new Error(`Page must be lesser than ${page}`);
-    // }
+    if (page > details.total_pages) throw new Error(`Page must be lesser than ${page}`);
 
     return {
       type: 'STORE_LESSONS',
@@ -28,3 +23,22 @@ export const getLessons = async (page: number): Promise<TDispatch | void> => {
     };
   }
 };
+
+
+export const addLesson = async (formData: FormData, page: number): Promise<[IResponse, TDispatch | void]> => {
+  const { data: axiosData } = await axios.post('/rest/lesson/upload', formData);
+
+  return [axiosData, await getLessons(page)];
+};
+
+export const editLesson = async (lesson_id: ILesson['lesson_id'], formData: FormData, page: number): Promise<[IResponse, TDispatch | void]> => {
+  const { data: axiosData } = await axios.put(`/rest/lesson/upload/${lesson_id}`, formData);
+
+  return [axiosData, await getLessons(page)];
+};
+
+// export const deleteStudent = async (student_id: IStudent['student_id'], page: number): Promise<[IResponse, TDispatch | void]> => {
+//   const { data: axiosData }: AxiosResponse<IResponse> = await axios.delete(`/rest/student/delete/${student_id}`);
+
+//   return [axiosData, await getLessons(page)];
+// };

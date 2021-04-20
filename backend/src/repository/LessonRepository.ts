@@ -32,7 +32,7 @@ export class LessonRepository extends Repository<Lesson> {
    *
    * @returns number
    */
-  async countStudent(): Promise<number> {
+  async countLesson(): Promise<number> {
     const [,count] = await this.findAndCount();
     return count;
   }
@@ -43,7 +43,29 @@ export class LessonRepository extends Repository<Lesson> {
    * @param student TInput
    * @returns
    */
-  async addStudent(student: Pick<ILesson, 'title'|'description'|'file'|'type' >): Promise<ILesson> {
+  async addLesson(student: Pick<ILesson, 'title'|'description'|'file'|'type' >): Promise<ILesson> {
     return this.save(student);
+  }
+
+  /**
+   * For adding new student
+   *
+   * @param student TInput
+   * @returns
+   */
+  async editLesson(lesson_id: number, lesson: Pick<ILesson, 'title'|'description'|'file'|'type' >): Promise<ILesson | void> {
+    const currentLesson = await this.findOne(lesson_id);
+
+    if (!currentLesson) return;
+
+    currentLesson.title = lesson.title;
+    currentLesson.description = lesson.description;
+    
+    if (lesson.file && lesson.type) {
+      currentLesson.file = lesson.file;
+      currentLesson.type = lesson.type;
+    }
+    
+    return this.save(currentLesson);
   }
 }
