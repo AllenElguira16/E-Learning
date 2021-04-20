@@ -1,16 +1,16 @@
-import React, { useState } from "react";
-import { 
-  Navbar, 
-  NavLink, 
-  NavbarBrand, 
-  NavbarToggler, 
-  Collapse, 
-  Nav, 
-  UncontrolledDropdown,
-  DropdownToggle, 
-  DropdownMenu, 
-  DropdownItem, 
-} from "reactstrap";
+import React, { useState } from 'react';
+import {
+  Navbar,
+  NavLink,
+  NavbarBrand,
+  NavbarToggler,
+  Collapse,
+  Nav,
+  NavItem,
+} from 'reactstrap';
+import AddStudent from './Student/Add';
+import AddLesson from './Lessons/Add';
+import { Route } from 'react-router-dom';
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,55 +18,27 @@ const Navigation = () => {
   const toggle = () => setIsOpen(!isOpen);
 
   return (
-    <header>
+    <header className="mb-4">
       <Navbar color="light" light expand="md">
         <NavbarBrand href="/">E-Learning Web</NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
-          <Nav className="mr-auto" navbar>
-            <UncontrolledDropdown nav inNavbar>
-              <DropdownToggle nav>
-                Teacher
-              </DropdownToggle>
-              <DropdownMenu>
-                <DropdownItem>
-                  <NavLink href="/teacher/list">Lists of Teachers</NavLink>
-                </DropdownItem>
-                <DropdownItem>
-                  <NavLink href="/teacher/add">Add Teacher</NavLink>
-                </DropdownItem>
-                <DropdownItem>
-                  <NavLink href="/teacher/edit">Edit Teacher</NavLink>
-                </DropdownItem>
-                <DropdownItem>
-                  <NavLink href="/teacher/delete">Delete Teacher</NavLink>
-                </DropdownItem>
-              </DropdownMenu>
-            </UncontrolledDropdown>
-            <UncontrolledDropdown nav inNavbar>
-              <DropdownToggle nav>
-                Students
-              </DropdownToggle>
-              <DropdownMenu>
-                <DropdownItem>
-                  <NavLink href="/student/list">Lists of Students</NavLink>
-                </DropdownItem>
-                <DropdownItem>
-                  <NavLink href="/student/add">Add Student</NavLink>
-                </DropdownItem>
-                <DropdownItem>
-                  <NavLink href="/student/edit">Edit Student</NavLink>
-                </DropdownItem>
-                <DropdownItem>
-                  <NavLink href="/student/delete">Delete Student</NavLink>
-                </DropdownItem>
-              </DropdownMenu>
-            </UncontrolledDropdown>
+          <Nav className="flex-grow-1" navbar>
+            <NavItem>
+              <NavLink href="/admin/students?page=1">Students</NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink href="/admin/lessons?page=1">Lessons</NavLink>
+            </NavItem>
+            <NavItem className="ml-md-auto">
+              <Route path="/admin/students" component={AddStudent} />
+              <Route path="/admin/lessons" component={AddLesson} />
+            </NavItem>
           </Nav>
         </Collapse>
       </Navbar>
     </header>
-  )
-}
+  );
+};
 
 export default Navigation;

@@ -1,55 +1,83 @@
-import {Env} from "@tsed/core";
-import {Configuration, Inject} from "@tsed/di";
-import {$log, PlatformApplication} from "@tsed/common";
-import "@tsed/platform-express"; // /!\ keep this import
-import bodyParser from "body-parser";
-import compress from "compression";
-import cookieParser from "cookie-parser";
-import methodOverride from "method-override";
-import cors from "cors";
-import "@tsed/ajv";
-import "@tsed/typeorm";
-import typeormConfig from "./config/typeorm";
-
+import {Env} from '@tsed/core';
+import {Configuration, Inject} from '@tsed/di';
+import {$log, PlatformApplication} from '@tsed/common';
+import '@tsed/platform-express'; // /!\ keep this import
+import express from 'express';
+import compress from 'compression';
+import cookieParser from 'cookie-parser';
+import methodOverride from 'method-override';
+import cors from 'cors';
+import '@tsed/ajv';
+import '@tsed/typeorm';
+import typeormConfig from './config/typeorm';
+import '@tsed/multipartfiles';
+import multer from 'multer';
+import path from 'path';
+import crypto from 'crypto';
 
 export const rootDir = __dirname;
 export const isProduction = process.env.NODE_ENV === Env.PROD;
 
 if (isProduction) {
-  $log.appenders.set("stdout", {
-    type: "stdout",
-    levels: ["info", "debug"],
+  $log.appenders.set('stdout', {
+    type: 'stdout',
+    levels: ['info', 'debug'],
     layout: {
-      type: "json"
+      type: 'json'
     }
   });
 
-  $log.appenders.set("stderr", {
-    levels: ["trace", "fatal", "error", "warn"],
-    type: "stderr",
+  $log.appenders.set('stderr', {
+    levels: ['trace', 'fatal', 'error', 'warn'],
+    type: 'stderr',
     layout: {
-      type: "json"
+      type: 'json'
     }
   });
 }
 
 @Configuration({
   rootDir,
-  acceptMimes: ["application/json"],
+  acceptMimes: ['application/json'],
   httpPort: process.env.PORT || 8083,
   httpsPort: false, // CHANGE
   logger: {
     disableRoutesSummary: isProduction
   },
   mount: {
-    "/rest": [
+    '/rest': [
       `${rootDir}/controllers/**/*.ts`
     ]
   },
+  multer: {
+    dest: `${rootDir}/../static`,
+    storage: multer.diskStorage({
+      destination(req: Express.Request, file: Express.Multer.File, callback: (error: (Error | null), filename: string) => void): void {
+        callback(null, `${rootDir}/../static`);
+      },
+      filename(req: Express.Request, file: Express.Multer.File, callback: (error: (Error | null), filename: string) => void): void {
+        const newFileName = crypto.randomBytes(18).toString('hex');
+        const fileExtension = path.extname(file.originalname);
+        callback(null, `${newFileName}${fileExtension}`);
+      }
+    })
+  },
+  statics: {
+    '/static': [
+      {
+        root: `${rootDir}/../static/`
+      }
+    ],
+  },
   typeorm: typeormConfig,
   exclude: [
-    "**/*.spec.ts"
-  ]
+    '**/*.spec.ts'
+  ],
+  ajv: {
+    errorFormatter: (error) => `'${error.instancePath}' ${error.message}`,
+    verbose: true,
+    allErrors: true
+  }
 })
 export class Server {
   @Inject()
@@ -64,8 +92,8 @@ export class Server {
       .use(cookieParser())
       .use(compress({}))
       .use(methodOverride())
-      .use(bodyParser.json())
-      .use(bodyParser.urlencoded({
+      .use(express.json())
+      .use(express.urlencoded({
         extended: true
       }));
   }

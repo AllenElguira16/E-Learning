@@ -47,7 +47,9 @@ test/**/*.js.map
 # IDE
 .vscode
 .idea
+database.sqlite
 
 # Project
 /public
 /dist
+/static

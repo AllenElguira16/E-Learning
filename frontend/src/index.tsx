@@ -3,9 +3,12 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
 import App from './App';
+import { renderFontAwesomeIcons } from './helpers';
 import reportWebVitals from './reportWebVitals';
 import store from './store';
 import './styles/index.scss';
+
+renderFontAwesomeIcons();
 
 ReactDOM.render(
   <React.Fragment>
