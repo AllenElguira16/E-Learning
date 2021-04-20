@@ -1,12 +1,13 @@
 import React, { FC, Suspense, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { Button, Table } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { getLessons } from '../../../../store/actions/LessonAction';
 import { formatDateToYMD } from '../../../../helpers';
 import { Paginate } from '../../../../components';
+import Edit from '../Edit';
 
 /**
  *
@@ -64,14 +65,17 @@ const Lists: FC = () => {
           </tr>
         }>
           {lesson.lessons.length ? lesson.lessons.map((lesson) => (
-            <tr key={lesson.lesson_id} className="tb-lesson-row" onClick={() => gotoPreview(lesson.lesson_id)}>
-              <th scope="row">{lesson.lesson_id}</th>
-              <td>{lesson.title}</td>
-              <td>{formatDateToYMD(lesson.created)}</td>
+            <tr key={lesson.lesson_id} className="tb-lesson-row">
+              <th onClick={() => gotoPreview(lesson.lesson_id)} scope="row">{lesson.lesson_id}</th>
+              <td onClick={() => gotoPreview(lesson.lesson_id)}>{lesson.title}</td>
+              <td onClick={() => gotoPreview(lesson.lesson_id)}>{formatDateToYMD(lesson.created)}</td>
               <td>
-                <Button color="warning">
-                  <FontAwesomeIcon icon="edit" fixedWidth />
-                </Button>
+                <Edit lesson={{
+                  lesson_id: lesson.lesson_id,
+                  title: lesson.title,
+                  description: lesson.description,
+                  file: lesson.file
+                }} />
                 <Button color="danger">
                   <FontAwesomeIcon icon="trash" fixedWidth />
                 </Button>
