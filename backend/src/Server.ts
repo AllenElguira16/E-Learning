@@ -110,11 +110,6 @@ export class Server {
       .use(express.json())
       .use(express.urlencoded({
         extended: true
-      }))
-      // .use(function(req: Request, res: Response) {
-      //   // console.log(req);
-      //   const root = path.resolve(rootDir, '../build');
-      //   res.sendFile('index.html', { root });
-      // });
+      }));
   }
 }
