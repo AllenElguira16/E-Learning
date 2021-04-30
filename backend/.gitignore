@@ -52,7 +52,6 @@ database.sqlite
 # Project
 /public
 /dist
-/static
 
 yarn.lock
 package-lock.json
