@@ -2,7 +2,7 @@ import {Env} from '@tsed/core';
 import {Configuration, Inject} from '@tsed/di';
 import {$log, PlatformApplication} from '@tsed/common';
 import '@tsed/platform-express'; // /!\ keep this import
-import express from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import compress from 'compression';
 import cookieParser from 'cookie-parser';
 import methodOverride from 'method-override';
@@ -47,7 +47,10 @@ if (isProduction) {
   mount: {
     '/rest': [
       `${rootDir}/controllers/**/*.ts`
-    ]
+    ],
+    '/': [
+      `${rootDir}/public.ts`
+    ],
   },
   multer: {
     dest: `${rootDir}/../static`,
@@ -63,11 +66,23 @@ if (isProduction) {
     })
   },
   statics: {
-    '/static': [
+    '/': [
+      {
+        root: `${rootDir}/../../frontend/build`
+      }
+    ],
+    '/statics': [
       {
         root: `${rootDir}/../static/`
       }
     ],
+  },
+  views: {
+    root: path.resolve(rootDir, '../../frontend/build'),
+    viewEngine: 'ejs',
+    extensions: {
+      'html': 'ejs'
+    }
   },
   typeorm: typeormConfig,
   exclude: [
@@ -95,6 +110,11 @@ export class Server {
       .use(express.json())
       .use(express.urlencoded({
         extended: true
-      }));
+      }))
+      // .use(function(req: Request, res: Response) {
+      //   // console.log(req);
+      //   const root = path.resolve(rootDir, '../build');
+      //   res.sendFile('index.html', { root });
+      // });
   }
 }

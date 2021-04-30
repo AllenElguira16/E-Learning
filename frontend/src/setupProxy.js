@@ -11,20 +11,16 @@ module.exports = function(app) {
             target: 'http://localhost:8083',
             changeOrigin: true,
             pathRewrite: {
-                '/rest/static': '/static',
                 '/rest': '/rest'
             }
         }),
     );
 
-    // app.use(
-    //     '/rest/static',
-    //     createProxyMiddleware({
-    //         target: 'http://localhost:8083',
-    //         changeOrigin: true,
-    //         pathRewrite: {
-    //             '/static': '/rest/static'
-    //         }
-    //     }),
-    // );
+    app.use(
+        '/statics',
+        createProxyMiddleware({
+            target: 'http://localhost:8083',
+            changeOrigin: true,
+        }),
+    );
 };

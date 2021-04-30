@@ -30,11 +30,11 @@ const Preview = () => {
           <h1>{lesson.title}</h1>
           <p>{lesson.description}</p>
           {lesson.type === 'video' && (
-            <VideoPlayer url={`/rest/static/${lesson.file}`}/>
+            <VideoPlayer url={`/statics/${lesson.file}`}/>
           )}
           {
             (lesson.type === 'document') && (
-              <a href={`/rest/static/${lesson.file}`} download>
+              <a href={`/statics/${lesson.file}`} download>
                 <FontAwesomeIcon icon="file"/>
                 <span className="pl-2">Download File</span>
               </a>
