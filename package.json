@@ -8,5 +8,8 @@
     "build": "cd frontend && npm install --production && npm run build && cd ../backend && npm install --production && npm run build",
     "start": "cd backend && npm run start:prod"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "engines": {
+    "yarn": "1.x"
+  }
 }
