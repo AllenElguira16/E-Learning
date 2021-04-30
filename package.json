@@ -6,7 +6,7 @@
   "author": "Allen Elguira <AllenElguira16@gmail.com>",
   "scripts": {
     "build": "cd frontend && yarn install --production && yarn build && cd ../backend && yarn install --production && yarn build",
-    "start": "yarn start:prod"
+    "start": "cd backend && yarn start:prod"
   },
   "license": "MIT",
   "engines": {
