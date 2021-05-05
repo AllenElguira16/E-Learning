@@ -3,8 +3,8 @@ import { Table } from 'reactstrap';
 import { useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
-import Edit from '../Edit';
-import Delete from '../Delete';
+import Edit from './Edit';
+import Delete from './Delete';
 
 import { formatDateToYMD, transformID } from '../../../../helpers';
 import { Paginate } from '../../../../components';

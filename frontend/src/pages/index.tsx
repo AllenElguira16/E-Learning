@@ -6,8 +6,8 @@ import Admin from './Admin';
 const Pages: FC = () => {
   return (
     <>
-      <Route path="/home"><Home/></Route>
-      <Route path="/admin"><Admin/></Route>
+      <Route path="/home" component={Home} />
+      <Route path="/admin" component={Admin} />
     </>
   );
 };

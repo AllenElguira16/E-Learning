@@ -8,8 +8,8 @@ import {
   Nav,
   NavItem,
 } from 'reactstrap';
-import AddStudent from './Student/Add';
-import AddLesson from './Lessons/Add';
+import AddStudent from './Students/components/Add';
+import AddLesson from './Lessons/components/Add';
 import { Route } from 'react-router-dom';
 
 const Navigation = () => {
@@ -28,7 +28,7 @@ const Navigation = () => {
               <NavLink href="/admin/students?page=1">Students</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="/admin/lessons?page=1">Lessons</NavLink>
+              <NavLink href="/admin/subjects?page=1">Subjects</NavLink>
             </NavItem>
             <NavItem className="ml-md-auto">
               <Route path="/admin/students" component={AddStudent} />

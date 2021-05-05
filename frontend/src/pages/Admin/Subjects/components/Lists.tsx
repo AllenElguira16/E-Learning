@@ -3,11 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { Table } from 'reactstrap';
 
-import { getLessons } from '../../../../store/actions/LessonAction';
+import { getSubjects } from '../../../../store/actions/SubjectsAction';
 import { formatDateToYMD } from '../../../../helpers';
 import { Paginate } from '../../../../components';
-import Edit from '../Edit';
-import Delete from '../Delete';
+// import Edit from './Edit';
+// import Delete from './Delete';
 
 /**
  *
@@ -22,7 +22,7 @@ const Lists: FC = () => {
   /**
    * Student State
    */
-  const { lesson } = useSelector<TRootReducers, TRootReducers>(state => state);
+  const { subject } = useSelector<TRootReducers, TRootReducers>(state => state);
 
   /**
    * For dispatching actions
@@ -30,8 +30,8 @@ const Lists: FC = () => {
   const dispatch = useDispatch();
 
 
-  const gotoPreview = (lessonId: number) => {
-    window.location.href = `/admin/lessons/${lessonId}`;
+  const gotoPreview = (subjectId: number) => {
+    window.location.href = `/admin/subjects/${subjectId}`;
   };
 
   /**
@@ -40,7 +40,9 @@ const Lists: FC = () => {
   useEffect(() => {
     (async () => {
       try {
-        dispatch(await getLessons(page));
+        dispatch(await getSubjects(page));
+
+        // console.log(subject);
       } catch (error) {
         alert(error.message);
       }
@@ -64,19 +66,22 @@ const Lists: FC = () => {
             <td colSpan={5}>Loading</td>
           </tr>
         }>
-          {lesson.lessons.length ? lesson.lessons.map((lesson) => (
-            <tr key={lesson.lesson_id} className="tb-lesson-row">
-              <th onClick={() => gotoPreview(lesson.lesson_id)} scope="row">{lesson.lesson_id}</th>
-              <td onClick={() => gotoPreview(lesson.lesson_id)}>{lesson.title}</td>
-              <td onClick={() => gotoPreview(lesson.lesson_id)}>{formatDateToYMD(lesson.created)}</td>
-              <td>
-                <Edit lesson={{
+          {(subject.subjects && subject.subjects.length) ? subject.subjects.map((subject) => (
+            <tr key={subject.subject_id} className="tb-lesson-row" onClick={() => gotoPreview(subject.subject_id)} >
+              <th scope="row">{subject.subject_id}</th>
+              <td>{subject.title}</td>
+              <td>{formatDateToYMD(subject.created)}</td>
+              <td onClick={(event) => {
+                event.preventDefault();
+                event.stopPropagation();
+              }}>
+                {/* <Edit lesson={{
                   lesson_id: lesson.lesson_id,
                   title: lesson.title,
                   description: lesson.description,
                   file: lesson.file
                 }} />
-                <Delete lesson_id={lesson.lesson_id} />
+                <Delete lesson_id={lesson.lesson_id} /> */}
               </td>
             </tr>
           )) : (
@@ -87,7 +92,7 @@ const Lists: FC = () => {
         </Suspense>
         </tbody>
       </Table>
-      <Paginate page={page} url="/admin/lessons" totalPages={lesson.total_pages} />
+      <Paginate page={page} url="/admin/lessons" totalPages={subject.total_pages} />
     </>
   );
 };

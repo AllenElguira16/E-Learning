@@ -3,7 +3,8 @@ type THelloWorldToggle = boolean | null;
 type TRootReducers = {
   helloWorld: THelloWorldToggle;
   student: TStudentReducer;
-  lesson: TLessonReducer;
+  subject: TSubjectReducer;
+  // lesson: TLessonReducer;
 };
 
 interface IStudent {
@@ -28,8 +29,27 @@ type TStudentReducer = {
   total_pages: number;
 }
 
+interface ISubject {
+  subject_id: number;
+  title: string;
+  description: string;
+  lessons: ILesson[];
+  created: Date;
+}
+
+type TSubjectInput = {
+  title: string;
+  description: string;
+}
+
+type TSubjectReducer = {
+  subjects: ISubject[];
+  total_pages: number;
+}
+
 interface ILesson {
   lesson_id: number;
+  subject_id: number;
   title: string;
   description: string;
   file?: string;
