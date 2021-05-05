@@ -4,7 +4,7 @@ type TRootReducers = {
   helloWorld: THelloWorldToggle;
   student: TStudentReducer;
   subject: TSubjectReducer;
-  // lesson: TLessonReducer;
+  lesson: TLessonReducer;
 };
 
 interface IStudent {
@@ -33,7 +33,7 @@ interface ISubject {
   subject_id: number;
   title: string;
   description: string;
-  lessons: ILesson[];
+  lessons?: ILesson[];
   created: Date;
 }
 
@@ -49,7 +49,7 @@ type TSubjectReducer = {
 
 interface ILesson {
   lesson_id: number;
-  subject_id: number;
+  subject_id: ISubject;
   title: string;
   description: string;
   file?: string;

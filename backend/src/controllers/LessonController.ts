@@ -10,16 +10,21 @@ import {
 } from '@tsed/common';
 import { MultipartFile } from '@tsed/multipartfiles';
 import { ContentType } from '@tsed/schema';
+import { SubjectService } from 'src/services/SubjectService';
 
 import { LessonService } from '../services/LessonService';
 
 /**
  * Controller for student api
  */
-@Controller('/lesson')
+@Controller('/:subject_id/lessons')
 @ContentType('application/json')
 export class LessonController {
-  constructor(private lessonService: LessonService) {}
+  constructor(
+    private lessonService: LessonService,
+    private subjectService: SubjectService
+  ) {}
+
   /**
    * Get all students
    *
@@ -27,14 +32,15 @@ export class LessonController {
    * @param limit
    * @returns IResponse
    */
-  @Get('/list')
+  @Get()
   async getLessons(
+    @PathParams('subject_id') subject_id: number,
     @QueryParams('page') page: number,
     @QueryParams('limit') limit: number,
   ): Promise<IResponse> {
     const offset = ((page - 1) * limit);
 
-    const [lessons, count] = await this.lessonService.getLessons(offset, limit);
+    const [lessons, count] = await this.lessonService.getLessons(subject_id, offset, limit);
 
     return {
       status: 200,
@@ -54,6 +60,7 @@ export class LessonController {
    */
   @Get('/:lesson_id')
   async getLessonById(
+    @PathParams('subject_id') subject_id: number,
     @PathParams('lesson_id') lesson_id: number,
   ): Promise<IResponse> {
     // const offset = ((page - 1) * limit);
@@ -62,19 +69,34 @@ export class LessonController {
       status: 200,
       message: 'Student list retrieved successfully',
       details: {
-        lesson: await this.lessonService.getLessonById(lesson_id)
+        lesson: await this.lessonService.getLessonById(subject_id, lesson_id)
       }
     };
   }
 
-  @Post('/add')
+  @Post()
   public async addLesson(
     @MultipartFile('file') file: Express.Multer.File,
+    @BodyParams('subject_id') subject_id: string,
     @BodyParams('title') title: string,
     @BodyParams('description') description: string
   ): Promise<IResponse> {
 
-    const response = await this.lessonService.addLesson(title, description, file);
+    const subject = await this.subjectService.getSubjectByID(parseInt(subject_id));
+
+    if (!subject) {
+      return {
+        status: 200,
+        message: 'Subject ID not found',
+      };
+    }
+
+    const response = await this.lessonService.addLesson({
+      subject_id: subject,
+      title, 
+      description, 
+      file
+    });
 
     return {
       status: 200,
@@ -85,7 +107,7 @@ export class LessonController {
     };
   }
 
-  @Put('/edit/:lesson_id')
+  @Put('/:lesson_id')
   public async editLesson(
     @MultipartFile('file') file: Express.Multer.File,
     @BodyParams('title') title: string,
@@ -110,15 +132,15 @@ export class LessonController {
    * @param student_id
    * @returns IResponse
    */
-   @Delete('/delete/:lesson_id')
-   async deleteStudent(
-     @PathParams('lesson_id') lesson_id: ILesson['lesson_id'],
-   ): Promise<IResponse> {
-     await this.lessonService.deleteLesson(lesson_id);
- 
-     return {
-       status: 200,
-       message: 'Successfully successfully deleted',
-     };
-   }
+  @Delete('/:lesson_id')
+  async deleteStudent(
+    @PathParams('lesson_id') lesson_id: ILesson['lesson_id'],
+  ): Promise<IResponse> {
+    await this.lessonService.deleteLesson(lesson_id);
+
+    return {
+      status: 200,
+      message: 'Successfully successfully deleted',
+    };
+  }
 }

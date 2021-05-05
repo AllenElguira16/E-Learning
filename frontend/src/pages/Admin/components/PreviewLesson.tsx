@@ -3,17 +3,18 @@ import axios, { AxiosResponse } from 'axios';
 import { useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { VideoPlayer } from '../../../../components';
+import { VideoPlayer } from '../../../components';
 
-const Preview = () => {
-  const { lesson_id } = useParams<{ lesson_id: string;}>();
+const PreviewLesson = () => {
+
+  const { lesson_id, subject_id } = useParams<{ lesson_id: string, subject_id: string ;}>();
 
   const [lesson, setLesson] = useState<ILesson|null>(null);
 
 
   useEffect(() => {
     (async () => {
-      const { data: { details } }: AxiosResponse<IResponse<{ lesson: ILesson; }>> = await axios.get(`/rest/lesson/${parseInt(lesson_id)}`);
+      const { data: { details } }: AxiosResponse<IResponse<{ lesson: ILesson; }>> = await axios.get(`/rest/subjects/${subject_id}/lessons/${parseInt(lesson_id)}`);
 
       if (details) {
         setLesson({
@@ -21,7 +22,7 @@ const Preview = () => {
         });
       }
     })();
-  }, [lesson_id]);
+  }, [lesson_id, subject_id]);
 
   return (
     <>
@@ -46,4 +47,4 @@ const Preview = () => {
   );
 };
 
-export default Preview;
+export default PreviewLesson;

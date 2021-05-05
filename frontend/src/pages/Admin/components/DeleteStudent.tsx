@@ -1,9 +1,10 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { FC, useState } from 'react';
 import { Form, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import { deleteStudent } from '../../../../store/actions/StudentAction';
 import { useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
+
+import { deleteStudent } from '../../../store/actions/StudentAction';
 
 type TProps = {
   student: IStudent
@@ -14,7 +15,7 @@ type TProps = {
  *
  * @returns FC
  */
-const Delete: FC<TProps> = ({student}) => {
+const DeleteStudent: FC<TProps> = ({student}) => {
   /**
    * Modal State
    */
@@ -71,4 +72,4 @@ const Delete: FC<TProps> = ({student}) => {
   );
 };
 
-export default Delete;
+export default DeleteStudent;

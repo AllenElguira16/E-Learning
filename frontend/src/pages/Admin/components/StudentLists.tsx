@@ -3,12 +3,12 @@ import { Table } from 'reactstrap';
 import { useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
-import Edit from './Edit';
-import Delete from './Delete';
+import Edit from './EditStudent';
+import Delete from './DeleteStudent';
 
-import { formatDateToYMD, transformID } from '../../../../helpers';
-import { Paginate } from '../../../../components';
-import { getStudents } from '../../../../store/actions/StudentAction';
+import { formatDateToYMD, transformID } from '../../../helpers';
+import { Paginate } from '../../../components';
+import { getStudents } from '../../../store/actions/StudentAction';
 
 type TProps = {}
 
@@ -17,7 +17,7 @@ type TProps = {}
  *
  * @returns FC
  */
-const Lists: FC<TProps> = () => {
+const StudentLists: FC<TProps> = () => {
   /**
    * Route params
    */
@@ -90,4 +90,4 @@ const Lists: FC<TProps> = () => {
   );
 };
 
-export default Lists;
+export default StudentLists;

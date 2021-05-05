@@ -1,19 +1,22 @@
 import React, { FC, Suspense, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { Table } from 'reactstrap';
 
-// import { getLessons } from '../../../../store/actions/LessonAction';
-// import { formatDateToYMD } from '../../../../helpers';
-// import { Paginate } from '../../../../components';
-// import Edit from './Edit';
-// import Delete from './Delete';
+import { getLessons } from '../../../store/actions/LessonAction';
+import { formatDateToYMD } from '../../../helpers';
+import { Paginate } from '../../../components';
+import Edit from './EditLesson';
+import Delete from './DeleteLesson';
 
 /**
  *
  * @constructor
  */
-const Lists: FC = () => {
+const LessonLists: FC = () => {
+
+  const { subject_id } = useParams<{ subject_id: string }>();
+
   /**
    * Route params
    */
@@ -22,7 +25,7 @@ const Lists: FC = () => {
   /**
    * Student State
    */
-  // const { lesson } = useSelector<TRootReducers, TRootReducers>(state => state);
+  const { lesson } = useSelector<TRootReducers, TRootReducers>(state => state);
 
   /**
    * For dispatching actions
@@ -31,7 +34,7 @@ const Lists: FC = () => {
 
 
   const gotoPreview = (lessonId: number) => {
-    window.location.href = `/admin/lessons/${lessonId}`;
+    window.location.href = `/admin/subjects/${subject_id}/lessons/${lessonId}`;
   };
 
   /**
@@ -40,12 +43,12 @@ const Lists: FC = () => {
   useEffect(() => {
     (async () => {
       try {
-        // dispatch(await getLessons(page));
+        dispatch(await getLessons(parseInt(subject_id), page));
       } catch (error) {
         alert(error.message);
       }
     })();
-  }, [dispatch, page]);
+  }, [dispatch, page, subject_id]);
 
   return (
     <>
@@ -64,8 +67,7 @@ const Lists: FC = () => {
             <td colSpan={5}>Loading</td>
           </tr>
         }>
-          <div>Hello World</div>
-          {/* {lesson.lessons.length ? lesson.lessons.map((lesson) => (
+          {lesson.lessons.length ? lesson.lessons.map((lesson) => (
             <tr key={lesson.lesson_id} className="tb-lesson-row">
               <th onClick={() => gotoPreview(lesson.lesson_id)} scope="row">{lesson.lesson_id}</th>
               <td onClick={() => gotoPreview(lesson.lesson_id)}>{lesson.title}</td>
@@ -82,15 +84,15 @@ const Lists: FC = () => {
             </tr>
           )) : (
             <tr>
-              <td colSpan={6}>There are no students or the page exceeded</td>
+              <td colSpan={6}>There are no lessons or the page exceeded</td>
             </tr>
-          )} */}
+          )}
         </Suspense>
         </tbody>
       </Table>
-      {/* <Paginate page={page} url="/admin/lessons" totalPages={lesson.total_pages} /> */}
+      <Paginate page={page} url={`/admin/subjects/${subject_id}`} totalPages={lesson.total_pages} />
     </>
   );
 };
 
-export default Lists;
+export default LessonLists;

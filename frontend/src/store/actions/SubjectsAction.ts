@@ -12,7 +12,9 @@ export const getSubjects = async (page: number): Promise<TDispatch | void> => {
 
   
   if (details) {
-    if (page > details.total_pages) throw new Error(`Page must be lesser than ${page}`);
+    if (page > details.total_pages && details.total_pages > 0) {
+      throw new Error(`Page must be lesser than ${page}`);
+    }
 
     return {
       type: 'STORE_SUBJECTS',
@@ -25,11 +27,11 @@ export const getSubjects = async (page: number): Promise<TDispatch | void> => {
 };
 
 
-// export const addLesson = async (formData: FormData, page: number): Promise<[IResponse, TDispatch | void]> => {
-//   const { data: axiosData } = await axios.post('/rest/lesson/add', formData);
+export const addSubject = async (input: TSubjectInput, page: number): Promise<[IResponse, TDispatch | void]> => {
+  const { data: axiosData } = await axios.post('/rest/subjects', input);
 
-//   return [axiosData, await getLessons(page)];
-// };
+  return [axiosData, await getSubjects(page)];
+};
 
 // export const editLesson = async (lesson_id: ILesson['lesson_id'], formData: FormData, page: number): Promise<[IResponse, TDispatch | void]> => {
 //   const { data: axiosData } = await axios.put(`/rest/lesson/edit/${lesson_id}`, formData);

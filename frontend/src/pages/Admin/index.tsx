@@ -1,10 +1,12 @@
 import React, { FC, useEffect } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { Container } from 'reactstrap';
-import Navigation from './Navigation';
-import Student from './Students';
-import Subjects from './Subjects';
-// import Lessons from './Lessons';
+
+import LessonLists from './components/LessonLists';
+import PreviewLesson from './components/PreviewLesson';
+import StudentLists from './components/StudentLists';
+import SubjectLists from './components/SubjectLists';
+import Navigation from './components/Navigation';
 
 const Admin: FC = () => {
 
@@ -19,9 +21,12 @@ const Admin: FC = () => {
         <Switch>
           <Redirect exact path="/admin" to="/admin/students?page=1" />
 
-          <Route path="/admin/students" component={Student} />
-          <Route path="/admin/subjects" component={Subjects} />
-          {/* <Route path="/admin/lessons"><Lessons/></Route> */}
+          <Route path="/admin/students" component={StudentLists} />
+
+          <Route path="/admin/subjects/:subject_id/lessons/:lesson_id" component={PreviewLesson} />
+          <Route path="/admin/subjects/:subject_id" component={LessonLists} />
+          <Route path="/admin/subjects" component={SubjectLists} />
+
         </Switch>
       </Container>
     </>

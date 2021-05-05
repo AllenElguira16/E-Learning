@@ -1,10 +1,10 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { FC, useState } from 'react';
 import { Form, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
-import { deleteLesson } from '../../../../store/actions/LessonAction';
+import { deleteLesson } from '../../../store/actions/LessonAction';
 
 type TProps = {
   lesson_id: ILesson['lesson_id']
@@ -15,7 +15,10 @@ type TProps = {
  *
  * @returns FC
  */
-const Delete: FC<TProps> = ({lesson_id}) => {
+const DeleteLesson: FC<TProps> = ({lesson_id}) => {
+  
+  const { subject_id } = useParams<{ subject_id: string }>();
+  
   /**
    * Modal State
    */
@@ -46,7 +49,7 @@ const Delete: FC<TProps> = ({lesson_id}) => {
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const [response, toDispatch] = await deleteLesson(lesson_id, page);
+    const [response, toDispatch] = await deleteLesson(parseInt(subject_id), lesson_id, page);
 
     alert(response.message);
     dispatch(toDispatch);
@@ -73,4 +76,4 @@ const Delete: FC<TProps> = ({lesson_id}) => {
   );
 };
 
-export default Delete;
+export default DeleteLesson;
