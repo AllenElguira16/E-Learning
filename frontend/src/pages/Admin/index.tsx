@@ -2,8 +2,9 @@ import React, { FC, useEffect } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { Container } from 'reactstrap';
 import Navigation from './Navigation';
-import Student from './Student';
-import Lessons from './Lessons';
+import Student from './Students';
+import Subjects from './Subjects';
+// import Lessons from './Lessons';
 
 const Admin: FC = () => {
 
@@ -18,8 +19,9 @@ const Admin: FC = () => {
         <Switch>
           <Redirect exact path="/admin" to="/admin/students?page=1" />
 
-          <Route path="/admin/students"><Student/></Route>
-          <Route path="/admin/lessons"><Lessons/></Route>
+          <Route path="/admin/students" component={Student} />
+          <Route path="/admin/subjects" component={Subjects} />
+          {/* <Route path="/admin/lessons"><Lessons/></Route> */}
         </Switch>
       </Container>
     </>
