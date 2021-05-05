@@ -3,9 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useParams } from 'react-router-dom';
 import { Table } from 'reactstrap';
 
-import { getLessons } from '../../../store/actions/LessonAction';
-import { formatDateToYMD } from '../../../helpers';
-import { Paginate } from '../../../components';
+import { getLessons } from '~store/actions/LessonAction';
+import { formatDateToYMD } from '~helpers';
+import { Paginate } from '~components';
+
 import Edit from './EditLesson';
 import Delete from './DeleteLesson';
 

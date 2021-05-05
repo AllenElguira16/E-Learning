@@ -1,7 +1,4 @@
-type THelloWorldToggle = boolean | null;
-
 type TRootReducers = {
-  helloWorld: THelloWorldToggle;
   student: TStudentReducer;
   subject: TSubjectReducer;
   lesson: TLessonReducer;

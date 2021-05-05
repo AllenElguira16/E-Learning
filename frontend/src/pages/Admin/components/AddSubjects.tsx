@@ -3,7 +3,7 @@ import { Button, Form, FormGroup, Input, Label, Modal, ModalBody, ModalHeader } 
 import { useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
-import { addSubject } from '../../../store/actions/SubjectsAction';
+import { addSubject } from '~store/actions/SubjectsAction';
 
 const AddSubject = () => {
   /**

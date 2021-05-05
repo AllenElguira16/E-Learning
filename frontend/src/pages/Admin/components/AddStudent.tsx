@@ -1,8 +1,10 @@
 import React, { FC, useState } from 'react';
 import { FormGroup, Label, Input, Form, Button, FormFeedback, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import { addStudent } from '../../../store/actions/StudentAction';
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+
+import { addStudent } from '~store/actions/StudentAction';
+
 // import { addStudent } from '../../../../api';
 
 type TProps = {

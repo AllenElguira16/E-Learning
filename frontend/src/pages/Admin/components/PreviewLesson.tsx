@@ -3,7 +3,7 @@ import axios, { AxiosResponse } from 'axios';
 import { useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { VideoPlayer } from '../../../components';
+import { VideoPlayer } from '~components';
 
 const PreviewLesson = () => {
 

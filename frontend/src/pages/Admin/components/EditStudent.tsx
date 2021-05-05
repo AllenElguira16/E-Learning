@@ -4,7 +4,7 @@ import { FormGroup, Label, Input, Form, Button, FormFeedback, Modal, ModalHeader
 import { useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
-import { editStudent } from '../../../store/actions/StudentAction';
+import { editStudent } from '~store/actions/StudentAction';
 
 type TProps = {
   student: IStudent

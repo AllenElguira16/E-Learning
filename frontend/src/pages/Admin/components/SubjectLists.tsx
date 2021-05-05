@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { Table } from 'reactstrap';
 
-import { getSubjects } from '../../../store/actions/SubjectsAction';
-import { formatDateToYMD } from '../../../helpers';
-import { Paginate } from '../../../components';
+import { getSubjects } from '~store/actions/SubjectsAction';
+import { formatDateToYMD } from '~helpers';
+import { Paginate } from '~components';
 // import Edit from './Edit';
 // import Delete from './Delete';
 

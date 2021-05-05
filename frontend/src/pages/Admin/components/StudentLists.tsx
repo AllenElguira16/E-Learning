@@ -6,9 +6,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import Edit from './EditStudent';
 import Delete from './DeleteStudent';
 
-import { formatDateToYMD, transformID } from '../../../helpers';
-import { Paginate } from '../../../components';
-import { getStudents } from '../../../store/actions/StudentAction';
+import { formatDateToYMD, transformID } from '~helpers';
+import { Paginate } from '~components';
+import { getStudents } from '~store/actions/StudentAction';
 
 type TProps = {}
 

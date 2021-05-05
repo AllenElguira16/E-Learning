@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useLocation, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
-import { editLesson } from '../../../store/actions/LessonAction';
+import { editLesson } from '~store/actions/LessonAction';
 
 type TProps = {
   lesson: {

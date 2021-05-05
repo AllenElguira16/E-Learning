@@ -2,8 +2,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
 import { Button, Col, Form, FormGroup, Input, Label, Modal, ModalBody, ModalHeader, Row } from 'reactstrap';
 import { useLocation, useParams } from 'react-router-dom';
-import { addLesson } from '../../../store/actions/LessonAction';
 import { useDispatch } from 'react-redux';
+
+import { addLesson } from '~store/actions/LessonAction';
 
 const AddLesson = () => {
   const { subject_id } = useParams<{ subject_id: string }>();

@@ -4,7 +4,7 @@ import { Form, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reacts
 import { useLocation, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
-import { deleteLesson } from '../../../store/actions/LessonAction';
+import { deleteLesson } from '~store/actions/LessonAction';
 
 type TProps = {
   lesson_id: ILesson['lesson_id']

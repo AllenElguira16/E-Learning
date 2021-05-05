@@ -4,7 +4,7 @@ import { Form, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reacts
 import { useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 
-import { deleteStudent } from '../../../store/actions/StudentAction';
+import { deleteStudent } from '~store/actions/StudentAction';
 
 type TProps = {
   student: IStudent

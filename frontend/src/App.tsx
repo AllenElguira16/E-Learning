@@ -1,6 +1,6 @@
 import React, { FC, Suspense } from 'react';
 import { BrowserRouter, Switch } from 'react-router-dom';
-import Pages from './pages';
+import Pages from '~pages';
 
 
 const App: FC = () => {
