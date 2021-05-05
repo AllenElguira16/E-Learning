@@ -1,10 +1,10 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { FC, useState } from 'react';
 import { FormGroup, Label, Input, Form, Button, FormFeedback, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import { editStudent } from '../../../../store/actions/StudentAction';
-
 import { useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+
+import { editStudent } from '../../../store/actions/StudentAction';
 
 type TProps = {
   student: IStudent
@@ -15,7 +15,7 @@ type TProps = {
  *
  * @returns FC
  */
-const Edit: FC<TProps> = ({student}) => {
+const EditStudent: FC<TProps> = ({student}) => {
   /**
    * Modal State
    */
@@ -152,4 +152,4 @@ const Edit: FC<TProps> = ({student}) => {
   );
 };
 
-export default Edit;
+export default EditStudent;

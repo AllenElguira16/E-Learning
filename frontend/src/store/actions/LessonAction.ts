@@ -5,15 +5,17 @@ type TDispatch = {
   payload: any;
 }
 
-export const getLessons = async (page: number): Promise<TDispatch | void> => {
+export const getLessons = async (subjectId: number, page: number): Promise<TDispatch | void> => {
   type TResponse = AxiosResponse<IResponse<TLessonReducer>>
   const limit = 5;
-  const { data: { details } }: TResponse = await axios.get(`/rest/lesson/list?page=${page}&limit=${limit}`);
+  const { data: { details } }: TResponse = await axios.get(`/rest/subjects/${subjectId}/lessons?page=${page}&limit=${limit}`);
 
   
   if (details) {
-    if (page > details.total_pages) throw new Error(`Page must be lesser than ${page}`);
-
+    if (page > details.total_pages && details.total_pages > 0) {
+      throw new Error(`Page must be lesser than ${page}`);
+    }
+    
     return {
       type: 'STORE_LESSONS',
       payload: {
@@ -25,20 +27,20 @@ export const getLessons = async (page: number): Promise<TDispatch | void> => {
 };
 
 
-export const addLesson = async (formData: FormData, page: number): Promise<[IResponse, TDispatch | void]> => {
-  const { data: axiosData } = await axios.post('/rest/lesson/add', formData);
+export const addLesson = async (subjectId: number, formData: FormData, page: number): Promise<[IResponse, TDispatch | void]> => {
+  const { data: axiosData } = await axios.post(`/rest/subjects/${subjectId}/lessons`, formData);
 
-  return [axiosData, await getLessons(page)];
+  return [axiosData, await getLessons(subjectId, page)];
 };
 
-export const editLesson = async (lesson_id: ILesson['lesson_id'], formData: FormData, page: number): Promise<[IResponse, TDispatch | void]> => {
-  const { data: axiosData } = await axios.put(`/rest/lesson/edit/${lesson_id}`, formData);
+export const editLesson = async (subjectId: number, lessonId: ILesson['lesson_id'], formData: FormData, page: number): Promise<[IResponse, TDispatch | void]> => {
+  const { data: axiosData } = await axios.put(`/rest/subjects/${subjectId}/lessons/${lessonId}`, formData);
 
-  return [axiosData, await getLessons(page)];
+  return [axiosData, await getLessons(subjectId, page)];
 };
 
-export const deleteLesson = async (lesson_id: ILesson['lesson_id'], page: number): Promise<[IResponse, TDispatch | void]> => {
-  const { data: axiosData }: AxiosResponse<IResponse> = await axios.delete(`/rest/lesson/delete/${lesson_id}`);
+export const deleteLesson = async (subjectId: number, lessonId: ILesson['lesson_id'], page: number): Promise<[IResponse, TDispatch | void]> => {
+  const { data: axiosData }: AxiosResponse<IResponse> = await axios.delete(`/rest/subjects/${subjectId}/lessons/${lessonId}`);
 
-  return [axiosData, await getLessons(page)];
+  return [axiosData, await getLessons(subjectId, page)];
 };

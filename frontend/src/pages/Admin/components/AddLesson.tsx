@@ -1,68 +1,40 @@
-import React, { FC, useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useState } from 'react';
 import { Button, Col, Form, FormGroup, Input, Label, Modal, ModalBody, ModalHeader, Row } from 'reactstrap';
-import axios from 'axios';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
+import { addLesson } from '../../../store/actions/LessonAction';
 import { useDispatch } from 'react-redux';
 
-import { editLesson } from '../../../../store/actions/LessonAction';
+const AddLesson = () => {
+  const { subject_id } = useParams<{ subject_id: string }>();
 
-type TProps = {
-  lesson: {
-    lesson_id: number;
-    title: ILesson['title'];
-    description: ILesson['description'];
-    file: ILesson['file'];
-  }
-};
-
-const Edit: FC<TProps> = ({ lesson }) => {
   /**
    * Route params
    */
-   const page = parseInt((new URLSearchParams(useLocation().search)).get('page') as string);
+  const page = parseInt((new URLSearchParams(useLocation().search)).get('page') as string);
  
    /**
     * For dispatching actions
     */
-   const dispatch = useDispatch();
+  const dispatch = useDispatch();
+
   /**
    * Modal State
    */
-   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
  
    /**
     * Toggle Modal
     */
-   const toggle = (event: React.MouseEvent<HTMLButtonElement>) => {
-     event.preventDefault();
-     event.stopPropagation();
-     setIsOpen(!isOpen);
-   };
+  const toggle = () => {
+    setIsOpen(!isOpen);
+  };
 
   const [inputState, setInputState] = useState<TLessonInput>({
-    title: lesson.title,
-    description: lesson.description,
+    title: '',
+    description: '',
     file: null
   });
-
-  useEffect(() => {
-    (async () => {
-      const file = lesson.file;
-      if (file !== null && file !== undefined) {
-        const { data } = await axios.get(`http://localhost:3000/rest/static/${file}`, {
-          responseType: 'blob'
-        });
-
-        setInputState((prevState) => ({
-          ...prevState,
-          file: new File([data], file, {
-            type: data.type
-          })
-        }));
-      }
-    })();
-  }, [lesson.file]);
 
   const inputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const key = event.currentTarget?.getAttribute('name') as keyof TLessonInput;
@@ -90,10 +62,11 @@ const Edit: FC<TProps> = ({ lesson }) => {
       const formData = new FormData();
   
       formData.append('file', inputState.file as Blob);
+      formData.append('subject_id', subject_id);
       formData.append('title', inputState.title);
       formData.append('description', inputState.description);
 
-      const [response, toDispatch] = await editLesson(lesson.lesson_id, formData, page);
+      const [response, toDispatch] = await addLesson(parseInt(subject_id), formData, page);
       dispatch(toDispatch);
       alert(response.message);
     } catch (error) {
@@ -103,12 +76,11 @@ const Edit: FC<TProps> = ({ lesson }) => {
 
   return (
     <>
-      <Button onClick={toggle} color="warning">
-        <FontAwesomeIcon icon="edit" fixedWidth />
-      </Button>
+      <Button onClick={toggle}>Add Lessons</Button>
       <Modal isOpen={isOpen} toggle={toggle}>
-        <ModalHeader toggle={toggle}>Edit Lesson</ModalHeader>
+        <ModalHeader toggle={toggle}>Add Lesson</ModalHeader>
         <ModalBody>
+
           <Form autoComplete="off" onSubmit={uploadNewLesson}>
             <FormGroup>
               <Label for="title" hidden>Title</Label>
@@ -129,7 +101,7 @@ const Edit: FC<TProps> = ({ lesson }) => {
                 id="description"
                 placeholder="Description"
                 style={{height: 250}}
-                onChange={inputChange}
+                onChange={inputChange}                
                 value={inputState.description}
               />
             </FormGroup>
@@ -137,7 +109,7 @@ const Edit: FC<TProps> = ({ lesson }) => {
               <Row className="justify-content-between" form>
                 <Col>
                   <Label 
-                    for={`file-${lesson.lesson_id}`} 
+                    for="file" 
                     className={`btn btn-primary${!inputState.file ? ' text-primary bg-transparent' : ''}`}
                   >
                     <FontAwesomeIcon icon="file"/>
@@ -146,7 +118,7 @@ const Edit: FC<TProps> = ({ lesson }) => {
                   <Input
                     type="file"
                     name="file"
-                    id={`file-${lesson.lesson_id}`}
+                    id="file"
                     accept="application/pdf,application/msword,application/vnd.ms-powerpoint,video/*"
                     onChange={fileChange}
                     hidden
@@ -164,4 +136,4 @@ const Edit: FC<TProps> = ({ lesson }) => {
   );
 };
 
-export default Edit;
+export default AddLesson;

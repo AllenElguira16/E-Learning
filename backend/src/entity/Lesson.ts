@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Subject } from './Subject';
 
 /**
  * Student Entity
@@ -8,6 +9,9 @@ export class Lesson implements ILesson {
 
   @PrimaryGeneratedColumn()
   lesson_id: number;
+
+  @ManyToOne(() => Subject, subject => subject.subject_id)
+  subject_id: Subject;
 
   @Column()
   title: string;

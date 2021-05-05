@@ -1,19 +1,26 @@
 import {
+  BodyParams,
   Controller,
   Get,
+  PathParams,
+  Post,
   QueryParams,
 } from '@tsed/common';
 import { ContentType } from '@tsed/schema';
-
-import { LessonService } from '../services/LessonService';
+import { SubjectService } from 'src/services/SubjectService';
+import { LessonController } from './LessonController';
 
 /**
  * Controller for student api
  */
-@Controller('/subjects')
+@Controller({
+  path: '/subjects',
+  children: [LessonController]
+})
 @ContentType('application/json')
 export class SubjectController {
-  constructor(private lessonService: LessonService) {}
+  constructor(private subjectService: SubjectService) {}
+
   /**
    * Get all students
    *
@@ -22,30 +29,63 @@ export class SubjectController {
    * @returns IResponse
    */
   @Get()
-  async getLessons(
+  async getSubjects(
     @QueryParams('page') page: number,
     @QueryParams('limit') limit: number,
   ): Promise<IResponse> {
     const offset = ((page - 1) * limit);
 
-    // const [lessons, count] = await this.lessonService.getLessons(offset, limit);
-
-    const sampleData: ISubject[] = [
-      {
-        subject_id: 1,
-        title: 'Sample Subject',
-        description: 'Sample Description',
-        lessons: (await this.lessonService.getLessons(offset, limit))[0] as unknown as ILesson[],
-        created: new Date()
-      }
-    ];
+    const [subjects, count] = await this.subjectService.getSubjects(offset, limit);
 
     return {
       status: 200,
       message: 'Student list retrieved successfully',
       details: {
-        total_pages: Math.ceil(1 / limit),
-        subjects: sampleData
+        total_pages: Math.ceil(count / limit),
+        subjects
+      }
+    };
+  }
+
+  /**
+   * Get all students
+   *
+   * @param page
+   * @param limit
+   * @returns IResponse
+   */
+  @Get('/:subject_id')
+  async getSubjectsByID(
+    @PathParams('subject_id') subject_id: number,
+  ): Promise<IResponse> {
+
+    const subject = await this.subjectService.getSubjectByID(subject_id);
+
+    return {
+      status: 200,
+      message: 'Student list retrieved successfully',
+      details: {
+        subject
+      }
+    };
+  }
+
+  @Post()
+  public async addLesson(
+    @BodyParams('title') title: string,
+    @BodyParams('description') description: string
+  ): Promise<IResponse> {
+
+    const response = await this.subjectService.addSubject({ 
+      title, 
+      description
+    });
+
+    return {
+      status: 200,
+      message: 'Subject successfully added',
+      details: {
+        subject: response
       }
     };
   }

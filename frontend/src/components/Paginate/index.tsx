@@ -47,10 +47,10 @@ const Paginate: FC<TProps> = ({ page: currentPage, totalPages, url: rootUrl }) =
           <PaginationLink href={url(page)} >{ page }</PaginationLink>
         </PaginationItem>
       ))}
-      <PaginationItem disabled={currentPage === totalPages}>
+      <PaginationItem disabled={totalPages === 0 || currentPage === totalPages}>
         <PaginationLink next href={url(currentPage + 1)} />
       </PaginationItem>
-      <PaginationItem disabled={currentPage === totalPages}>
+      <PaginationItem disabled={totalPages === 0 || currentPage === totalPages}>
         <PaginationLink last href={url(totalPages)} />
       </PaginationItem>
     </Pagination>

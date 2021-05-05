@@ -1,11 +1,25 @@
+import React, { FC, useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useState } from 'react';
 import { Button, Col, Form, FormGroup, Input, Label, Modal, ModalBody, ModalHeader, Row } from 'reactstrap';
-import { useLocation } from 'react-router-dom';
-import { addLesson } from '../../../../store/actions/LessonAction';
+import axios from 'axios';
+import { useLocation, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
-const Add = () => {
+import { editLesson } from '../../../store/actions/LessonAction';
+
+type TProps = {
+  lesson: {
+    lesson_id: number;
+    title: ILesson['title'];
+    description: ILesson['description'];
+    file: ILesson['file'];
+  }
+};
+
+const EditLesson: FC<TProps> = ({ lesson }) => {
+
+  const { subject_id } = useParams<{ subject_id: string }>();
+  
   /**
    * Route params
    */
@@ -23,15 +37,35 @@ const Add = () => {
    /**
     * Toggle Modal
     */
-   const toggle = () => {
+   const toggle = (event: React.MouseEvent<HTMLButtonElement>) => {
+     event.preventDefault();
+     event.stopPropagation();
      setIsOpen(!isOpen);
    };
 
   const [inputState, setInputState] = useState<TLessonInput>({
-    title: '',
-    description: '',
+    title: lesson.title,
+    description: lesson.description,
     file: null
   });
+
+  useEffect(() => {
+    (async () => {
+      const file = lesson.file;
+      if (file !== null && file !== undefined) {
+        const { data } = await axios.get(`http://localhost:3000/rest/static/${file}`, {
+          responseType: 'blob'
+        });
+
+        setInputState((prevState) => ({
+          ...prevState,
+          file: new File([data], file, {
+            type: data.type
+          })
+        }));
+      }
+    })();
+  }, [lesson.file]);
 
   const inputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const key = event.currentTarget?.getAttribute('name') as keyof TLessonInput;
@@ -62,7 +96,7 @@ const Add = () => {
       formData.append('title', inputState.title);
       formData.append('description', inputState.description);
 
-      const [response, toDispatch] = await addLesson(formData, page);
+      const [response, toDispatch] = await editLesson(parseInt(subject_id), lesson.lesson_id, formData, page);
       dispatch(toDispatch);
       alert(response.message);
     } catch (error) {
@@ -72,11 +106,12 @@ const Add = () => {
 
   return (
     <>
-      <Button onClick={toggle}>Add Lessons</Button>
+      <Button onClick={toggle} color="warning">
+        <FontAwesomeIcon icon="edit" fixedWidth />
+      </Button>
       <Modal isOpen={isOpen} toggle={toggle}>
-        <ModalHeader toggle={toggle}>Add Lesson</ModalHeader>
+        <ModalHeader toggle={toggle}>Edit Lesson</ModalHeader>
         <ModalBody>
-
           <Form autoComplete="off" onSubmit={uploadNewLesson}>
             <FormGroup>
               <Label for="title" hidden>Title</Label>
@@ -97,7 +132,7 @@ const Add = () => {
                 id="description"
                 placeholder="Description"
                 style={{height: 250}}
-                onChange={inputChange}                
+                onChange={inputChange}
                 value={inputState.description}
               />
             </FormGroup>
@@ -105,7 +140,7 @@ const Add = () => {
               <Row className="justify-content-between" form>
                 <Col>
                   <Label 
-                    for="file" 
+                    for={`file-${lesson.lesson_id}`} 
                     className={`btn btn-primary${!inputState.file ? ' text-primary bg-transparent' : ''}`}
                   >
                     <FontAwesomeIcon icon="file"/>
@@ -114,7 +149,7 @@ const Add = () => {
                   <Input
                     type="file"
                     name="file"
-                    id="file"
+                    id={`file-${lesson.lesson_id}`}
                     accept="application/pdf,application/msword,application/vnd.ms-powerpoint,video/*"
                     onChange={fileChange}
                     hidden
@@ -132,4 +167,4 @@ const Add = () => {
   );
 };
 
-export default Add;
+export default EditLesson;

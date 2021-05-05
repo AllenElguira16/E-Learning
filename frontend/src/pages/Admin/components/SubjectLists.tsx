@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { Table } from 'reactstrap';
 
-import { getSubjects } from '../../../../store/actions/SubjectsAction';
-import { formatDateToYMD } from '../../../../helpers';
-import { Paginate } from '../../../../components';
+import { getSubjects } from '../../../store/actions/SubjectsAction';
+import { formatDateToYMD } from '../../../helpers';
+import { Paginate } from '../../../components';
 // import Edit from './Edit';
 // import Delete from './Delete';
 
@@ -13,7 +13,7 @@ import { Paginate } from '../../../../components';
  *
  * @constructor
  */
-const Lists: FC = () => {
+const SubjectLists: FC = () => {
   /**
    * Route params
    */
@@ -31,7 +31,7 @@ const Lists: FC = () => {
 
 
   const gotoPreview = (subjectId: number) => {
-    window.location.href = `/admin/subjects/${subjectId}`;
+    window.location.href = `/admin/subjects/${subjectId}?page=1`;
   };
 
   /**
@@ -92,9 +92,9 @@ const Lists: FC = () => {
         </Suspense>
         </tbody>
       </Table>
-      <Paginate page={page} url="/admin/lessons" totalPages={subject.total_pages} />
+      <Paginate page={page} url="/admin/subjects" totalPages={subject.total_pages} />
     </>
   );
 };
 
-export default Lists;
+export default SubjectLists;

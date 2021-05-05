@@ -12,8 +12,11 @@ export class LessonRepository extends Repository<Lesson> {
    *
    * @returns Student[]
    */
-  async getLessons(offset: number, limit: number): Promise<[Lesson[], number]> {
+  async getLessons(subject_id: number, offset: number, limit: number): Promise<[Lesson[], number]> {
     return this.findAndCount({
+      where: {
+        subject_id
+      },
       take: limit,
       skip: offset
     });
@@ -24,8 +27,13 @@ export class LessonRepository extends Repository<Lesson> {
    *
    * @returns Student[]
    */
-  async getLessonById(lesson_id: number): Promise<Lesson | undefined> {
-    return this.findOne(lesson_id);
+  async getLessonById(subject_id: number, lesson_id: number): Promise<Lesson | undefined> {
+    return this.findOne({
+      where: {
+        subject_id,
+        lesson_id
+      }
+    });
   }
 
   /**
@@ -44,7 +52,7 @@ export class LessonRepository extends Repository<Lesson> {
    * @param student TInput
    * @returns
    */
-  async addLesson(student: Pick<ILesson, 'title'|'description'|'file'|'type' >): Promise<ILesson> {
+  async addLesson(student: Pick<ILesson, 'title'|'description'|'file'|'type'|'subject_id' >): Promise<ILesson> {
     return this.save(student);
   }
 
