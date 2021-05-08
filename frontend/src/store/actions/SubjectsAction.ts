@@ -5,10 +5,10 @@ type TDispatch = {
   payload: any;
 }
 
-export const getSubjects = async (page: number): Promise<TDispatch | void> => {
+export const getSubjects = async (page: number, search: string = ''): Promise<TDispatch | void> => {
   type TResponse = AxiosResponse<IResponse<TSubjectReducer>>
   const limit = 5;
-  const { data: { details } }: TResponse = await axios.get(`/rest/subjects?page=${page}&limit=${limit}`);
+  const { data: { details } }: TResponse = await axios.get(`/rest/subjects?page=${page}&limit=${limit}&search=${search}`);
 
   
   if (details) {

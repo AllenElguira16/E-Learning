@@ -1,13 +1,14 @@
-import React, { FC, Suspense, useEffect } from 'react';
+import React, { FC, Suspense, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
-import { Table } from 'reactstrap';
+import { Input, Table } from 'reactstrap';
 
 import { getSubjects } from '~store/actions/SubjectsAction';
 import { formatDateToYMD } from '~helpers';
 import { Paginate } from '~components';
 import EditSubject from './EditSubject';
 import DeleteSubject from './DeleteSubject';
+import AddSubject from './AddSubjects';
 
 /**
  *
@@ -34,23 +35,37 @@ const SubjectLists: FC = () => {
     window.location.href = `/admin/subjects/${subjectId}?page=1`;
   };
 
+  const fetchData = useCallback(async (search = '') => {
+    try {
+      dispatch(await getSubjects(page, search));
+
+      // console.log(subject);
+    } catch (error) {
+      alert(error.message);
+    }
+  }, [dispatch, page]);
+
   /**
    * Get Lessons
    */
   useEffect(() => {
     (async () => {
-      try {
-        dispatch(await getSubjects(page));
-
-        // console.log(subject);
-      } catch (error) {
-        alert(error.message);
-      }
+      await fetchData();
     })();
-  }, [dispatch, page]);
+  }, [fetchData]);
 
   return (
     <>
+      <div className="d-flex justify-content-between my-3">
+        <div>
+          <Input placeholder="Search Subjects" onChange={async (event) => {
+            await fetchData(event.currentTarget.value);
+          }} />
+        </div>
+        <div>
+          <AddSubject />
+        </div>
+      </div>
       <Table striped bordered responsive hover>
         <thead>
         <tr>

@@ -1,6 +1,8 @@
 import React, { FC } from 'react';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 
+import { useHistory } from 'react-router-dom';
+
 type TProps = {
   page: number;
   totalPages: number;
@@ -8,9 +10,11 @@ type TProps = {
 }
 
 const Paginate: FC<TProps> = ({ page: currentPage, totalPages, url: rootUrl }) => {
+  const history = useHistory();
 
   const url = (page: number) => {
-    return `${rootUrl}?page=${page}`;
+    const toUrl = `${rootUrl}?page=${page}`;
+    history.push(toUrl);
   };
 
   const pages = () => {
@@ -37,21 +41,21 @@ const Paginate: FC<TProps> = ({ page: currentPage, totalPages, url: rootUrl }) =
   return (
     <Pagination className="d-flex justify-content-center" aria-label="Page navigation">
       <PaginationItem disabled={currentPage === 1}>
-        <PaginationLink first href={url(1)} />
+        <PaginationLink first onClick={() => url(1)} />
       </PaginationItem>
       <PaginationItem disabled={currentPage === 1}>
-        <PaginationLink previous href={url(currentPage - 1)} />
+        <PaginationLink previous onClick={() => url(currentPage - 1)} />
       </PaginationItem>
       {pages().map((page) => (
         <PaginationItem key={page} active={currentPage === page}>
-          <PaginationLink href={url(page)} >{ page }</PaginationLink>
+          <PaginationLink onClick={() => url(page)} >{ page }</PaginationLink>
         </PaginationItem>
       ))}
       <PaginationItem disabled={totalPages === 0 || currentPage === totalPages}>
-        <PaginationLink next href={url(currentPage + 1)} />
+        <PaginationLink next onClick={() => url(currentPage + 1)} />
       </PaginationItem>
       <PaginationItem disabled={totalPages === 0 || currentPage === totalPages}>
-        <PaginationLink last href={url(totalPages)} />
+        <PaginationLink last onClick={() => url(totalPages)} />
       </PaginationItem>
     </Pagination>
   );

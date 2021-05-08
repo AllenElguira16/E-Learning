@@ -34,10 +34,11 @@ export class SubjectController {
   async getSubjects(
     @QueryParams('page') page: number,
     @QueryParams('limit') limit: number,
+    @QueryParams('search') search: string
   ): Promise<IResponse> {
     const offset = ((page - 1) * limit);
 
-    const [subjects, count] = await this.subjectService.getSubjects(offset, limit);
+    const [subjects, count] = await this.subjectService.getSubjects(offset, limit, search || '');
 
     return {
       status: 200,
@@ -96,7 +97,7 @@ export class SubjectController {
   public async editSubject(
     @BodyParams('subject_id') subject_id: string,
     @BodyParams('title') title: string,
-    @BodyParams('description') description: string
+    @BodyParams('description') description: string,
   ): Promise<IResponse> {
 
     const response = await this.subjectService.editSubject(parseInt(subject_id), { 

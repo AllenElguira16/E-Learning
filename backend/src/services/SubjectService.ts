@@ -21,8 +21,8 @@ export class SubjectService {
    *
    * @returns ILesson[]
    */
-  async getSubjects(offset: number, limit: number): Promise<[Subject[], number]> {
-    return this.subjectRepository.getSubjects(offset, limit);
+  async getSubjects(offset: number, limit: number, search: string): Promise<[Subject[], number]> {
+    return this.subjectRepository.getSubjects(offset, limit, search);
   }
 
   /**

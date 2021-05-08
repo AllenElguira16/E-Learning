@@ -8,11 +8,6 @@ import {
   Nav,
   NavItem,
 } from 'reactstrap';
-import { Route, Switch } from 'react-router-dom';
-
-import AddStudent from './AddStudent';
-import AddSubject from './AddSubjects';
-import AddLesson from './AddLesson';
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -32,13 +27,13 @@ const Navigation = () => {
             <NavItem>
               <NavLink href="/admin/subjects?page=1">Subjects</NavLink>
             </NavItem>
-            <NavItem className="ml-md-auto">
+            {/* <NavItem className="ml-md-auto">
               <Switch>
                 <Route path="/admin/students" component={AddStudent} />
                 <Route path="/admin/subjects/:subject_id" component={AddLesson} />
                 <Route path="/admin/subjects" component={AddSubject} />
               </Switch>
-            </NavItem>
+            </NavItem> */}
           </Nav>
         </Collapse>
       </Navbar>
