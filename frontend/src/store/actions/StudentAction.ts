@@ -1,44 +1,60 @@
 import axios, { AxiosResponse } from 'axios';
+import { TThunkAction } from '~store';
 
-type TDispatch = {
-  type: string;
-  payload: any;
-}
-
-export const getStudents = async (page: number): Promise<TDispatch> =>  {
-  const limit = 5;
-  const { data: { details } }: AxiosResponse<IResponse> = await axios.get(`/rest/students?page=${page}&limit=${limit}`);
-
-  if (page > details.total_pages && details.total_pages > 0) {
-    throw new Error(`Page must be lesser than ${page}`);
-  }
-
-  return {
-    type: 'STORE_STUDENT',
-    payload: {
-      students: details.students,
-      total_pages: details.total_pages,
+export const getStudents = (): TThunkAction<Promise<void>> => {
+  return async (dispatch, state) => {
+    const limit = 5;
+    const { data: { details } }: AxiosResponse<IResponse> = await axios.get(`/rest/students?page=${state().page.current_page}&limit=${limit}`);
+  
+    if (state().page.current_page > details.total_pages && details.total_pages > 0) {
+      throw new Error(`Page must be lesser than ${state().page.current_page}`);
     }
+  
+    dispatch({
+      type: 'STORE_STUDENT',
+      payload: {
+        students: details.students,
+        total_pages: details.total_pages,
+      }
+    });
   };
 };
 
-export const addStudent = async (newStudentData: TInput, page: number): Promise<[IResponse, TDispatch]> => {
-  const { data: axiosData }: AxiosResponse<IResponse> = await axios.post('/rest/students', newStudentData);
+export const addStudent = (
+  newStudentData: TInput
+): TThunkAction<Promise<AxiosResponse<IResponse>['data']>> => { 
+  return async (dispatch) => {
+    const { data } = await axios.post('/rest/students', newStudentData);
 
-  return [axiosData, await getStudents(page)];
+    await dispatch(getStudents());
+
+    return data;
+  };
 };
 
-export const editStudent = async (student_id: IStudent['student_id'], studentData: TInput, page: number): Promise<[IResponse, TDispatch]> => {
-  type TResponse = AxiosResponse<IResponse<{ students: IStudent[]}>>;
-  const { data: axiosData }: TResponse = await axios.put(`/rest/students/${student_id}`, studentData);
+export const editStudent = (
+  student_id: IStudent['student_id'], 
+  studentData: TInput
+): TThunkAction<Promise<AxiosResponse<IResponse>['data']>> => {
 
-  return [axiosData, await getStudents(page)];
+  return async (dispatch) => {
+    const { data } = await axios.put(`/rest/students/${student_id}`, studentData);
+  
+    await dispatch(getStudents());
+
+    return data;
+  };
 };
 
-export const deleteStudent = async (student_id: IStudent['student_id'], page: number): Promise<[IResponse, TDispatch]> => {
-  const { data: axiosData }: AxiosResponse<IResponse> = await axios.delete(`/rest/students/${student_id}`);
+export const deleteStudent = (
+  student_id: IStudent['student_id']
+): TThunkAction<Promise<AxiosResponse<IResponse>['data']>> => {
 
-  return [axiosData, await getStudents(page)];
+  return async (dispatch) => {
+    const { data } = await axios.delete(`/rest/students/${student_id}`);
+  
+    await dispatch(getStudents());
+  
+    return data;
+  };
 };
-
-

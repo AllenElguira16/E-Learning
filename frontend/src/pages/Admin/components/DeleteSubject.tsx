@@ -1,10 +1,10 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { FC, useState } from 'react';
 import { Form, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import { useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import { deleteSubject } from '~store/actions/SubjectsAction';
+import { TDispatch } from '~store';
 
 type TProps = {
   subject_id: ISubject['subject_id']
@@ -30,14 +30,9 @@ const DeleteLesson: FC<TProps> = ({ subject_id }) => {
   };
 
   /**
-   * Route params
-   */
-  const page = parseInt((new URLSearchParams(useLocation().search)).get('page') as string);
-
-  /**
    * For dispatching actions
    */
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<TDispatch>();
 
   /**
    * Submit event for adding new student
@@ -47,10 +42,13 @@ const DeleteLesson: FC<TProps> = ({ subject_id }) => {
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const [response, toDispatch] = await deleteSubject(subject_id, page);
+    // const [response, toDispatch] = await deleteSubject(subject_id, page);
 
+    // alert(response.message);
+    // dispatch(toDispatch);
+    const response = await dispatch(deleteSubject(subject_id));
+    // dispatch(toDispatch);
     alert(response.message);
-    dispatch(toDispatch);
   };
 
   return (

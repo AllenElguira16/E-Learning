@@ -1,5 +1,5 @@
-import React, { FC, Suspense, useEffect } from 'react';
-import { Table } from 'reactstrap';
+import React, { FC, Suspense, useCallback, useEffect } from 'react';
+import { Input, Table } from 'reactstrap';
 import { useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -9,6 +9,8 @@ import Delete from './DeleteStudent';
 import { formatDateToYMD, transformID } from '~helpers';
 import { Paginate } from '~components';
 import { getStudents } from '~store/actions/StudentAction';
+import { TDispatch } from '~store';
+import AddStudent from './AddStudent';
 
 type TProps = {}
 
@@ -31,7 +33,11 @@ const StudentLists: FC<TProps> = () => {
   /**
    * For dispatching actions
    */
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<TDispatch>();
+
+  const fetchData = useCallback(async () => {
+    await dispatch(getStudents());
+  }, [dispatch]);
 
   /**
    * Get All Student before rendering component
@@ -39,15 +45,27 @@ const StudentLists: FC<TProps> = () => {
   useEffect(() => {
     (async () => {
       try {
-        dispatch(await getStudents(page));
+        fetchData();
       } catch (error) {
         alert(error.message);
       }
     })();
-  }, [dispatch, page]);
+  }, [fetchData, page]);
 
   return (
     <>
+    <div className="d-flex justify-content-between my-3">
+        <div>
+          <Input 
+            placeholder="Search Students" 
+            // value={page.search_input}
+            // onChange={searchOnInputChange} 
+          />
+        </div>
+        <div>
+          <AddStudent />
+        </div>
+      </div>
       <Table striped bordered responsive>
         <thead>
           <tr>
@@ -85,7 +103,13 @@ const StudentLists: FC<TProps> = () => {
           </Suspense>
         </tbody>
       </Table>
-      <Paginate page={page} url="/admin/students" totalPages={student.total_pages} />
+      <Paginate 
+        url="/admin/students" 
+        totalPages={student.total_pages}
+        onClick={async () => {
+
+        }}
+      />
     </>
   );
 };

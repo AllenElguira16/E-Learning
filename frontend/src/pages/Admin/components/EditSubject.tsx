@@ -1,11 +1,10 @@
 import React, { FC, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Form, FormGroup, Input, Label, Modal, ModalBody, ModalHeader } from 'reactstrap';
-
-import { useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
-import { editSuject } from '~store/actions/SubjectsAction';
+import { editSubject } from '~store/actions/SubjectsAction';
+import { TDispatch } from '~store';
 
 type TProps = {
   subject: {
@@ -17,17 +16,10 @@ type TProps = {
 
 const EditSubject: FC<TProps> = ({ subject }) => {
 
-  // const { subject_id } = useParams<{ subject_id: string }>();
-  
-  /**
-   * Route params
-   */
-  const page = parseInt((new URLSearchParams(useLocation().search)).get('page') as string);
-
   /**
    * For dispatching actions
    */
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<TDispatch>();
 
   /**
    * Modal State
@@ -62,8 +54,8 @@ const EditSubject: FC<TProps> = ({ subject }) => {
     try {
       event.preventDefault();
   
-      const [response, toDispatch] = await editSuject(subject.subject_id, inputState, page);
-      dispatch(toDispatch);
+      const response = await dispatch(editSubject(subject.subject_id, inputState));
+
       alert(response.message);
     } catch (error) {
       alert(error.message);

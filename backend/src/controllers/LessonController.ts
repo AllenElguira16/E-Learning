@@ -37,10 +37,11 @@ export class LessonController {
     @PathParams('subject_id') subject_id: number,
     @QueryParams('page') page: number,
     @QueryParams('limit') limit: number,
+    @QueryParams('search') search: string
   ): Promise<IResponse> {
     const offset = ((page - 1) * limit);
 
-    const [lessons, count] = await this.lessonService.getLessons(subject_id, offset, limit);
+    const [lessons, count] = await this.lessonService.getLessons(subject_id, offset, limit, search || '');
 
     return {
       status: 200,

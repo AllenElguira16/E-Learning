@@ -2,17 +2,25 @@ import React, { FC } from 'react';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 
 import { useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 type TProps = {
-  page: number;
+  // page: number;
   totalPages: number;
   url: string;
+  onClick(): Promise<void>;
 }
 
-const Paginate: FC<TProps> = ({ page: currentPage, totalPages, url: rootUrl }) => {
+const Paginate: FC<TProps> = ({ totalPages, url: rootUrl, onClick }) => {
+
+  const state = useSelector<TRootReducers, TRootReducers>(state => state);
+
   const history = useHistory();
 
-  const url = (page: number) => {
+  const currentPage = state.page.current_page;
+
+  const url = async (page: number) => {
+    await onClick();
     const toUrl = `${rootUrl}?page=${page}`;
     history.push(toUrl);
   };

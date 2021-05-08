@@ -24,7 +24,7 @@ const Admin: FC = () => {
           <Route path="/admin/students" component={StudentLists} />
 
           <Route path="/admin/subjects/:subject_id/lessons/:lesson_id" component={PreviewLesson} />
-          <Route path="/admin/subjects/:subject_id" component={LessonLists} />
+          <Route path="/admin/subjects/:subject_id/lessons" component={LessonLists} />
           <Route path="/admin/subjects" component={SubjectLists} />
 
         </Switch>

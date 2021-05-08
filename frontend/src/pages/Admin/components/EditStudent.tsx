@@ -1,10 +1,10 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { FC, useState } from 'react';
 import { FormGroup, Label, Input, Form, Button, FormFeedback, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import { useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import { editStudent } from '~store/actions/StudentAction';
+import { TDispatch } from '~store';
 
 type TProps = {
   student: IStudent
@@ -22,14 +22,9 @@ const EditStudent: FC<TProps> = ({student}) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   /**
-   * Route params
-   */
-   const page = parseInt((new URLSearchParams(useLocation().search)).get('page') as string);
-
-  /**
    * For dispatching actions
    */
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<TDispatch>();
 
   /**
    * Toggle Modal
@@ -77,10 +72,9 @@ const EditStudent: FC<TProps> = ({student}) => {
     try {
       event.preventDefault();
 
-      const [response, toDispatch] = await editStudent(student.student_id, input, page);
+      const response = await dispatch(editStudent(student.student_id, input));
 
       alert(response.message);
-      dispatch(toDispatch);
 
       setInputError({first_name: '', middle_name: '' ,last_name: ''});
     } catch (error) {

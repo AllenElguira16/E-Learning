@@ -1,7 +1,7 @@
-import React, { FC, Suspense, useEffect } from 'react';
+import React, { FC, Suspense, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useParams } from 'react-router-dom';
-import { Table } from 'reactstrap';
+import { Input, Table } from 'reactstrap';
 
 import { getLessons } from '~store/actions/LessonAction';
 import { formatDateToYMD } from '~helpers';
@@ -9,6 +9,8 @@ import { Paginate } from '~components';
 
 import Edit from './EditLesson';
 import Delete from './DeleteLesson';
+import AddLesson from './AddLesson';
+import { TDispatch } from '~store';
 
 /**
  *
@@ -21,21 +23,44 @@ const LessonLists: FC = () => {
   /**
    * Route params
    */
-  const page = parseInt((new URLSearchParams(useLocation().search)).get('page') as string);
+  const currentPage = parseInt((new URLSearchParams(useLocation().search)).get('page') as string);
 
   /**
    * Student State
    */
-  const { lesson } = useSelector<TRootReducers, TRootReducers>(state => state);
+  const { lesson, page } = useSelector<TRootReducers, TRootReducers>(state => state);
 
   /**
    * For dispatching actions
    */
-  const dispatch = useDispatch();
-
+  const dispatch = useDispatch<TDispatch>();
 
   const gotoPreview = (lessonId: number) => {
     window.location.href = `/admin/subjects/${subject_id}/lessons/${lessonId}`;
+  };
+
+  const fetchData = useCallback(async () => {
+    try {
+      dispatch({
+        type: 'STORE_CURRENT_PAGE',
+        payload: {
+          current_page: currentPage
+        }
+      });
+      dispatch(getLessons(parseInt(subject_id)));
+    } catch (error) {
+      alert(error.message);
+    }
+  }, [dispatch, currentPage, subject_id]);
+
+  const searchOnInputChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch({
+      type: 'STORE_SEARCH_INPUT',
+      payload: {
+        search_input: event.currentTarget.value
+      }
+    });
+    dispatch(getLessons(parseInt(subject_id)));
   };
 
   /**
@@ -43,16 +68,24 @@ const LessonLists: FC = () => {
    */
   useEffect(() => {
     (async () => {
-      try {
-        dispatch(await getLessons(parseInt(subject_id), page));
-      } catch (error) {
-        alert(error.message);
-      }
+      await fetchData();
     })();
-  }, [dispatch, page, subject_id]);
+  }, [fetchData]);
 
   return (
     <>
+    <div className="d-flex justify-content-between my-3">
+        <div>
+          <Input 
+            placeholder="Search Lessons" 
+            value={page.search_input}
+            onChange={searchOnInputChange} 
+          />
+        </div>
+        <div>
+          <AddLesson />
+        </div>
+      </div>
       <Table striped bordered responsive hover>
         <thead>
         <tr>
@@ -91,7 +124,11 @@ const LessonLists: FC = () => {
         </Suspense>
         </tbody>
       </Table>
-      <Paginate page={page} url={`/admin/subjects/${subject_id}`} totalPages={lesson.total_pages} />
+      <Paginate 
+        url={`/admin/subjects/${subject_id}/lessons`} 
+        onClick={fetchData}
+        totalPages={lesson.total_pages}
+      />
     </>
   );
 };
