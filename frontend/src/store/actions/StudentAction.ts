@@ -4,7 +4,8 @@ import { TThunkAction } from '~store';
 export const getStudents = (): TThunkAction<Promise<void>> => {
   return async (dispatch, state) => {
     const limit = 5;
-    const { data: { details } }: AxiosResponse<IResponse> = await axios.get(`/rest/students?page=${state().page.current_page}&limit=${limit}`);
+    const url = `/rest/students?page=${state().page.current_page}&limit=${limit}&search=${state().page.search_input}`;
+    const { data: { details } }: AxiosResponse<IResponse> = await axios.get(url);
   
     if (state().page.current_page > details.total_pages && details.total_pages > 0) {
       throw new Error(`Page must be lesser than ${state().page.current_page}`);

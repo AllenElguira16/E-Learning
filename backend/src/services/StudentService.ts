@@ -21,8 +21,8 @@ export class StudentService {
    *
    * @returns Student[]
    */
-  async getStudents(offset: number, limit: number): Promise<[Student[], number]> {
-    return this.studentRepository.getStudents(offset, limit);
+  async getStudents(offset: number, limit: number, search: string): Promise<[Student[], number]> {
+    return this.studentRepository.getStudents(offset, limit, search);
   }
 
   /**

@@ -1,4 +1,4 @@
-import { DeleteResult, EntityRepository, Repository } from 'typeorm';
+import { DeleteResult, EntityRepository, Like, Repository } from 'typeorm';
 import { Student } from '../entity/Student';
 import { StudentInput } from '../model/StudentInput';
 
@@ -12,8 +12,11 @@ export class StudentRepository extends Repository<Student> {
    * 
    * @returns Student[]
    */
-  async getStudents(offset: number, limit: number): Promise<[Student[], number]> {
+  async getStudents(offset: number, limit: number, search: string): Promise<[Student[], number]> {
     return this.findAndCount({
+      where: {
+        last_name: Like(`%${search}%`)
+      },
       take: limit,
       skip: offset
     });
