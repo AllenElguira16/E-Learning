@@ -23,10 +23,11 @@ export class StudentController {
   async listOfStudents(
     @QueryParams('page') page: number,
     @QueryParams('limit') limit: number,
-  ): Promise<IResponse> {
+    @QueryParams('search') search: string
+    ): Promise<IResponse> {
     const offset = ((page - 1) * limit);
 
-    const [students, count] = await this.studentService.getStudents(offset, limit);
+    const [students, count] = await this.studentService.getStudents(offset, limit, search);
 
     return {
       status: 200,

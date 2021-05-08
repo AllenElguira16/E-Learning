@@ -1,6 +1,5 @@
 import React, { FC, Suspense, useCallback, useEffect } from 'react';
 import { Input, Table } from 'reactstrap';
-import { useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import Edit from './EditStudent';
@@ -11,6 +10,7 @@ import { Paginate } from '~components';
 import { getStudents } from '~store/actions/StudentAction';
 import { TDispatch } from '~store';
 import AddStudent from './AddStudent';
+import { useLocation } from 'react-router-dom';
 
 type TProps = {}
 
@@ -20,15 +20,16 @@ type TProps = {}
  * @returns FC
  */
 const StudentLists: FC<TProps> = () => {
+
   /**
    * Route params
    */
-  const page = parseInt((new URLSearchParams(useLocation().search)).get('page') as string);
+  const currentPage = parseInt((new URLSearchParams(useLocation().search)).get('page') as string);
 
   /**
    * Student State
    */
-  const { student } = useSelector<TRootReducers, TRootReducers>(state => state);
+  const { student, page } = useSelector<TRootReducers, TRootReducers>(state => state);
 
   /**
    * For dispatching actions
@@ -36,8 +37,25 @@ const StudentLists: FC<TProps> = () => {
   const dispatch = useDispatch<TDispatch>();
 
   const fetchData = useCallback(async () => {
+    dispatch({
+      type: 'STORE_CURRENT_PAGE',
+      payload: {
+        current_page: currentPage
+      }
+    });
+
     await dispatch(getStudents());
-  }, [dispatch]);
+  }, [currentPage, dispatch]);
+
+  const searchOnInputChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch({
+      type: 'STORE_SEARCH_INPUT',
+      payload: {
+        search_input: event.currentTarget.value
+      }
+    });
+    dispatch(getStudents());
+  };
 
   /**
    * Get All Student before rendering component
@@ -50,7 +68,7 @@ const StudentLists: FC<TProps> = () => {
         alert(error.message);
       }
     })();
-  }, [fetchData, page]);
+  }, [fetchData]);
 
   return (
     <>
@@ -58,8 +76,8 @@ const StudentLists: FC<TProps> = () => {
         <div>
           <Input 
             placeholder="Search Students" 
-            // value={page.search_input}
-            // onChange={searchOnInputChange} 
+            value={page.search_input}
+            onChange={searchOnInputChange}
           />
         </div>
         <div>
@@ -70,9 +88,9 @@ const StudentLists: FC<TProps> = () => {
         <thead>
           <tr>
             <th scope="col">Student ID</th>
-            <th scope="col">First Name</th>
-            <th scope="col">Middle Name</th>
             <th scope="col">Last Name</th>
+            <th scope="col">Middle Name</th>
+            <th scope="col">First Name</th>
             <th scope="col">Date Enrolled</th>
             <th scope="col">Actions</th>
           </tr>
@@ -86,9 +104,9 @@ const StudentLists: FC<TProps> = () => {
             {student.students.length ? student.students.map((student) => (
               <tr key={student.student_id}>
                 <th scope="row">{transformID(student.student_id)}</th>
-                <td>{student.first_name}</td>
-                <td>{student.middle_name}</td>
                 <td>{student.last_name}</td>
+                <td>{student.middle_name}</td>
+                <td>{student.first_name}</td>
                 <td>{formatDateToYMD(student.created)}</td>
                 <td>
                   <Edit student={student} />
@@ -106,9 +124,7 @@ const StudentLists: FC<TProps> = () => {
       <Paginate 
         url="/admin/students" 
         totalPages={student.total_pages}
-        onClick={async () => {
-
-        }}
+        onClick={fetchData}
       />
     </>
   );

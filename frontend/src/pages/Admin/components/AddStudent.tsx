@@ -1,6 +1,5 @@
 import React, { FC, useState } from 'react';
 import { FormGroup, Label, Input, Form, Button, FormFeedback, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import { addStudent } from '~store/actions/StudentAction';
@@ -67,11 +66,6 @@ const AddStudent: FC<TProps> = () => {
   };
 
   /**
-   * Route params
-   */
-  const { page } = useParams<{ page: string; }>();
-
-  /**
    * Submit event for adding new student
    *
    * @param event
@@ -112,6 +106,7 @@ const AddStudent: FC<TProps> = () => {
                 id="first_name"
                 placeholder="Enter student's first name"
                 onChange={onChange}
+                value={input.first_name}
                 invalid={inputError.first_name !== ''}
               />
               <FormFeedback>{inputError.first_name}</FormFeedback>
@@ -124,6 +119,7 @@ const AddStudent: FC<TProps> = () => {
                 id="middle_name"
                 placeholder="Enter student's middle name"
                 onChange={onChange}
+                value={input.middle_name}
                 invalid={inputError.middle_name !== ''}
               />
               <FormFeedback>{inputError.middle_name}</FormFeedback>
@@ -136,6 +132,7 @@ const AddStudent: FC<TProps> = () => {
                 id="last_name"
                 placeholder="Enter student's last name"
                 onChange={onChange}
+                value={input.last_name}
                 invalid={inputError.last_name !== ''}
               />
               <FormFeedback>{inputError.last_name}</FormFeedback>
