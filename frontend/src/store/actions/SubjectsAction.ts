@@ -33,11 +33,11 @@ export const addSubject = async (input: TSubjectInput, page: number): Promise<[I
   return [axiosData, await getSubjects(page)];
 };
 
-// export const editLesson = async (lesson_id: ILesson['lesson_id'], formData: FormData, page: number): Promise<[IResponse, TDispatch | void]> => {
-//   const { data: axiosData } = await axios.put(`/rest/lesson/edit/${lesson_id}`, formData);
+export const editSuject = async (subject_id: number, input: TSubjectInput, page: number): Promise<[IResponse, TDispatch | void]> => {
+  const { data: axiosData } = await axios.put(`/rest/subjects/${subject_id}`, input);
 
-//   return [axiosData, await getLessons(page)];
-// };
+  return [axiosData, await getSubjects(page)];
+};
 
 // export const deleteLesson = async (lesson_id: ILesson['lesson_id'], page: number): Promise<[IResponse, TDispatch | void]> => {
 //   const { data: axiosData }: AxiosResponse<IResponse> = await axios.delete(`/rest/lesson/delete/${lesson_id}`);
