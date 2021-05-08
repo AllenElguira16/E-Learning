@@ -10,7 +10,9 @@ export class Lesson implements ILesson {
   @PrimaryGeneratedColumn()
   lesson_id: number;
 
-  @ManyToOne(() => Subject, subject => subject.subject_id)
+  @ManyToOne(() => Subject, subject => subject.subject_id, {
+    onDelete: 'CASCADE',
+  })
   subject_id: Subject;
 
   @Column()

@@ -3,6 +3,7 @@ import { UseConnection } from '@tsed/typeorm';
 
 import { Subject } from 'src/entity/Subject';
 import { SubjectRepository } from 'src/repository/SubjectRepository';
+import { DeleteResult } from 'typeorm';
 
 /**
  * Student Provider
@@ -43,5 +44,29 @@ export class SubjectService {
    */
   async addSubject(subject: TSubjectInput): Promise<ISubject> {
     return this.subjectRepository.addSubject(subject);
+  }
+
+  /**
+   * Add Lesson
+   * 
+   * @param title
+   * @param description
+   * @param file
+   * @returns Promise<ILesson>
+   */
+  async editSubject(subject_id: ISubject['subject_id'], subject: TSubjectInput): Promise<ISubject | void> {
+    return this.subjectRepository.editSubject(subject_id, subject);
+  }
+
+  /**
+   * Add Lesson
+   * 
+   * @param title
+   * @param description
+   * @param file
+   * @returns Promise<ILesson>
+   */
+  async deleteSubject(subject_id: ISubject['subject_id']): Promise<DeleteResult> {
+    return this.subjectRepository.deleteSubject(subject_id);
   }
 }

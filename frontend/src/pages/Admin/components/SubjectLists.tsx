@@ -7,7 +7,7 @@ import { getSubjects } from '~store/actions/SubjectsAction';
 import { formatDateToYMD } from '~helpers';
 import { Paginate } from '~components';
 import EditSubject from './EditSubject';
-// import Delete from './Delete';
+import DeleteSubject from './DeleteSubject';
 
 /**
  *
@@ -76,7 +76,7 @@ const SubjectLists: FC = () => {
                 event.stopPropagation();
               }}>
                 <EditSubject subject={subject} />
-                {/* <Delete lesson_id={lesson.lesson_id} /> */}
+                <DeleteSubject subject_id={subject.subject_id} />
               </td>
             </tr>
           )) : (
