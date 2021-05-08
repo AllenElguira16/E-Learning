@@ -2,14 +2,14 @@ import React, { FC, Suspense, useCallback, useEffect } from 'react';
 import { Input, Table } from 'reactstrap';
 import { useSelector, useDispatch } from 'react-redux';
 
-import Edit from './EditStudent';
-import Delete from './DeleteStudent';
+import Edit from './components/EditStudent';
+import Delete from './components/DeleteStudent';
 
 import { formatDateToYMD, transformID } from '~helpers';
 import { Paginate } from '~components';
 import { getStudents } from '~store/actions/StudentAction';
 import { TDispatch } from '~store';
-import AddStudent from './AddStudent';
+import AddStudent from './components/AddStudent';
 import { useLocation } from 'react-router-dom';
 
 type TProps = {}
