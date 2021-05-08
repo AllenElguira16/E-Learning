@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import { addStudent } from '~store/actions/StudentAction';
+import { TDispatch } from '~store';
 
 // import { addStudent } from '../../../../api';
 
@@ -26,7 +27,7 @@ const AddStudent: FC<TProps> = () => {
   /**
    * For dispatching actions
    */
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<TDispatch>();
 
   /**
    * Toggle Modal
@@ -79,10 +80,10 @@ const AddStudent: FC<TProps> = () => {
     try {
       event.preventDefault();
 
-      const [response, toDispatch] = await addStudent(input, parseInt(page));
+      const response = await dispatch(addStudent(input));
 
       alert(response.message);
-      dispatch(toDispatch);
+
       setInputError({first_name: '', middle_name: '' ,last_name: ''});
       setInput({first_name: '', middle_name: '' ,last_name: ''});
     } catch (error) {

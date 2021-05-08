@@ -23,8 +23,8 @@ export class LessonService {
    *
    * @returns ILesson[]
    */
-  async getLessons(subject_id: number, offset: number, limit: number): Promise<[Lesson[], number]> {
-    return this.lessonRepository.getLessons(subject_id, offset, limit);
+  async getLessons(subject_id: number, offset: number, limit: number, search: string): Promise<[Lesson[], number]> {
+    return this.lessonRepository.getLessons(subject_id, offset, limit, search);
   }
 
   /**

@@ -1,4 +1,4 @@
-import { DeleteResult, EntityRepository, Repository } from 'typeorm';
+import { DeleteResult, EntityRepository, Like, Repository } from 'typeorm';
 
 import { Lesson } from '../entity/Lesson';
 
@@ -12,10 +12,11 @@ export class LessonRepository extends Repository<Lesson> {
    *
    * @returns Student[]
    */
-  async getLessons(subject_id: number, offset: number, limit: number): Promise<[Lesson[], number]> {
+  async getLessons(subject_id: number, offset: number, limit: number, search: string): Promise<[Lesson[], number]> {
     return this.findAndCount({
       where: {
-        subject_id
+        subject_id,
+        title: Like(`%${search}%`)
       },
       take: limit,
       skip: offset

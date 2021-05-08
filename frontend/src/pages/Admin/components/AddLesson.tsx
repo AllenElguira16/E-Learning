@@ -1,23 +1,19 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
 import { Button, Col, Form, FormGroup, Input, Label, Modal, ModalBody, ModalHeader, Row } from 'reactstrap';
-import { useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import { addLesson } from '~store/actions/LessonAction';
+import { TDispatch } from '~store';
 
 const AddLesson = () => {
   const { subject_id } = useParams<{ subject_id: string }>();
-
-  /**
-   * Route params
-   */
-  const page = parseInt((new URLSearchParams(useLocation().search)).get('page') as string);
  
    /**
     * For dispatching actions
     */
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<TDispatch>();
 
   /**
    * Modal State
@@ -67,8 +63,8 @@ const AddLesson = () => {
       formData.append('title', inputState.title);
       formData.append('description', inputState.description);
 
-      const [response, toDispatch] = await addLesson(parseInt(subject_id), formData, page);
-      dispatch(toDispatch);
+      const response = await dispatch(addLesson(parseInt(subject_id), formData));
+      
       alert(response.message);
     } catch (error) {
       alert(error.message);

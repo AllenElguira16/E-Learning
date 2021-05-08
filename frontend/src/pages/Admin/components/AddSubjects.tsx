@@ -1,20 +1,16 @@
 import React, { useState } from 'react';
 import { Button, Form, FormGroup, Input, Label, Modal, ModalBody, ModalHeader } from 'reactstrap';
-import { useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import { addSubject } from '~store/actions/SubjectsAction';
+import { TDispatch } from '~store';
 
 const AddSubject = () => {
-  /**
-   * Route params
-   */
-  const page = parseInt((new URLSearchParams(useLocation().search)).get('page') as string);
  
   /**
    * For dispatching actions
    */
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<TDispatch>();
 
   /**
    * Modal State
@@ -47,8 +43,8 @@ const AddSubject = () => {
     try {
       event.preventDefault();
 
-      const [response, toDispatch] = await addSubject(inputState, page);
-      dispatch(toDispatch);
+      const response = await dispatch(addSubject(inputState));
+      // dispatch(toDispatch);s
       alert(response.message);
     } catch (error) {
       alert(error.message);

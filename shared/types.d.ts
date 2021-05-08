@@ -2,6 +2,7 @@ type TRootReducers = {
   student: TStudentReducer;
   subject: TSubjectReducer;
   lesson: TLessonReducer;
+  page: TPageReducer;
 };
 
 interface IStudent {
@@ -61,6 +62,11 @@ type TLessonInput = {
 }
 
 type TLessonReducer = {
-  lessons: ILesson[];
   total_pages: number;
+  lessons: ILesson[];
+}
+
+type TPageReducer = {
+  current_page: number;
+  search_input: string;
 }

@@ -2,10 +2,11 @@ import React, { FC, useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Col, Form, FormGroup, Input, Label, Modal, ModalBody, ModalHeader, Row } from 'reactstrap';
 import axios from 'axios';
-import { useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import { editLesson } from '~store/actions/LessonAction';
+import { TDispatch } from '~store';
 
 type TProps = {
   lesson: {
@@ -19,16 +20,11 @@ type TProps = {
 const EditLesson: FC<TProps> = ({ lesson }) => {
 
   const { subject_id } = useParams<{ subject_id: string }>();
-  
-  /**
-   * Route params
-   */
-   const page = parseInt((new URLSearchParams(useLocation().search)).get('page') as string);
  
    /**
     * For dispatching actions
     */
-   const dispatch = useDispatch();
+   const dispatch = useDispatch<TDispatch>();
   /**
    * Modal State
    */
@@ -96,8 +92,8 @@ const EditLesson: FC<TProps> = ({ lesson }) => {
       formData.append('title', inputState.title);
       formData.append('description', inputState.description);
 
-      const [response, toDispatch] = await editLesson(parseInt(subject_id), lesson.lesson_id, formData, page);
-      dispatch(toDispatch);
+      const response = await dispatch(editLesson(parseInt(subject_id), lesson.lesson_id, formData));
+
       alert(response.message);
     } catch (error) {
       alert(error.message);
