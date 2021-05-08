@@ -1,4 +1,4 @@
-import { EntityRepository, Repository } from 'typeorm';
+import { DeleteResult, EntityRepository, Repository } from 'typeorm';
 
 import { Subject } from '../entity/Subject';
 
@@ -36,5 +36,32 @@ export class SubjectRepository extends Repository<Subject> {
    */
   async addSubject(subject: TSubjectInput): Promise<ISubject> {
     return this.save(subject);
+  }
+
+  /**
+   * For adding new student
+   *
+   * @param student TInput
+   * @returns
+   */
+  async editSubject(subject_id: ISubject['subject_id'], subject: TSubjectInput): Promise<ISubject | void> {
+    const subjectToUpdate = await this.findOne(subject_id);
+
+    if (!subjectToUpdate) return;
+
+    subjectToUpdate.title = subject.title;
+    subjectToUpdate.description = subject.description;
+
+    return this.save(subjectToUpdate);
+  }
+
+  /**
+   * For adding new student
+   *
+   * @param student TInput
+   * @returns
+   */
+  async deleteSubject(subject_id: ISubject['subject_id']): Promise<DeleteResult> {
+    return this.delete(subject_id);
   }
 }

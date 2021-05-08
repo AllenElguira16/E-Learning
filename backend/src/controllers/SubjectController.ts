@@ -1,9 +1,11 @@
 import {
   BodyParams,
   Controller,
+  Delete,
   Get,
   PathParams,
   Post,
+  Put,
   QueryParams,
 } from '@tsed/common';
 import { ContentType } from '@tsed/schema';
@@ -71,7 +73,7 @@ export class SubjectController {
   }
 
   @Post()
-  public async addLesson(
+  public async addSubject(
     @BodyParams('title') title: string,
     @BodyParams('description') description: string
   ): Promise<IResponse> {
@@ -80,6 +82,43 @@ export class SubjectController {
       title, 
       description
     });
+
+    return {
+      status: 200,
+      message: 'Subject successfully added',
+      details: {
+        subject: response
+      }
+    };
+  }
+
+  @Put()
+  public async editSubject(
+    @BodyParams('subject_id') subject_id: string,
+    @BodyParams('title') title: string,
+    @BodyParams('description') description: string
+  ): Promise<IResponse> {
+
+    const response = await this.subjectService.editSubject(parseInt(subject_id), { 
+      title, 
+      description
+    });
+
+    return {
+      status: 200,
+      message: 'Subject successfully updated',
+      details: {
+        subject: response
+      }
+    };
+  }
+
+  @Delete('/:subject_id')
+  public async deleteSubject(
+    @PathParams('subject_id') subject_id: string,
+  ): Promise<IResponse> {
+
+    const response = await this.subjectService.deleteSubject(parseInt(subject_id));
 
     return {
       status: 200,

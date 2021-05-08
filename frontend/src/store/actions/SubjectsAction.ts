@@ -26,7 +26,6 @@ export const getSubjects = async (page: number): Promise<TDispatch | void> => {
   }
 };
 
-
 export const addSubject = async (input: TSubjectInput, page: number): Promise<[IResponse, TDispatch | void]> => {
   const { data: axiosData } = await axios.post('/rest/subjects', input);
 
@@ -34,13 +33,16 @@ export const addSubject = async (input: TSubjectInput, page: number): Promise<[I
 };
 
 export const editSuject = async (subject_id: number, input: TSubjectInput, page: number): Promise<[IResponse, TDispatch | void]> => {
-  const { data: axiosData } = await axios.put(`/rest/subjects/${subject_id}`, input);
+  const { data: axiosData } = await axios.put('/rest/subjects', {
+    subject_id,
+    ...input
+  });
 
   return [axiosData, await getSubjects(page)];
 };
 
-// export const deleteLesson = async (lesson_id: ILesson['lesson_id'], page: number): Promise<[IResponse, TDispatch | void]> => {
-//   const { data: axiosData }: AxiosResponse<IResponse> = await axios.delete(`/rest/lesson/delete/${lesson_id}`);
+export const deleteSubject = async (subject_id: ISubject['subject_id'], page: number): Promise<[IResponse, TDispatch | void]> => {
+  const { data: axiosData }: AxiosResponse<IResponse> = await axios.delete(`/rest/subjects/${subject_id}`);
 
-//   return [axiosData, await getLessons(page)];
-// };
+  return [axiosData, await getSubjects(page)];
+};

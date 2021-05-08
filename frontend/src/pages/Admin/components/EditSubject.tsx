@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Form, FormGroup, Input, Label, Modal, ModalBody, ModalHeader } from 'reactstrap';
 
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import { editSuject } from '~store/actions/SubjectsAction';
@@ -17,7 +17,7 @@ type TProps = {
 
 const EditSubject: FC<TProps> = ({ subject }) => {
 
-  const { subject_id } = useParams<{ subject_id: string }>();
+  // const { subject_id } = useParams<{ subject_id: string }>();
   
   /**
    * Route params
@@ -62,7 +62,7 @@ const EditSubject: FC<TProps> = ({ subject }) => {
     try {
       event.preventDefault();
   
-      const [response, toDispatch] = await editSuject(parseInt(subject_id), inputState, page);
+      const [response, toDispatch] = await editSuject(subject.subject_id, inputState, page);
       dispatch(toDispatch);
       alert(response.message);
     } catch (error) {
