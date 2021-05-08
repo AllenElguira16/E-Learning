@@ -6,7 +6,7 @@ import { Table } from 'reactstrap';
 import { getSubjects } from '~store/actions/SubjectsAction';
 import { formatDateToYMD } from '~helpers';
 import { Paginate } from '~components';
-// import Edit from './Edit';
+import EditSubject from './EditSubject';
 // import Delete from './Delete';
 
 /**
@@ -75,13 +75,8 @@ const SubjectLists: FC = () => {
                 event.preventDefault();
                 event.stopPropagation();
               }}>
-                {/* <Edit lesson={{
-                  lesson_id: lesson.lesson_id,
-                  title: lesson.title,
-                  description: lesson.description,
-                  file: lesson.file
-                }} />
-                <Delete lesson_id={lesson.lesson_id} /> */}
+                <EditSubject subject={subject} />
+                {/* <Delete lesson_id={lesson.lesson_id} /> */}
               </td>
             </tr>
           )) : (
