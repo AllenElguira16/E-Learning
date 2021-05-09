@@ -3,7 +3,7 @@ import React, { FC, useState } from 'react';
 import { FormGroup, Label, Input, Form, Button, FormFeedback, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { useDispatch } from 'react-redux';
 
-import { editStudent } from '~store/actions/StudentAction';
+import { editStudent } from '~store/actions/StudentsAction';
 import { TDispatch } from '~store';
 
 type TProps = {

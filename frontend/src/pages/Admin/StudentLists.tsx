@@ -5,9 +5,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import Edit from './components/EditStudent';
 import Delete from './components/DeleteStudent';
 
-import { formatDateToYMD, transformID } from '~helpers';
+import { formatDateToYMD } from '~helpers';
 import { Paginate } from '~components';
-import { getStudents } from '~store/actions/StudentAction';
+import { getStudents } from '~store/actions/StudentsAction';
 import { TDispatch } from '~store';
 import AddStudent from './components/AddStudent';
 import { useLocation } from 'react-router-dom';
@@ -103,7 +103,7 @@ const StudentLists: FC<TProps> = () => {
           }>
             {student.students.length ? student.students.map((student) => (
               <tr key={student.student_id}>
-                <th scope="row">{transformID(student.student_id)}</th>
+                <th scope="row">{student.student_id}</th>
                 <td>{student.last_name}</td>
                 <td>{student.middle_name}</td>
                 <td>{student.first_name}</td>

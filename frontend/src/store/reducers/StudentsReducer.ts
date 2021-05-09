@@ -1,6 +1,6 @@
 import { Reducer } from 'redux';
 
-const initialState: TStudentReducer = {
+const initialState: TStudentsReducer = {
   students: [],
   total_pages: 0
 };
@@ -14,7 +14,7 @@ type TPayload = {
   }
 }
 
-const StudentReducer: Reducer<TStudentReducer, TPayload> = (state = initialState, {type, payload}): TStudentReducer => {
+const StudentsReducer: Reducer<TStudentsReducer, TPayload> = (state = initialState, {type, payload}): TStudentsReducer => {
   switch (type) {
     case 'STORE_STUDENT':
       return {
@@ -26,4 +26,4 @@ const StudentReducer: Reducer<TStudentReducer, TPayload> = (state = initialState
   }
 };
 
-export default StudentReducer;
+export default StudentsReducer;
