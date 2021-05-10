@@ -41,9 +41,3 @@ export const secondsTo60MinFormat = (time: number | undefined) => {
 export const renderFontAwesomeIcons = (): void => {
   library.add(faTrash, faEdit, faPlay, faPause, faVolumeUp, faExpand, faCompress, faFile);
 };
-
-export const transformID = (id: number | string) => {
-  const padding = '000000';
-  const studentIdLength = id.toString().length;
-  return 'STUD-' + (padding.substr(studentIdLength) + id);
-};

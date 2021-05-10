@@ -19,6 +19,9 @@ export class Student implements IStudent {
   last_name: string;
   
   @Column({ nullable: true })
+  password: string;
+
+  @Column({ nullable: true })
   profile_id: number;
   
   @Column({

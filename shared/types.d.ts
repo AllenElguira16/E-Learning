@@ -1,8 +1,9 @@
 type TRootReducers = {
-  student: TStudentReducer;
+  student: TStudentsReducer;
   subject: TSubjectReducer;
   lesson: TLessonReducer;
   page: TPageReducer;
+  auth: TAuthReducer;
 };
 
 interface IStudent {
@@ -11,6 +12,7 @@ interface IStudent {
   middle_name: string;
   last_name: string;
   profile_id: number | null;
+  password: string | null;
   created: Date;
 }
 
@@ -22,7 +24,7 @@ interface IResponse<T = any> {
 
 type TInput = Pick<IStudent, "first_name"|"middle_name"|"last_name">
 
-type TStudentReducer = {
+type TStudentsReducer = {
   students: IStudent[];
   total_pages: number;
 }
@@ -69,4 +71,8 @@ type TLessonReducer = {
 type TPageReducer = {
   current_page: number;
   search_input: string;
+}
+
+type TAuthReducer = {
+  status: 'verifying'|'authenticated'|'not-authenticated';
 }

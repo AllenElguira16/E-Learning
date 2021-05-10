@@ -2,7 +2,7 @@ import {Env} from '@tsed/core';
 import {Configuration, Inject} from '@tsed/di';
 import {$log, PlatformApplication} from '@tsed/common';
 import '@tsed/platform-express'; // /!\ keep this import
-import express, { NextFunction, Request, Response } from 'express';
+import express from 'express';
 import compress from 'compression';
 import cookieParser from 'cookie-parser';
 import methodOverride from 'method-override';
@@ -14,6 +14,8 @@ import '@tsed/multipartfiles';
 import multer from 'multer';
 import path from 'path';
 import crypto from 'crypto';
+import session from 'express-session';
+// import { CreateRequestSessionMiddleware } from './middlwares/CreateRequestSession';
 
 export const rootDir = __dirname;
 export const isProduction = process.env.NODE_ENV === Env.PROD;
@@ -44,6 +46,10 @@ if (isProduction) {
   logger: {
     disableRoutesSummary: isProduction
   },
+  componentsScan: [
+    `${rootDir}/protocols/**/*.ts`
+  ],
+  passport: {},
   mount: {
     '/rest': [
       `${rootDir}/controllers/**/*.ts`
@@ -110,6 +116,21 @@ export class Server {
       .use(express.json())
       .use(express.urlencoded({
         extended: true
+      }))
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      .use(session({
+        secret: 'mysecretkey',
+        resave: true,
+        saveUninitialized: true,
+        // maxAge: 36000,
+        cookie: {
+          path: '/',
+          httpOnly: true,
+          secure: false,
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          maxAge: null
+        }
       }));
   }
 }

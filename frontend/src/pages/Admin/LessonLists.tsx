@@ -1,21 +1,25 @@
 import React, { FC, Suspense, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { Input, Table } from 'reactstrap';
 
-import { getSubjects } from '~store/actions/SubjectsAction';
+import { getLessons } from '~store/actions/LessonAction';
 import { formatDateToYMD } from '~helpers';
 import { Paginate } from '~components';
-import EditSubject from './EditSubject';
-import DeleteSubject from './DeleteSubject';
-import AddSubject from './AddSubjects';
+
+import Edit from './components/EditLesson';
+import Delete from './components/DeleteLesson';
+import AddLesson from './components/AddLesson';
 import { TDispatch } from '~store';
 
 /**
  *
  * @constructor
  */
-const SubjectLists: FC = () => {
+const LessonLists: FC = () => {
+
+  const { subject_id } = useParams<{ subject_id: string }>();
+
   /**
    * Route params
    */
@@ -24,16 +28,15 @@ const SubjectLists: FC = () => {
   /**
    * Student State
    */
-  const { subject, page } = useSelector<TRootReducers, TRootReducers>(state => state);
+  const { lesson, page } = useSelector<TRootReducers, TRootReducers>(state => state);
 
   /**
    * For dispatching actions
    */
   const dispatch = useDispatch<TDispatch>();
 
-
-  const gotoPreview = (subjectId: number) => {
-    window.location.href = `/admin/subjects/${subjectId}/lessons?page=1`;
+  const gotoPreview = (lessonId: number) => {
+    window.location.href = `/admin/subjects/${subject_id}/lessons/${lessonId}`;
   };
 
   const fetchData = useCallback(async () => {
@@ -44,12 +47,11 @@ const SubjectLists: FC = () => {
           current_page: currentPage
         }
       });
-
-      await dispatch(getSubjects());
+      dispatch(getLessons(parseInt(subject_id)));
     } catch (error) {
       alert(error.message);
     }
-  }, [currentPage, dispatch]);
+  }, [dispatch, currentPage, subject_id]);
 
   const searchOnInputChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch({
@@ -58,7 +60,7 @@ const SubjectLists: FC = () => {
         search_input: event.currentTarget.value
       }
     });
-    dispatch(getSubjects());
+    dispatch(getLessons(parseInt(subject_id)));
   };
 
   /**
@@ -72,16 +74,16 @@ const SubjectLists: FC = () => {
 
   return (
     <>
-      <div className="d-flex justify-content-between my-3">
+    <div className="d-flex justify-content-between my-3">
         <div>
           <Input 
-            placeholder="Search Subjects" 
+            placeholder="Search Lessons" 
             value={page.search_input}
             onChange={searchOnInputChange} 
           />
         </div>
         <div>
-          <AddSubject />
+          <AddLesson />
         </div>
       </div>
       <Table striped bordered responsive hover>
@@ -99,34 +101,36 @@ const SubjectLists: FC = () => {
             <td colSpan={5}>Loading</td>
           </tr>
         }>
-          {(subject.subjects && subject.subjects.length) ? subject.subjects.map((subject) => (
-            <tr key={subject.subject_id} className="tb-lesson-row" onClick={() => gotoPreview(subject.subject_id)} >
-              <th scope="row">{subject.subject_id}</th>
-              <td>{subject.title}</td>
-              <td>{formatDateToYMD(subject.created)}</td>
-              <td onClick={(event) => {
-                event.preventDefault();
-                event.stopPropagation();
-              }}>
-                <EditSubject subject={subject} />
-                <DeleteSubject subject_id={subject.subject_id} />
+          {lesson.lessons.length ? lesson.lessons.map((lesson) => (
+            <tr key={lesson.lesson_id} className="tb-lesson-row">
+              <th onClick={() => gotoPreview(lesson.lesson_id)} scope="row">{lesson.lesson_id}</th>
+              <td onClick={() => gotoPreview(lesson.lesson_id)}>{lesson.title}</td>
+              <td onClick={() => gotoPreview(lesson.lesson_id)}>{formatDateToYMD(lesson.created)}</td>
+              <td>
+                <Edit lesson={{
+                  lesson_id: lesson.lesson_id,
+                  title: lesson.title,
+                  description: lesson.description,
+                  file: lesson.file
+                }} />
+                <Delete lesson_id={lesson.lesson_id} />
               </td>
             </tr>
           )) : (
             <tr>
-              <td colSpan={6}>There are no students or the page exceeded</td>
+              <td colSpan={6}>There are no lessons or the page exceeded</td>
             </tr>
           )}
         </Suspense>
         </tbody>
       </Table>
       <Paginate 
-        url="/admin/subjects" 
-        totalPages={subject.total_pages}
+        url={`/admin/subjects/${subject_id}/lessons`} 
         onClick={fetchData}
+        totalPages={lesson.total_pages}
       />
     </>
   );
 };
 
-export default SubjectLists;
+export default LessonLists;
