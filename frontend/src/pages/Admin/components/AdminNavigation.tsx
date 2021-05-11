@@ -9,7 +9,7 @@ import {
   NavItem,
 } from 'reactstrap';
 
-const Navigation = () => {
+const AdminNavigation = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => setIsOpen(!isOpen);
@@ -27,13 +27,6 @@ const Navigation = () => {
             <NavItem>
               <NavLink href="/admin/subjects?page=1">Subjects</NavLink>
             </NavItem>
-            {/* <NavItem className="ml-md-auto">
-              <Switch>
-                <Route path="/admin/students" component={AddStudent} />
-                <Route path="/admin/subjects/:subject_id" component={AddLesson} />
-                <Route path="/admin/subjects" component={AddSubject} />
-              </Switch>
-            </NavItem> */}
           </Nav>
         </Collapse>
       </Navbar>
@@ -41,4 +34,4 @@ const Navigation = () => {
   );
 };
 
-export default Navigation;
+export default AdminNavigation;

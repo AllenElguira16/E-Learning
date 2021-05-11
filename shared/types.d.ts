@@ -75,4 +75,9 @@ type TPageReducer = {
 
 type TAuthReducer = {
   status: 'verifying'|'authenticated'|'not-authenticated';
+  student?: IStudent;
+}
+
+type TSession = {
+  student?: IStudent
 }
