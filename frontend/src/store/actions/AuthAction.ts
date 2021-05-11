@@ -10,12 +10,7 @@ export const loginStudent = (school_id: string, password: string): TThunkAction<
         password
       });
     
-      dispatch({
-        type: 'STORE_LOGIN_STATUS',
-        payload: {
-          status: 'authenticated'
-        }
-      });
+      await dispatch(getAuthenticatedStudent());
 
       return data.message;
     } catch (error) {
@@ -24,21 +19,79 @@ export const loginStudent = (school_id: string, password: string): TThunkAction<
   };
 };
 
+export const logoutStudent = (): TThunkAction<Promise<AxiosResponse['data']>, {
+  payload: TAuthReducer
+}> => {
+  return async (dispatch) => {
+    try {
+      const url = '/rest/auth/logout';
+      const { data }: AxiosResponse<IResponse> = await axios.post(url);
+    
+      dispatch({
+        type: 'STORE_LOGIN_STATUS',
+        payload: {
+          status: 'not-authenticated'
+        }
+      });
+
+      return data.message;
+    } catch (error) {
+      return error.response.data.message;
+    }
+  };
+};
+
 export const getAuthenticatedStudent = (): TThunkAction<Promise<AxiosResponse['data']>, {
   payload: TAuthReducer
 }> => {
   return async (dispatch) => {
+    try {  
 
-    const url = '/rest/auth';
-    const { data }: AxiosResponse<IResponse> = await axios.get(url);
-  
-    dispatch({
-      type: 'STORE_LOGIN_STATUS',
-      payload: {
-        status: 'authenticated'
-      }
-    });
+      const url = '/rest/auth';
+      const { data }: AxiosResponse<IResponse> = await axios.get(url);
+    
+      dispatch({
+        type: 'STORE_LOGIN_STATUS',
+        payload: {
+          status: 'authenticated',
+          student: data.details.student
+        }
+      });
 
-    return data;
-  };
+      return data.message;
+    } catch (error) {
+      dispatch({
+        type: 'STORE_LOGIN_STATUS',
+        payload: {
+          status: 'not-authenticated'
+        }
+      });
+
+      return error.response.data.message;
+    }
+  }; 
+};
+
+export const logout = (): TThunkAction<Promise<AxiosResponse['data']>, {
+  payload: TAuthReducer
+}> => {
+  return async (dispatch) => {
+    try {  
+
+      const url = '/rest/auth/logout';
+      const { data }: AxiosResponse<IResponse> = await axios.get(url);
+    
+      dispatch({
+        type: 'STORE_LOGIN_STATUS',
+        payload: {
+          status: 'not-authenticated',
+          student: undefined
+        }
+      });
+
+      return data.message;
+    } catch (error) {
+      return error.response.data.message;
+    }
+  }; 
 };

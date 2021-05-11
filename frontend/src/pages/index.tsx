@@ -1,16 +1,18 @@
 import React, { FC, useCallback, useEffect } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { Container } from 'reactstrap';
 
 import LessonLists from './Admin/LessonLists';
-import AdminNavigation from './Admin/components/Navigation';
+import AdminNavigation from './Admin/components/AdminNavigation';
+import HomeNavigation from './Home/components/HomeNavigation';
 import PreviewLesson from './Admin/PreviewLesson';
 import StudentLists from './Admin/StudentLists';
 import SubjectLists from './Admin/SubjectLists';
-
 import Login from './Home/Login';
+import Main from './Home/Main';
+
 import { getAuthenticatedStudent } from '~store/actions/AuthAction';
-import { useDispatch, useSelector } from 'react-redux';
 import { TDispatch } from '~store';
 
 
@@ -33,17 +35,19 @@ const Pages: FC = () => {
   return (
     <Switch>
       <Route path="/home" >
+        <HomeNavigation />
         <Container>
           <Switch>
             {auth.status === 'verifying' && <>Loading...</>}
             {auth.status === 'not-authenticated' && (
               <>
-                <Route path="/home/login" component={Login} />
+                <Route exact path="/home/login" component={Login} />
+                <Route path="/home" component={Main} />
               </>
             )}
             {auth.status === 'authenticated' && (
               <>
-                <Redirect path="/home/login" to="/home" />
+                <Redirect exact path="/home/login" to="/home" />
 
                 <Route path="/home" >Hello, World!</Route>
               </>

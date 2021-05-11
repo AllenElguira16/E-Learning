@@ -14,7 +14,10 @@ import '@tsed/multipartfiles';
 import multer from 'multer';
 import path from 'path';
 import crypto from 'crypto';
-import session from 'express-session';
+import { SessionStoreMiddleware } from './middlewares/SessionStore';
+// import session from 'express-session';
+// import { TypeormStore } from 'connect-typeorm';
+// import { SessionRepository } from './repository/SessionRepository';
 // import { CreateRequestSessionMiddleware } from './middlwares/CreateRequestSession';
 
 export const rootDir = __dirname;
@@ -47,9 +50,8 @@ if (isProduction) {
     disableRoutesSummary: isProduction
   },
   componentsScan: [
-    `${rootDir}/protocols/**/*.ts`
+    `${rootDir}/middlewares/**/*.ts`,
   ],
-  passport: {},
   mount: {
     '/rest': [
       `${rootDir}/controllers/**/*.ts`
@@ -116,21 +118,9 @@ export class Server {
       .use(express.json())
       .use(express.urlencoded({
         extended: true
-      }))
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      .use(session({
-        secret: 'mysecretkey',
-        resave: true,
-        saveUninitialized: true,
-        // maxAge: 36000,
-        cookie: {
-          path: '/',
-          httpOnly: true,
-          secure: false,
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          maxAge: null
-        }
       }));
+    this.app.getApp().set('trust proxy', 1);
+    this.app
+      .use(SessionStoreMiddleware);
   }
 }

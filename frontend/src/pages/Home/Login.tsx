@@ -33,7 +33,7 @@ const Login = () => {
 
   return (
     <div className="d-flex" style={{height: '100vh'}}>
-      <div className="col-6 m-auto">
+      <div className="col-6 mx-auto mt-5">
         <Card>
           <CardHeader>Login</CardHeader>
           <CardBody>
