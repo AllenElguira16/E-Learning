@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import {
@@ -17,7 +17,7 @@ import {
 import { TDispatch } from '~store';
 import { logout } from '~store/actions/AuthAction';
 
-const HomeNavigation = () => {
+const HomeNavigation: FC = () => {
   const { auth } = useSelector<TRootReducers, TRootReducers>(state => state);
 
   const [isOpen, setIsOpen] = useState(false);
@@ -38,7 +38,7 @@ const HomeNavigation = () => {
         <Collapse isOpen={isOpen} navbar>
           <Nav className="flex-grow-1" navbar>
             <NavItem>
-              <NavLink href="/admin/subjects?page=1">Subjects</NavLink>
+              <NavLink tag={Link} to="/home/subjects?page=1">Subjects</NavLink>
             </NavItem>
             {auth.status === 'authenticated' && (
               <UncontrolledDropdown className="ml-md-auto" nav inNavbar>

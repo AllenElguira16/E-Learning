@@ -114,7 +114,7 @@ const SubjectLists: FC = () => {
             </tr>
           )) : (
             <tr>
-              <td colSpan={6}>There are no students or the page exceeded</td>
+              <td colSpan={6}>There are no results or the page exceeded</td>
             </tr>
           )}
         </Suspense>

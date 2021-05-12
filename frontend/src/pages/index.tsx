@@ -3,18 +3,22 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Container } from 'reactstrap';
 
-import LessonLists from './Admin/LessonLists';
 import AdminNavigation from './Admin/components/AdminNavigation';
+import AdminPreviewLesson from './Admin/PreviewLesson';
+import AdminSubjectLists from './Admin/SubjectLists';
+import AdminLessonLists from './Admin/LessonLists';
+import AdminStudentLists from './Admin/StudentLists';
+
 import HomeNavigation from './Home/components/HomeNavigation';
-import PreviewLesson from './Admin/PreviewLesson';
-import StudentLists from './Admin/StudentLists';
-import SubjectLists from './Admin/SubjectLists';
-import Login from './Home/Login';
-import Main from './Home/Main';
+import HomeLogin from './Home/Login';
+import HomeMain from './Home/Main';
+import HomeStudentInfo from './Home/StudentInfo';
+import HomePreviewLesson from './Home/PreviewLesson';
+import HomeSubjectLists from './Home/SubjectLists';
+import HomeLessonLists from './Home/LessonLists';
 
 import { getAuthenticatedStudent } from '~store/actions/AuthAction';
 import { TDispatch } from '~store';
-import StudentInfo from './Home/StudentInfo';
 
 
 const Pages: FC = () => {
@@ -36,23 +40,28 @@ const Pages: FC = () => {
       <Route path="/home" >
         <HomeNavigation />
         <Container>
-          <Switch>
             {auth.status === 'verifying' && <>Loading...</>}
             {auth.status === 'not-authenticated' && (
-              <>
-                <Route exact path="/home/login" component={Login} />
-                <Route exact path="/home" component={Main} />
-              </>
+              <Switch>
+                <Route exact path="/home/login" component={HomeLogin} />
+                <Route exact path="/home" component={HomeMain} />
+              </Switch>
             )}
             {auth.status === 'authenticated' && (
-              <>
-                <Redirect exact path="/home/login" to="/home" />
+              <Switch>
+                {/* Admin Lesson Preview */}
+                <Route path="/home/subjects/:subject_id/lessons/:lesson_id" component={HomePreviewLesson} />
 
-                <Route path="/home/student" component={StudentInfo} />
-                <Route path="/home" >Hello, World!</Route>
-              </>
+                {/* Lessons */}
+                <Route path="/home/subjects/:subject_id/lessons" component={HomeLessonLists} />
+
+                {/* Subject List */}
+                <Route path="/home/subjects" component={HomeSubjectLists} />
+
+                <Route path="/home/student" component={HomeStudentInfo} />
+                <Route exact path="/home" component={HomeMain} />
+              </Switch>
             )}
-          </Switch>
         </Container>
       </Route>
       <Route path="/admin">
@@ -62,16 +71,16 @@ const Pages: FC = () => {
             <Redirect exact path="/admin" to="/admin/students?page=1" />
 
             {/* Students List */}
-            <Route path="/admin/students" component={StudentLists} />
+            <Route path="/admin/students" component={AdminStudentLists} />
 
             {/* Admin Lesson Preview */}
-            <Route path="/admin/subjects/:subject_id/lessons/:lesson_id" component={PreviewLesson} />
+            <Route path="/admin/subjects/:subject_id/lessons/:lesson_id" component={AdminPreviewLesson} />
 
             {/* Lessons */}
-            <Route path="/admin/subjects/:subject_id/lessons" component={LessonLists} />
+            <Route path="/admin/subjects/:subject_id/lessons" component={AdminLessonLists} />
 
             {/* Subject List */}
-            <Route path="/admin/subjects" component={SubjectLists} />
+            <Route path="/admin/subjects" component={AdminSubjectLists} />
 
           </Switch>
         </Container>

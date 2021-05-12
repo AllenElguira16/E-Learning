@@ -7,9 +7,6 @@ import { getLessons } from '~store/actions/LessonAction';
 import { formatDateToYMD } from '~helpers';
 import { Paginate } from '~components';
 
-import Edit from './components/EditLesson';
-import Delete from './components/DeleteLesson';
-import AddLesson from './components/AddLesson';
 import { TDispatch } from '~store';
 
 /**
@@ -82,9 +79,6 @@ const LessonLists: FC = () => {
             onChange={searchOnInputChange} 
           />
         </div>
-        <div>
-          <AddLesson />
-        </div>
       </div>
       <Table striped bordered responsive hover>
         <thead>
@@ -92,7 +86,6 @@ const LessonLists: FC = () => {
           <th scope="col">ID</th>
           <th scope="col">Title</th>
           <th scope="col">Created</th>
-          <th scope="col">Action</th>
         </tr>
         </thead>
         <tbody>
@@ -106,15 +99,6 @@ const LessonLists: FC = () => {
               <th onClick={() => gotoPreview(lesson.lesson_id)} scope="row">{lesson.lesson_id}</th>
               <td onClick={() => gotoPreview(lesson.lesson_id)}>{lesson.title}</td>
               <td onClick={() => gotoPreview(lesson.lesson_id)}>{formatDateToYMD(lesson.created)}</td>
-              <td>
-                <Edit lesson={{
-                  lesson_id: lesson.lesson_id,
-                  title: lesson.title,
-                  description: lesson.description,
-                  file: lesson.file
-                }} />
-                <Delete lesson_id={lesson.lesson_id} />
-              </td>
             </tr>
           )) : (
             <tr>

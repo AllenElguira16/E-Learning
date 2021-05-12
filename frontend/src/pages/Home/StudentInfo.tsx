@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Card, CardBody, CardHeader, Form, FormGroup, Input, Label } from 'reactstrap';
 import { TDispatch } from '~store';
@@ -12,7 +12,7 @@ type TUserInput = {
   password: string | null;
 }
 
-const StudentInfo = () => {
+const StudentInfo: FC = () => {
   const [onEdit, setOnEdit] = useState(false);
   const { auth } = useSelector<TRootReducers, TRootReducers>(state => state);
 
