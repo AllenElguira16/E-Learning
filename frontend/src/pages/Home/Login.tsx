@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Button, Card, CardBody, CardHeader, Form, FormGroup, Input } from 'reactstrap';
 import { TDispatch } from '~store';
@@ -9,7 +9,7 @@ type TUserInput = {
   password: string;
 }
 
-const Login = () => {
+const Login: FC = () => {
 
   const dispatch = useDispatch<TDispatch>();
 

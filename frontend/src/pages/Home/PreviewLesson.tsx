@@ -1,11 +1,11 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios, { AxiosResponse } from 'axios';
 import { useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { VideoPlayer } from '~components';
 
-const PreviewLesson: FC = () => {
+const PreviewLesson = () => {
 
   const { lesson_id, subject_id } = useParams<{ lesson_id: string, subject_id: string ;}>();
 
