@@ -1,5 +1,6 @@
-import { BodyParams, Controller, Get, Post, ProviderScope, Scope, Session } from '@tsed/common';
+import { BodyParams, Controller, Get, Post, ProviderScope, Put, Scope, Session } from '@tsed/common';
 import { ContentType } from '@tsed/schema';
+import { Student } from 'src/entity/Student';
 import { decodeID } from 'src/helpers';
 import { StudentService } from 'src/services/StudentService';
 
@@ -29,17 +30,15 @@ export class AuthController {
       throw new Error('School ID is incorrect!');
     }
 
-    if (student?.password === null) {
-      if (school_id !== password) {
-        throw new Error('Password is incorrect!');
-      }
+    if ((student.password === null && school_id !== password) || (student.password !== null && student.password !== password)) {
+      throw new Error('Password is incorrect!');
     }
 
     session.student = student;
 
     return {
       status: 200,
-      message: 'Success',
+      message: 'Login Success',
       details: {
         student
       }
@@ -56,7 +55,7 @@ export class AuthController {
 
     return {
       status: 200,
-      message: 'Success',
+      message: 'Logout Success',
     };
   }
 
@@ -69,10 +68,27 @@ export class AuthController {
 
     return {
       status: 200,
-      message: 'Success',
+      message: 'Current Auth Info Retrieve Success',
       details: {
         student: session.student
       }
+    };
+  }
+
+  @Put()
+  // @Authorize()
+  public async updateStudent(@Session() session: TSession, @BodyParams() input: TInput): Promise<IResponse> {
+    if (!session.student) {
+      throw new Error('Student not authenticated');
+    }
+    
+    const student = await this.studentService.editStudent(session.student.student_id, input);
+
+    session.student = student as Student;
+
+    return {
+      status: 200,
+      message: 'Student Info Updated',
     };
   }
 }

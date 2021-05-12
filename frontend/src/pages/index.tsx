@@ -14,6 +14,7 @@ import Main from './Home/Main';
 
 import { getAuthenticatedStudent } from '~store/actions/AuthAction';
 import { TDispatch } from '~store';
+import StudentInfo from './Home/StudentInfo';
 
 
 const Pages: FC = () => {
@@ -30,8 +31,6 @@ const Pages: FC = () => {
     fetchUser();
   }, [fetchUser]);
 
-  console.log(auth);
-
   return (
     <Switch>
       <Route path="/home" >
@@ -42,13 +41,14 @@ const Pages: FC = () => {
             {auth.status === 'not-authenticated' && (
               <>
                 <Route exact path="/home/login" component={Login} />
-                <Route path="/home" component={Main} />
+                <Route exact path="/home" component={Main} />
               </>
             )}
             {auth.status === 'authenticated' && (
               <>
                 <Redirect exact path="/home/login" to="/home" />
 
+                <Route path="/home/student" component={StudentInfo} />
                 <Route path="/home" >Hello, World!</Route>
               </>
             )}

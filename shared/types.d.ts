@@ -22,7 +22,13 @@ interface IResponse<T = any> {
   details?: T;
 }
 
-type TInput = Pick<IStudent, "first_name"|"middle_name"|"last_name">
+type TInput = {
+  first_name: string;
+  middle_name: string;
+  last_name: string;
+  password?: string | null;
+  // Pick<IStudent, "first_name"|"middle_name"|"last_name"|"password">
+}
 
 type TStudentsReducer = {
   students: IStudent[];

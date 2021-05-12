@@ -49,7 +49,7 @@ export class StudentRepository extends Repository<Student> {
    * @param student TInput
    * @returns void | string 
    */
-  async editStudent(student_id: IStudent['student_id'], student: StudentInput): Promise<Student | void> {
+  async editStudent(student_id: IStudent['student_id'], student: TInput): Promise<Student | void> {
     const studentToUpdate = await this.findOne(student_id);
 
     if (!studentToUpdate) return;
@@ -57,6 +57,10 @@ export class StudentRepository extends Repository<Student> {
     studentToUpdate.first_name = student.first_name;
     studentToUpdate.middle_name = student.middle_name;
     studentToUpdate.last_name = student.last_name;
+
+    if (student.password !== undefined) {
+      studentToUpdate.password = student.password as string;
+    }
 
     return this.save(studentToUpdate);
   }

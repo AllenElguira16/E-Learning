@@ -14,7 +14,7 @@ export const loginStudent = (school_id: string, password: string): TThunkAction<
 
       return data.message;
     } catch (error) {
-      alert(error.response.data.message);
+      return error.response.data.message;
     }
   };
 };
@@ -94,4 +94,21 @@ export const logout = (): TThunkAction<Promise<AxiosResponse['data']>, {
       return error.response.data.message;
     }
   }; 
+};
+
+export const editStudentInfo = (
+  studentData: TInput
+): TThunkAction<Promise<AxiosResponse<IResponse>['data']>> => {
+
+  return async (dispatch) => {
+    try {  
+      const { data } = await axios.put('/rest/auth', studentData);
+  
+      await dispatch(getAuthenticatedStudent());
+
+      return data.message;
+    } catch (error) {
+      return error.response.data.message;
+    }
+  };
 };

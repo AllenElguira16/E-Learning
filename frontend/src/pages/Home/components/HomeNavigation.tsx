@@ -40,27 +40,27 @@ const HomeNavigation = () => {
             <NavItem>
               <NavLink href="/admin/subjects?page=1">Subjects</NavLink>
             </NavItem>
-            <NavItem className="ml-md-auto">
-              {auth.status === 'authenticated' && (
-                <UncontrolledDropdown nav inNavbar>
-                  <DropdownToggle nav caret>
-                    {auth.student?.first_name}
-                  </DropdownToggle>
-                  <DropdownMenu right>
-                    <DropdownItem>
-                      Account
-                    </DropdownItem>
-                    <DropdownItem divider />
-                    <DropdownItem onClick={onClickLogout}>
-                      Logout
-                    </DropdownItem>
-                  </DropdownMenu>
-                </UncontrolledDropdown>
-              )}
-              {auth.status === 'not-authenticated' && (
+            {auth.status === 'authenticated' && (
+              <UncontrolledDropdown className="ml-md-auto" nav inNavbar>
+                <DropdownToggle nav caret>
+                  {auth.student?.first_name}
+                </DropdownToggle>
+                <DropdownMenu right>
+                  <DropdownItem tag={Link} to="/home/student">
+                    Account
+                  </DropdownItem>
+                  <DropdownItem divider />
+                  <DropdownItem onClick={onClickLogout}>
+                    Logout
+                  </DropdownItem>
+                </DropdownMenu>
+              </UncontrolledDropdown>
+            )}
+            {auth.status === 'not-authenticated' && (
+              <NavItem className="ml-md-auto">
                 <NavLink tag={Link} to="/home/login">Login</NavLink>
-              )}
-            </NavItem>
+              </NavItem>
+            )}
           </Nav>
         </Collapse>
       </Navbar>
