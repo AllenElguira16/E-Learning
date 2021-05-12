@@ -15,10 +15,6 @@ import multer from 'multer';
 import path from 'path';
 import crypto from 'crypto';
 import { SessionStoreMiddleware } from './middlewares/SessionStore';
-// import session from 'express-session';
-// import { TypeormStore } from 'connect-typeorm';
-// import { SessionRepository } from './repository/SessionRepository';
-// import { CreateRequestSessionMiddleware } from './middlwares/CreateRequestSession';
 
 export const rootDir = __dirname;
 export const isProduction = process.env.NODE_ENV === Env.PROD;

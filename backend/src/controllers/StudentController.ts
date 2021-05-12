@@ -1,8 +1,8 @@
 import { BodyParams, Controller, Delete, Get, PathParams, Post, Put, QueryParams } from '@tsed/common';
 import { ContentType } from '@tsed/schema';
-import { Student } from 'src/entity/Student';
-import { StudentService } from '../services/StudentService';
-import { StudentInput } from '../model/StudentInput';
+import { Student } from '~entities/Student';
+import { StudentService } from '~services/StudentService';
+import { StudentInput } from '~models/StudentInput';
 
 /**
  * Controller for student api

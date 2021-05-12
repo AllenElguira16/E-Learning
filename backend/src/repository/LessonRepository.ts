@@ -1,6 +1,6 @@
 import { DeleteResult, EntityRepository, Like, Repository } from 'typeorm';
 
-import { Lesson } from '../entity/Lesson';
+import { Lesson } from '~entities/Lesson';
 
 /**
  * Student Repository

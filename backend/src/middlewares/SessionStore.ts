@@ -2,7 +2,7 @@ import {Inject, Middleware} from '@tsed/common';
 import { UseConnection } from '@tsed/typeorm';
 import { TypeormStore } from 'connect-typeorm/out';
 import session from 'express-session';
-import { SessionRepository } from 'src/repository/SessionRepository';
+import { SessionRepository } from '~repositories/SessionRepository';
 
 @Middleware()
 export class SessionStoreMiddleware {
