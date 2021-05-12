@@ -24,23 +24,42 @@ const PreviewLesson = () => {
     })();
   }, [lesson_id, subject_id]);
 
+  const fileFromUrl = (filepath: string) => {
+    const arr = window.location.href.split('/');
+    const url = arr[0] + '//' + arr[2];
+    
+    return `${url}/statics/${filepath}`;
+  };
+
   return (
     <>
       {lesson && (
         <>
-          <h1>{lesson.title}</h1>
-          <p>{lesson.description}</p>
-          {lesson.type === 'video' && (
-            <VideoPlayer url={`/statics/${lesson.file}`}/>
-          )}
-          {
-            (lesson.type === 'document') && (
+          <header className="d-flex justify-content-between">
+            <span>
+              <h1>{lesson.title}</h1>
+              <p>{lesson.description}</p>
+            </span>
+            <span>
               <a href={`/statics/${lesson.file}`} download>
                 <FontAwesomeIcon icon="file"/>
                 <span className="pl-2">Download File</span>
               </a>
-            )
-          }
+            </span>
+          </header>
+          <main>
+            {lesson.type === 'video' && (
+              <VideoPlayer url={`/statics/${lesson.file}`}/>
+            )}
+            {
+              (lesson.type === 'document' && lesson.file) && (
+                <iframe 
+                  title="sad" 
+                  src={`https://docs.google.com/gview?url=${fileFromUrl(lesson.file)}&embedded=true`}
+                />
+              )
+            }
+          </main>
         </>
       )}
     </>
