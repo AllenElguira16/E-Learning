@@ -1,7 +1,7 @@
 import { DeleteResult, EntityRepository, Like, Repository } from 'typeorm';
 
-import { Student } from '~entities/Student';
-import { StudentInput } from '~models/StudentInput';
+import { Student } from '../entities/Student';
+import { StudentInput } from '../models/StudentInput';
 
 /**
  * Student Repository

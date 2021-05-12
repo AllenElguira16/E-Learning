@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@tsed/di';
 import { UseConnection } from '@tsed/typeorm';
 
-import { Subject } from '~entities/Subject';
-import { SubjectRepository } from '~repositories/SubjectRepository';
+import { Subject } from '../entities/Subject';
+import { SubjectRepository } from '../repositories/SubjectRepository';
 import { DeleteResult } from 'typeorm';
 
 /**

@@ -5,8 +5,8 @@
   "repository": "https://github.com/AllenKunn16/E-Learning",
   "author": "Allen Elguira <AllenElguira16@gmail.com>",
   "scripts": {
-    "build": "cd frontend && yarn install --production && yarn build && cd ../backend && yarn install",
-    "start": "cd backend && yarn start"
+    "build": "cd frontend && yarn install --production && yarn build && cd ../backend && yarn install --production && yarn build",
+    "start": "cd backend && yarn start:prod"
   },
   "license": "MIT",
   "engines": {

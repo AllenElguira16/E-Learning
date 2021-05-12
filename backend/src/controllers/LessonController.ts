@@ -10,9 +10,9 @@ import {
 } from '@tsed/common';
 import { MultipartFile } from '@tsed/multipartfiles';
 import { ContentType } from '@tsed/schema';
-import { SubjectService } from '~services/SubjectService';
 
-import { LessonService } from '~services/LessonService';
+import { SubjectService } from '../services/SubjectService';
+import { LessonService } from '../services/LessonService';
 
 /**
  * Controller for student api

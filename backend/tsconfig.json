@@ -27,33 +27,7 @@
     ],
     "typeRoots": [
       "./node_modules/@types"
-    ],
-    "paths": {
-      "~controllers/*": [
-        "src/controllers/*"
-      ],
-      "~helpers/*": [
-        "src/helpers/*"
-      ],
-      "~middlewares/*": [
-        "src/model/*"
-      ],
-      "~entities/*": [
-        "src/entity/*"
-      ],
-      "~models/*": [
-        "src/model/*"
-      ],
-      "~repositories/*": [
-        "src/repository/*"
-      ],
-      "~services/*": [
-        "src/services/*"
-      ],
-      "~config/*": [
-        "src/config/*"
-      ],
-    }
+    ]
   },
   "include": [
     "./src/**/*.ts",
