@@ -3,9 +3,9 @@ import { MultipartFile } from '@tsed/common';
 import { UseConnection } from '@tsed/typeorm';
 import { DeleteResult } from 'typeorm';
 
-import { LessonRepository } from '../repository/LessonRepository';
-import { Lesson } from '../entity/Lesson';
-import { Subject } from 'src/entity/Subject';
+import { LessonRepository } from '../repositories/LessonRepository';
+import { Lesson } from '../entities/Lesson';
+import { Subject } from '../entities/Subject';
 
 /**
  * Student Provider

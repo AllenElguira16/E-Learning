@@ -107,7 +107,7 @@ const SubjectLists: FC = () => {
         </tbody>
       </Table>
       <Paginate 
-        url="/admin/subjects" 
+        url="/home/subjects" 
         totalPages={subject.total_pages}
         onClick={fetchData}
       />

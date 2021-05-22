@@ -31,6 +31,8 @@
     "http-proxy-middleware": "^1.1.0",
     "node-sass": "^5.0.0",
     "react": "^17.0.2",
+    "react-app-rewire-alias": "^1.0.3",
+    "react-app-rewired": "^2.1.8",
     "react-dom": "^17.0.2",
     "react-player": "^2.9.0",
     "react-redux": "^7.2.3",
@@ -46,9 +48,7 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10",
-    "react-app-rewire-alias": "^1.0.3",
-    "react-app-rewired": "^2.1.8"
+    "@testing-library/user-event": "^12.1.10"
   },
   "eslintConfig": {
     "extends": [

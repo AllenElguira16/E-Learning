@@ -33,7 +33,7 @@ const LessonLists: FC = () => {
   const dispatch = useDispatch<TDispatch>();
 
   const gotoPreview = (lessonId: number) => {
-    window.location.href = `/admin/subjects/${subject_id}/lessons/${lessonId}`;
+    window.location.href = `/home/subjects/${subject_id}/lessons/${lessonId}`;
   };
 
   const fetchData = useCallback(async () => {
@@ -109,7 +109,7 @@ const LessonLists: FC = () => {
         </tbody>
       </Table>
       <Paginate 
-        url={`/admin/subjects/${subject_id}/lessons`} 
+        url={`/home/subjects/${subject_id}/lessons`} 
         onClick={fetchData}
         totalPages={lesson.total_pages}
       />

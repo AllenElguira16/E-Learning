@@ -1,8 +1,9 @@
 import { BodyParams, Controller, Get, Post, ProviderScope, Put, Scope, Session } from '@tsed/common';
 import { ContentType } from '@tsed/schema';
-import { Student } from 'src/entity/Student';
-import { decodeID } from 'src/helpers';
-import { StudentService } from 'src/services/StudentService';
+
+import { Student } from '../entities/Student';
+import { decodeID } from '../helpers/index';
+import { StudentService } from '../services/StudentService';
 
 /**
  * Controller for student api

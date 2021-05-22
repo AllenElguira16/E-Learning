@@ -1,10 +1,10 @@
 import { Inject, Injectable } from '@tsed/di';
 import { UseConnection } from '@tsed/typeorm';
-import { encodeID } from 'src/helpers';
 import { DeleteResult } from 'typeorm';
 
-import { Student } from '../entity/Student';
-import { StudentRepository } from '../repository/StudentRepository';
+import { encodeID } from '../helpers';
+import { Student } from '../entities/Student';
+import { StudentRepository } from '../repositories/StudentRepository';
 
 /**
  * Student Provider

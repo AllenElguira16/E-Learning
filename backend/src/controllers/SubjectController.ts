@@ -9,7 +9,8 @@ import {
   QueryParams,
 } from '@tsed/common';
 import { ContentType } from '@tsed/schema';
-import { SubjectService } from 'src/services/SubjectService';
+
+import { SubjectService } from '../services/SubjectService';
 import { LessonController } from './LessonController';
 
 /**

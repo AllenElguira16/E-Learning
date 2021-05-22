@@ -1,6 +1,4 @@
-// import { Response, Request } from 'express';
 import { Controller, Get, Redirect, View } from '@tsed/common';
-
 
 @Controller('/')
 export class home {
