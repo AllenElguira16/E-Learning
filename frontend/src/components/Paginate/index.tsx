@@ -1,16 +1,28 @@
 import React, { FC } from 'react';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 
+import { useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+
 type TProps = {
-  page: number;
+  // page: number;
   totalPages: number;
   url: string;
+  onClick(): Promise<void>;
 }
 
-const Paginate: FC<TProps> = ({ page: currentPage, totalPages, url: rootUrl }) => {
+const Paginate: FC<TProps> = ({ totalPages, url: rootUrl, onClick }) => {
 
-  const url = (page: number) => {
-    return `${rootUrl}?page=${page}`;
+  const state = useSelector<TRootReducers, TRootReducers>(state => state);
+
+  const history = useHistory();
+
+  const currentPage = state.page.current_page;
+
+  const url = async (page: number) => {
+    await onClick();
+    const toUrl = `${rootUrl}?page=${page}`;
+    history.push(toUrl);
   };
 
   const pages = () => {
@@ -37,21 +49,21 @@ const Paginate: FC<TProps> = ({ page: currentPage, totalPages, url: rootUrl }) =
   return (
     <Pagination className="d-flex justify-content-center" aria-label="Page navigation">
       <PaginationItem disabled={currentPage === 1}>
-        <PaginationLink first href={url(1)} />
+        <PaginationLink first onClick={() => url(1)} />
       </PaginationItem>
       <PaginationItem disabled={currentPage === 1}>
-        <PaginationLink previous href={url(currentPage - 1)} />
+        <PaginationLink previous onClick={() => url(currentPage - 1)} />
       </PaginationItem>
       {pages().map((page) => (
         <PaginationItem key={page} active={currentPage === page}>
-          <PaginationLink href={url(page)} >{ page }</PaginationLink>
+          <PaginationLink onClick={() => url(page)} >{ page }</PaginationLink>
         </PaginationItem>
       ))}
-      <PaginationItem disabled={currentPage === totalPages}>
-        <PaginationLink next href={url(currentPage + 1)} />
+      <PaginationItem disabled={totalPages === 0 || currentPage === totalPages}>
+        <PaginationLink next onClick={() => url(currentPage + 1)} />
       </PaginationItem>
-      <PaginationItem disabled={currentPage === totalPages}>
-        <PaginationLink last href={url(totalPages)} />
+      <PaginationItem disabled={totalPages === 0 || currentPage === totalPages}>
+        <PaginationLink last onClick={() => url(totalPages)} />
       </PaginationItem>
     </Pagination>
   );

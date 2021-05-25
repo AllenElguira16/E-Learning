@@ -3,8 +3,9 @@ import { MultipartFile } from '@tsed/common';
 import { UseConnection } from '@tsed/typeorm';
 import { DeleteResult } from 'typeorm';
 
-import { LessonRepository } from '../repository/LessonRepository';
-import { Lesson } from '../entity/Lesson';
+import { LessonRepository } from '../repositories/LessonRepository';
+import { Lesson } from '../entities/Lesson';
+import { Subject } from '../entities/Subject';
 
 /**
  * Student Provider
@@ -22,8 +23,8 @@ export class LessonService {
    *
    * @returns ILesson[]
    */
-  async getLessons(offset: number, limit: number): Promise<[Lesson[], number]> {
-    return this.lessonRepository.getLessons(offset, limit);
+  async getLessons(subject_id: number, offset: number, limit: number, search: string): Promise<[Lesson[], number]> {
+    return this.lessonRepository.getLessons(subject_id, offset, limit, search);
   }
 
   /**
@@ -31,8 +32,8 @@ export class LessonService {
    * 
    * @returns Promise<Ilesson|undefined>
    */
-  async getLessonById(lesson_id: number): Promise<ILesson|undefined> {
-    return this.lessonRepository.getLessonById(lesson_id);
+  async getLessonById(subject_id: number, lesson_id: number): Promise<ILesson|undefined> {
+    return this.lessonRepository.getLessonById(subject_id, lesson_id);
   }
 
   /**
@@ -43,19 +44,20 @@ export class LessonService {
    * @param file
    * @returns Promise<ILesson>
    */
-  async addLesson(title: string, description: string, file?: MultipartFile): Promise<ILesson> {
-    type TData = Pick<ILesson, 'title'|'description'|'file'|'type' >;
+  async addLesson(lesson: { subject_id: Subject, title: string, description: string, file?: MultipartFile } ): Promise<ILesson> {
+    type TData = Pick<ILesson, 'title'|'description'|'file'|'type'|'subject_id' >;
 
     let data: TData = {
-      title,
-      description
+      subject_id: lesson.subject_id,
+      title: lesson.title,
+      description: lesson.description
     };
 
-    if (file) {
+    if (lesson.file) {
       data = {
         ...data,
-        file: file.filename,
-        type: file.mimetype.match(/video\/.*/) ? 'video' : 'document'
+        file: lesson.file.filename,
+        type: lesson.file.mimetype.match(/video\/.*/) ? 'video' : 'document'
       };
     }
 

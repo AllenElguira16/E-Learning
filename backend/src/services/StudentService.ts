@@ -2,8 +2,9 @@ import { Inject, Injectable } from '@tsed/di';
 import { UseConnection } from '@tsed/typeorm';
 import { DeleteResult } from 'typeorm';
 
-import { Student } from '../entity/Student';
-import { StudentRepository } from '../repository/StudentRepository';
+import { encodeID } from '../helpers';
+import { Student } from '../entities/Student';
+import { StudentRepository } from '../repositories/StudentRepository';
 
 /**
  * Student Provider
@@ -21,8 +22,20 @@ export class StudentService {
    *
    * @returns Student[]
    */
-  async getStudents(offset: number, limit: number): Promise<[Student[], number]> {
-    return this.studentRepository.getStudents(offset, limit);
+  async getStudents(offset: number, limit: number, search: string): Promise<[IStudent[], number]> {
+    const students = await this.studentRepository.getStudents(offset, limit, search);
+
+    return [
+      students[0].map(student => ({
+        ...student,
+        student_id: encodeID(student.student_id),
+      })),
+      students[1]
+    ];
+  }
+
+  async getStudentByID(id: number): Promise<Student | undefined> {
+    return this.studentRepository.findOne(id);
   }
 
   /**

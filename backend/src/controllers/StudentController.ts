@@ -1,13 +1,14 @@
 import { BodyParams, Controller, Delete, Get, PathParams, Post, Put, QueryParams } from '@tsed/common';
 import { ContentType } from '@tsed/schema';
-import { Student } from 'src/entity/Student';
+
+import { Student } from '../entities/Student';
 import { StudentService } from '../services/StudentService';
-import { StudentInput } from '../model/StudentInput';
+import { StudentInput } from '../models/StudentInput';
 
 /**
  * Controller for student api
  */
-@Controller('/student')
+@Controller('/students')
 @ContentType('application/json')
 export class StudentController {
   constructor(private studentService: StudentService) { }
@@ -19,14 +20,15 @@ export class StudentController {
    * @param limit
    * @returns IResponse
    */
-  @Get('/list')
+  @Get()
   async listOfStudents(
     @QueryParams('page') page: number,
     @QueryParams('limit') limit: number,
-  ): Promise<IResponse> {
+    @QueryParams('search') search: string
+    ): Promise<IResponse> {
     const offset = ((page - 1) * limit);
 
-    const [students, count] = await this.studentService.getStudents(offset, limit);
+    const [students, count] = await this.studentService.getStudents(offset, limit, search);
 
     return {
       status: 200,
@@ -45,7 +47,7 @@ export class StudentController {
    * @param newStudent
    * @returns IResponse
    */
-  @Post('/add')
+  @Post()
   async addStudent(@BodyParams() newStudent: StudentInput): Promise<IResponse> {
     await this.studentService.addStudent(newStudent);
 
@@ -62,7 +64,7 @@ export class StudentController {
    * @param student
    * @returns IResponse
    */
-  @Put('/edit/:student_id')
+  @Put('/:student_id')
   async editStudent(
     @PathParams() student_id: IStudent['student_id'],
     @BodyParams() student: TInput
@@ -84,7 +86,7 @@ export class StudentController {
    * @param student_id
    * @returns IResponse
    */
-  @Delete('/delete/:student_id')
+  @Delete('/:student_id')
   async deleteStudent(
     @PathParams('student_id') student_id: Student['student_id'],
   ): Promise<IResponse> {

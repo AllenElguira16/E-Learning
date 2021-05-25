@@ -1,44 +1,71 @@
 import axios, { AxiosResponse } from 'axios';
 
-type TDispatch = {
-  type: string;
-  payload: any;
-}
+import { TThunkAction } from '~store';
 
-export const getLessons = async (page: number): Promise<TDispatch | void> => {
-  type TResponse = AxiosResponse<IResponse<TLessonReducer>>
-  const limit = 5;
-  const { data: { details } }: TResponse = await axios.get(`/rest/lesson/list?page=${page}&limit=${limit}`);
+export const getLessons = (subjectId: number): TThunkAction<Promise<void>> => {
+  return async (dispatch, state) => {
+    type TResponse = AxiosResponse<IResponse<TLessonReducer>>
+    const limit = 5;
 
-  
-  if (details) {
-    if (page > details.total_pages) throw new Error(`Page must be lesser than ${page}`);
+    const { current_page, search_input } = state().page;
 
-    return {
-      type: 'STORE_LESSONS',
-      payload: {
-        lessons: details.lessons,
-        total_pages: details.total_pages,
+    const url = `/rest/subjects/${subjectId}/lessons?page=${current_page}&limit=${limit}&search=${search_input}`;
+
+    const { data: { details } }: TResponse = await axios.get(url);
+    
+    if (details) {
+      if (current_page > details.total_pages && details.total_pages > 0) {
+        throw new Error(`Page must be lesser than ${current_page}`);
       }
-    };
-  }
+      
+      dispatch({
+        type: 'STORE_LESSONS',
+        payload: {
+          lessons: details.lessons,
+          total_pages: details.total_pages,
+        }
+      });
+    }
+  };
 };
 
+export const addLesson = (
+  subjectId: number, 
+  formData: FormData
+): TThunkAction<Promise<AxiosResponse<IResponse>['data']>> => {
+  return async (dispatch) => {
+    const { data } = await axios.post(`/rest/subjects/${subjectId}/lessons`, formData);
 
-export const addLesson = async (formData: FormData, page: number): Promise<[IResponse, TDispatch | void]> => {
-  const { data: axiosData } = await axios.post('/rest/lesson/add', formData);
+    dispatch(getLessons(subjectId));
 
-  return [axiosData, await getLessons(page)];
+    return data;
+  };
 };
 
-export const editLesson = async (lesson_id: ILesson['lesson_id'], formData: FormData, page: number): Promise<[IResponse, TDispatch | void]> => {
-  const { data: axiosData } = await axios.put(`/rest/lesson/edit/${lesson_id}`, formData);
+export const editLesson = (
+  subjectId: number, 
+  lessonId: ILesson['lesson_id'], 
+  formData: FormData
+): TThunkAction<Promise<AxiosResponse<IResponse>['data']>> => {
+  return async (dispatch) => {
+    const url = `/rest/subjects/${subjectId}/lessons/${lessonId}`;
+    const { data } = await axios.put(url, formData);
+  
+    dispatch(getLessons(subjectId));
 
-  return [axiosData, await getLessons(page)];
+    return data;
+  };
 };
 
-export const deleteLesson = async (lesson_id: ILesson['lesson_id'], page: number): Promise<[IResponse, TDispatch | void]> => {
-  const { data: axiosData }: AxiosResponse<IResponse> = await axios.delete(`/rest/lesson/delete/${lesson_id}`);
+export const deleteLesson = (
+  subjectId: number, 
+  lessonId: ILesson['lesson_id']
+): TThunkAction<Promise<AxiosResponse>> => {
+  return async (dispatch) => {
+    const { data }: AxiosResponse = await axios.delete(`/rest/subjects/${subjectId}/lessons/${lessonId}`);
+  
+    dispatch(getLessons(subjectId));
 
-  return [axiosData, await getLessons(page)];
+    return data;
+  };
 };

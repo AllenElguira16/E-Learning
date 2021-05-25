@@ -2,7 +2,7 @@ import {Env} from '@tsed/core';
 import {Configuration, Inject} from '@tsed/di';
 import {$log, PlatformApplication} from '@tsed/common';
 import '@tsed/platform-express'; // /!\ keep this import
-import express, { NextFunction, Request, Response } from 'express';
+import express from 'express';
 import compress from 'compression';
 import cookieParser from 'cookie-parser';
 import methodOverride from 'method-override';
@@ -14,6 +14,7 @@ import '@tsed/multipartfiles';
 import multer from 'multer';
 import path from 'path';
 import crypto from 'crypto';
+import { SessionStoreMiddleware } from './middlewares/SessionStore';
 
 export const rootDir = __dirname;
 export const isProduction = process.env.NODE_ENV === Env.PROD;
@@ -44,6 +45,9 @@ if (isProduction) {
   logger: {
     disableRoutesSummary: isProduction
   },
+  componentsScan: [
+    `${rootDir}/middlewares/**/*.ts`,
+  ],
   mount: {
     '/rest': [
       `${rootDir}/controllers/**/*.ts`
@@ -111,5 +115,8 @@ export class Server {
       .use(express.urlencoded({
         extended: true
       }));
+    this.app.getApp().set('trust proxy', 1);
+    this.app
+      .use(SessionStoreMiddleware);
   }
 }
