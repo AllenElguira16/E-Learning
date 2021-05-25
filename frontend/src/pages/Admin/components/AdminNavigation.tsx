@@ -16,8 +16,8 @@ const AdminNavigation = () => {
 
   return (
     <header className="mb-4">
-      <Navbar color="light" light expand="md">
-        <NavbarBrand href="/">E-Learning Web</NavbarBrand>
+      <Navbar expand="md">
+        <NavbarBrand href="/admin">E-Learning Web</NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="flex-grow-1" navbar>

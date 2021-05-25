@@ -28,33 +28,36 @@ const HomeNavigation: FC = () => {
 
   const onClickLogout = async () => {
     await dispatch(logout());
+    window.location.href = '/home';
   };
 
   return (
     <header className="mb-4">
-      <Navbar color="light" light expand="md">
-        <NavbarBrand href="/">E-Learning Web</NavbarBrand>
+      <Navbar expand="md">
+        <NavbarBrand href="/home">E-Learning Web</NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="flex-grow-1" navbar>
-            <NavItem>
-              <NavLink tag={Link} to="/home/subjects?page=1">Subjects</NavLink>
-            </NavItem>
             {auth.status === 'authenticated' && (
-              <UncontrolledDropdown className="ml-md-auto" nav inNavbar>
-                <DropdownToggle nav caret>
-                  {auth.student?.first_name}
-                </DropdownToggle>
-                <DropdownMenu right>
-                  <DropdownItem tag={Link} to="/home/student">
-                    Account
-                  </DropdownItem>
-                  <DropdownItem divider />
-                  <DropdownItem onClick={onClickLogout}>
-                    Logout
-                  </DropdownItem>
-                </DropdownMenu>
-              </UncontrolledDropdown>
+              <>
+                <NavItem>
+                  <NavLink tag={Link} to="/home/subjects?page=1">Subjects</NavLink>
+                </NavItem>
+                <UncontrolledDropdown className="ml-md-auto" nav inNavbar>
+                  <DropdownToggle nav caret>
+                    {auth.student?.first_name}
+                  </DropdownToggle>
+                  <DropdownMenu right>
+                    <DropdownItem tag={Link} to="/home/student">
+                      Account
+                    </DropdownItem>
+                    <DropdownItem divider />
+                    <DropdownItem onClick={onClickLogout} className="text-white">
+                      Logout
+                    </DropdownItem>
+                  </DropdownMenu>
+                </UncontrolledDropdown>
+              </>
             )}
             {auth.status === 'not-authenticated' && (
               <NavItem className="ml-md-auto">

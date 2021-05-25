@@ -29,6 +29,7 @@ const Login: FC = () => {
     event.preventDefault();
     const response = await dispatch(loginStudent(userInput.school_id, userInput.password));
     alert(response);
+    window.location.href = '/home/subjects?page=1';
   };
 
   return (
